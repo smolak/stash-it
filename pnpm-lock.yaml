@@ -107,6 +107,12 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/core:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+
   packages/eslint-config:
     devDependencies:
       '@typescript-eslint/eslint-plugin':

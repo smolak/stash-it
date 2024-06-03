@@ -1,3 +1,6 @@
 {
-  "extends": "@total-typescript/tsconfig/tsc/dom/library-monorepo"
+  "extends": "@total-typescript/tsconfig/tsc/dom/library",
+  "compilerOptions": {
+    "moduleResolution": "bundler"
+  }
 }
