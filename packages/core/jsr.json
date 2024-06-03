@@ -1,5 +1,5 @@
 {
   "name": "@stash-it/core",
   "version": "0.0.0-beta.1",
-  "exports": "./src/index.ts"
+  "exports": "./mod.ts"
 }
