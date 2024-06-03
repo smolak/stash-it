@@ -1,6 +1,9 @@
 {
   "name": "@stash-it/core",
   "version": "0.0.0-beta.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "echo 'Add dev script here'",
     "build": "echo 'Add build script here'",
