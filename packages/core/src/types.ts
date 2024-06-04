@@ -6,6 +6,7 @@ export type SerializableArray = Array<SerializableValue | SerializableObject>;
 export type SerializableDataStructure = SerializableArray | SerializableObject;
 
 export type Key = string;
+export type BuiltKey = `@__${string}`;
 export type Value = SerializableValue | SerializableDataStructure;
 export type Extra = SerializableObject;
 
@@ -39,28 +40,12 @@ export class ExtraNotSetException extends Error {
   }
 }
 
-export interface CommonMethods {
-  buildKey(key: Key): Promise<Key>;
-  hasItem(key: Key): Promise<boolean>;
-  setItem(key: string, value: string, extra: Extra): Promise<Item | ItemNotSetException>;
-  getItem(key: string): Promise<Item | undefined>;
-  removeItem(key: string): Promise<true | ItemNotRemovedException>;
-  getExtra(key: string): Promise<Extra | undefined>;
-  addExtra(key: string, extra: Extra): Promise<Extra | ExtraNotAddedException>;
-  setExtra(key: string, extra: Extra): Promise<Extra | ExtraNotSetException>;
-}
-
-export abstract class Adapter implements CommonMethods {
-  buildKey(key: Key): Promise<Key> {
-    console.log("foo");
-    return Promise.resolve(key);
-  }
-
-  abstract addExtra(key: string, extra: Extra): Promise<Extra | ExtraNotAddedException>;
-  abstract getExtra(key: string): Promise<Extra | undefined>;
-  abstract getItem(key: string): Promise<Item | undefined>;
-  abstract hasItem(key: Key): Promise<boolean>;
-  abstract removeItem(key: string): Promise<true | ItemNotRemovedException>;
-  abstract setExtra(key: string, extra: Extra): Promise<Extra | ExtraNotSetException>;
-  abstract setItem(key: string, value: string, extra: Extra): Promise<Item | ItemNotSetException>;
+export abstract class Adapter {
+  abstract addExtra(key: BuiltKey, extra: Extra): Promise<Extra | ExtraNotAddedException>;
+  abstract getExtra(key: BuiltKey): Promise<Extra | undefined>;
+  abstract getItem(key: BuiltKey): Promise<Item | undefined>;
+  abstract hasItem(key: BuiltKey): Promise<boolean>;
+  abstract removeItem(key: BuiltKey): Promise<true | ItemNotRemovedException>;
+  abstract setExtra(key: BuiltKey, extra: Extra): Promise<Extra | ExtraNotSetException>;
+  abstract setItem(key: BuiltKey, value: Value, extra: Extra): Promise<Item | ItemNotSetException>;
 }
