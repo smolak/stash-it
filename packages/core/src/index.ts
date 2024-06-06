@@ -1,29 +1,25 @@
 import {
-  Adapter,
-  type BuiltKey,
+  type AdapterInterface,
   type Extra,
-  ExtraNotAddedException,
   ExtraNotSetException,
   type Item,
   ItemNotRemovedException,
   ItemNotSetException,
+  type ItemRemoveResult,
   type Key,
+  type StashItInterface,
   type Value,
 } from "./types";
 
-export class StashIt {
-  #adapter: Adapter;
+export class StashIt implements StashItInterface {
+  #adapter: AdapterInterface;
 
-  constructor(adapter: Adapter) {
+  constructor(adapter: AdapterInterface) {
     this.#adapter = adapter;
   }
 
-  #buildKey(key: Key): BuiltKey {
-    return `@__${key}`;
-  }
-
-  async addExtra(key: Key, extra: Extra): Promise<Extra | ExtraNotAddedException> {
-    return this.#adapter.addExtra(this.#buildKey(key), extra);
+  #buildKey(key: Key): Key {
+    return key;
   }
 
   async getExtra(key: Key): Promise<Extra | undefined> {
@@ -38,7 +34,7 @@ export class StashIt {
     return this.#adapter.hasItem(this.#buildKey(key));
   }
 
-  async removeItem(key: Key): Promise<true | ItemNotRemovedException> {
+  async removeItem(key: Key): Promise<ItemRemoveResult | ItemNotRemovedException> {
     return this.#adapter.removeItem(this.#buildKey(key));
   }
 

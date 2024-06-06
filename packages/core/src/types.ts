@@ -1,20 +1,36 @@
 export type SerializableValue = string | number | boolean | null;
 export type SerializableObject = {
-  [key: string]: SerializableValue | SerializableObject;
+  [key: string]: SerializableValue | SerializableObject | SerializableArray;
 };
 export type SerializableArray = Array<SerializableValue | SerializableObject>;
 export type SerializableDataStructure = SerializableArray | SerializableObject;
 
 export type Key = string;
-export type BuiltKey = `@__${string}`;
 export type Value = SerializableValue | SerializableDataStructure;
 export type Extra = SerializableObject;
 
-export interface Item {
+export type Item = {
   key: Key;
   value: Value;
   extra: Extra;
-}
+};
+
+type Event = string;
+type Handler =
+  | (({ stashIt }: { stashIt: StashItInterface }) => { stashIt: StashItInterface })
+  | (({ key }: { key: Key }) => { key: Key })
+  | (({ value }: { value: Value }) => { value: Value })
+  | (({ extra }: { extra: Extra }) => { extra: Extra });
+
+type Hook = {
+  event: Event;
+  handler: Handler;
+};
+
+/**
+ * TODO
+ * Add `reason` for exceptions? :thingking:
+ */
 
 export class ItemNotSetException extends Error {
   constructor(key: Key) {
@@ -28,24 +44,24 @@ export class ItemNotRemovedException extends Error {
   }
 }
 
-export class ExtraNotAddedException extends Error {
-  constructor(key: Key) {
-    super(`Extra for item with key ${key} could not be added.`);
-  }
-}
-
 export class ExtraNotSetException extends Error {
   constructor(key: Key) {
     super(`Extra for item with key ${key} could not be set.`);
   }
 }
 
-export abstract class Adapter {
-  abstract addExtra(key: BuiltKey, extra: Extra): Promise<Extra | ExtraNotAddedException>;
-  abstract getExtra(key: BuiltKey): Promise<Extra | undefined>;
-  abstract getItem(key: BuiltKey): Promise<Item | undefined>;
-  abstract hasItem(key: BuiltKey): Promise<boolean>;
-  abstract removeItem(key: BuiltKey): Promise<true | ItemNotRemovedException>;
-  abstract setExtra(key: BuiltKey, extra: Extra): Promise<Extra | ExtraNotSetException>;
-  abstract setItem(key: BuiltKey, value: Value, extra: Extra): Promise<Item | ItemNotSetException>;
+export type ItemRemoved = true;
+export type ItemNotPresentCouldNotRemove = false;
+export type ItemRemoveResult = ItemRemoved | ItemNotPresentCouldNotRemove;
+
+interface CommonInterface {
+  hasItem(key: Key): Promise<boolean>;
+  setItem(key: Key, value: Value, extra: Extra): Promise<Item | ItemNotSetException>;
+  getItem(key: Key): Promise<Item | undefined>;
+  removeItem(key: Key): Promise<ItemRemoveResult | ItemNotRemovedException>;
+  setExtra(key: Key, extra: Extra): Promise<Extra | ExtraNotSetException>;
+  getExtra(key: Key): Promise<Extra | undefined>;
 }
+
+export interface StashItInterface extends CommonInterface {}
+export interface AdapterInterface extends CommonInterface {}
