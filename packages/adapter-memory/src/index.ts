@@ -12,8 +12,12 @@ import {
 export class StashItAdapterMemory implements AdapterInterface {
   #data = new Map<Key, Item>();
 
-  async getExtra(key: Key): Promise<Extra | undefined> {
-    return this.#data.get(key)?.extra;
+  async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item | ItemNotSetException> {
+    const item = { key, value, extra };
+
+    this.#data.set(key, item);
+
+    return item;
   }
 
   async getItem(key: Key): Promise<Item | undefined> {
@@ -42,9 +46,7 @@ export class StashItAdapterMemory implements AdapterInterface {
     throw new ExtraNotSetException(key);
   }
 
-  async setItem(key: Key, value: Value, extra: Extra): Promise<Item | ItemNotSetException> {
-    const item = { key, value, extra };
-    this.#data.set(key, item);
-    return item;
+  async getExtra(key: Key): Promise<Extra | undefined> {
+    return this.#data.get(key)?.extra;
   }
 }
