@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+
 import { StashItAdapterMemory } from "./index";
 
 describe("StashItAdapterMemory", () => {
@@ -65,7 +66,9 @@ describe("StashItAdapterMemory", () => {
       const key = "non-existing-key";
       const extra = { foo: "bar" };
 
-      expect(() => adapter.setExtra(key, extra)).rejects.toThrow();
+      const result = await adapter.setExtra(key, extra);
+
+      expect(result).toBe(false);
     });
 
     it("setting extra should overwrite the existing extra", async () => {

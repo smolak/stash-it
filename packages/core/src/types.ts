@@ -1,67 +1,114 @@
-export type SerializableValue = string | number | boolean | null;
-export type SerializableObject = {
+type SerializableValue = string | number | boolean | null;
+type SerializableObject = {
   [key: string]: SerializableValue | SerializableObject | SerializableArray;
 };
-export type SerializableArray = Array<SerializableValue | SerializableObject>;
-export type SerializableDataStructure = SerializableArray | SerializableObject;
+type SerializableArray = Array<SerializableValue | SerializableObject>;
+type SerializableDataStructure = SerializableArray | SerializableObject;
 
 export type Key = string;
 export type Value = SerializableValue | SerializableDataStructure;
 export type Extra = SerializableObject;
-
 export type Item = {
   key: Key;
   value: Value;
   extra: Extra;
 };
 
-type Event = string;
-type Handler =
-  | (({ stashIt }: { stashIt: StashItInterface }) => { stashIt: StashItInterface })
-  | (({ key }: { key: Key }) => { key: Key })
-  | (({ value }: { value: Value }) => { value: Value })
-  | (({ extra }: { extra: Extra }) => { extra: Extra });
+// eslint-disable-next-line no-unused-vars
+export type EventHandler<Args> = (args: Args) => Promise<Args>;
 
-type Hook = {
-  event: Event;
-  handler: Handler;
-};
+type BuildKeyArgs = { key: Key };
+type PreSetItemArgs = { key: Key; value: Value; extra: Extra };
+type PostSetItemArgs = { key: Key; value: Value; extra: Extra; item: Item };
+type PreGetItemArgs = { key: Key };
+type PostGetItemArgs = { key: Key; item: GetItemResult };
+type PreHasItemArgs = { key: Key };
+type PostHasItemArgs = { key: Key; result: boolean };
+type PreRemoveItemArgs = { key: Key };
+type PostRemoveItemArgs = { key: Key; result: boolean };
+type PreSetExtraArgs = { key: Key; extra: Extra };
+type PostSetExtraArgs = { key: Key; extra: SetExtraResult };
+type PreGetExtraArgs = { key: Key };
+type PostGetExtraArgs = { key: Key; extra: GetExtraResult };
 
-/**
- * TODO
- * Add `reason` for exceptions? :thingking:
- */
+type ExtraCouldNotBeSet = false;
+export type SetExtraResult = Extra | ExtraCouldNotBeSet;
 
-export class ItemNotSetException extends Error {
-  constructor(key: Key) {
-    super(`Item with key ${key} could not be set.`);
-  }
-}
+type ItemNotFound = undefined;
+export type GetItemResult = Item | ItemNotFound;
 
-export class ItemNotRemovedException extends Error {
-  constructor(key: Key) {
-    super(`Item with key ${key} could not be removed.`);
-  }
-}
-
-export class ExtraNotSetException extends Error {
-  constructor(key: Key) {
-    super(`Extra for item with key ${key} could not be set.`);
-  }
-}
-
-export type ItemRemoved = true;
-export type ItemNotPresentCouldNotRemove = false;
-export type ItemRemoveResult = ItemRemoved | ItemNotPresentCouldNotRemove;
+type ExtraNotFound = undefined;
+export type GetExtraResult = Extra | ExtraNotFound;
 
 interface CommonInterface {
+  // eslint-disable-next-line no-unused-vars
+  setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
+  // eslint-disable-next-line no-unused-vars
+  getItem(key: Key): Promise<GetItemResult>;
+  // eslint-disable-next-line no-unused-vars
   hasItem(key: Key): Promise<boolean>;
-  setItem(key: Key, value: Value, extra: Extra): Promise<Item | ItemNotSetException>;
-  getItem(key: Key): Promise<Item | undefined>;
-  removeItem(key: Key): Promise<ItemRemoveResult | ItemNotRemovedException>;
-  setExtra(key: Key, extra: Extra): Promise<Extra | ExtraNotSetException>;
-  getExtra(key: Key): Promise<Extra | undefined>;
+  // eslint-disable-next-line no-unused-vars
+  removeItem(key: Key): Promise<boolean>;
+  // eslint-disable-next-line no-unused-vars
+  setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
+  // eslint-disable-next-line no-unused-vars
+  getExtra(key: Key): Promise<GetExtraResult>;
 }
 
-export interface StashItInterface extends CommonInterface {}
-export interface AdapterInterface extends CommonInterface {}
+// TODO: make this use BuiltInEvent to exhaust it
+export type EventHandlerArgs = {
+  buildKey: BuildKeyArgs;
+  preSetItem: PreSetItemArgs;
+  postSetItem: PostSetItemArgs;
+  preGetItem: PreGetItemArgs;
+  postGetItem: PostGetItemArgs;
+  preHasItem: PreHasItemArgs;
+  postHasItem: PostHasItemArgs;
+  preRemoveItem: PreRemoveItemArgs;
+  postRemoveItem: PostRemoveItemArgs;
+  preSetExtra: PreSetExtraArgs;
+  postSetExtra: PostSetExtraArgs;
+  preGetExtra: PreGetExtraArgs;
+  postGetExtra: PostGetExtraArgs;
+};
+
+export type EventHandlers = {
+  buildKey: ReadonlyArray<EventHandler<BuildKeyArgs>>;
+  preSetItem: ReadonlyArray<EventHandler<PreSetItemArgs>>;
+  postSetItem: ReadonlyArray<EventHandler<PostSetItemArgs>>;
+  preGetItem: ReadonlyArray<EventHandler<PreGetItemArgs>>;
+  postGetItem: ReadonlyArray<EventHandler<PostGetItemArgs>>;
+  preHasItem: ReadonlyArray<EventHandler<PreHasItemArgs>>;
+  postHasItem: ReadonlyArray<EventHandler<PostHasItemArgs>>;
+  preRemoveItem: ReadonlyArray<EventHandler<PreRemoveItemArgs>>;
+  postRemoveItem: ReadonlyArray<EventHandler<PostRemoveItemArgs>>;
+  preSetExtra: ReadonlyArray<EventHandler<PreSetExtraArgs>>;
+  postSetExtra: ReadonlyArray<EventHandler<PostSetExtraArgs>>;
+  preGetExtra: ReadonlyArray<EventHandler<PreGetExtraArgs>>;
+  postGetExtra: ReadonlyArray<EventHandler<PostGetExtraArgs>>;
+};
+
+export type Plugin = {
+  eventHandlers: {
+    buildKey?: EventHandler<BuildKeyArgs>;
+    preSetItem?: EventHandler<PreSetItemArgs>;
+    postSetItem?: EventHandler<PostSetItemArgs>;
+    preGetItem?: EventHandler<PreGetItemArgs>;
+    postGetItem?: EventHandler<PostGetItemArgs>;
+    preHasItem?: EventHandler<PreHasItemArgs>;
+    postHasItem?: EventHandler<PostHasItemArgs>;
+    preRemoveItem?: EventHandler<PreRemoveItemArgs>;
+    postRemoveItem?: EventHandler<PostRemoveItemArgs>;
+    preSetExtra?: EventHandler<PreSetExtraArgs>;
+    postSetExtra?: EventHandler<PostSetExtraArgs>;
+    preGetExtra?: EventHandler<PreGetExtraArgs>;
+    postGetExtra?: EventHandler<PostGetExtraArgs>;
+  };
+};
+
+export interface StashItInterface extends CommonInterface {
+  // eslint-disable-next-line no-unused-vars
+  registerPlugins(plugins: Plugin[]): void;
+}
+
+export interface StashItAdapterInterface extends CommonInterface {}

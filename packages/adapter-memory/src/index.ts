@@ -1,18 +1,18 @@
-import {
-  type AdapterInterface,
-  type Extra,
-  ExtraNotSetException,
-  type Item,
-  ItemNotSetException,
-  type ItemRemoveResult,
-  type Key,
-  type Value,
-} from "@stash-it/core/src/types";
+import type {
+  StashItAdapterInterface,
+  Extra,
+  GetExtraResult,
+  GetItemResult,
+  Item,
+  Key,
+  SetExtraResult,
+  Value,
+} from "@stash-it/core";
 
-export class StashItAdapterMemory implements AdapterInterface {
+export class StashItAdapterMemory implements StashItAdapterInterface {
   #data = new Map<Key, Item>();
 
-  async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item | ItemNotSetException> {
+  async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
     const item = { key, value, extra };
 
     this.#data.set(key, item);
@@ -20,7 +20,7 @@ export class StashItAdapterMemory implements AdapterInterface {
     return item;
   }
 
-  async getItem(key: Key): Promise<Item | undefined> {
+  async getItem(key: Key): Promise<GetItemResult> {
     return this.#data.get(key);
   }
 
@@ -28,11 +28,11 @@ export class StashItAdapterMemory implements AdapterInterface {
     return this.#data.has(key);
   }
 
-  async removeItem(key: Key): Promise<ItemRemoveResult> {
+  async removeItem(key: Key): Promise<boolean> {
     return this.#data.delete(key);
   }
 
-  async setExtra(key: Key, extra: Extra): Promise<Extra | ExtraNotSetException> {
+  async setExtra(key: Key, extra: Extra): Promise<SetExtraResult> {
     const item = this.#data.get(key);
 
     if (item) {
@@ -43,10 +43,10 @@ export class StashItAdapterMemory implements AdapterInterface {
       return extra;
     }
 
-    throw new ExtraNotSetException(key);
+    return false;
   }
 
-  async getExtra(key: Key): Promise<Extra | undefined> {
+  async getExtra(key: Key): Promise<GetExtraResult> {
     return this.#data.get(key)?.extra;
   }
 }

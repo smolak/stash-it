@@ -4,6 +4,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "exports": {
+    ".": "./mod.ts"
+  },
   "scripts": {
     "dev": "echo 'Add dev script here'",
     "build": "echo 'Add build script here'",
