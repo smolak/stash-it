@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/stash-it",
-  "version": "0.0.0-beta.1",
+  "version": "0.0.0-beta.2",
   "publishConfig": {
     "access": "public"
   },
