@@ -9,20 +9,28 @@
 
 ## Installation
 
+npm
 ```bash
-// npm
 npx jsr add @stash-it/stash-it
+```
 
-// deno
+deno
+```bash
 deno add @stash-it/stash-it
+```
 
-// yarn
+yarn
+```bash
 yarn dlx jsr add @stash-it/stash-it
+```
 
-// pnpm
+pnpm
+```bash
 pnpm dlx jsr add @stash-it/stash-it
+```
 
-// bun
+bun
+```baash
 bunx jsr add @stash-it/stash-it
 ```
 
@@ -43,8 +51,8 @@ const adapter = new MemoryAdapter();
 const stash = new StashIt(adapter);
 
 // Use it
-stash.set('key', 'value');
-const item = stash.get('key');
+await stash.set('key', 'value');
+const item = await stash.get('key');
 
 console.log(item.value); // 'value'
 ```
