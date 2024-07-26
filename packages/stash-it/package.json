@@ -12,7 +12,7 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/adapter-memory": "workspace:*",
+    "@stash-it/adapter-memory": "npm:@jsr/stash-it__adapter-memory@0.0.0-beta.2",
     "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.4"
   },
   "devDependencies": {

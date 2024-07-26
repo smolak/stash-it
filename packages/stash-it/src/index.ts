@@ -13,6 +13,7 @@ import type {
   Value,
 } from "@stash-it/core";
 
+/** StashIt class. The main class to use. */
 export class StashIt implements StashItInterface {
   #adapter: StashItAdapterInterface;
   #eventHandlers: EventHandlers = {
