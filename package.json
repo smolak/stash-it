@@ -1,6 +1,5 @@
 {
   "name": "stash-it",
-  "private": true,
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
