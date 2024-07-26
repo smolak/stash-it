@@ -9,6 +9,7 @@ import type {
   Value,
 } from "@stash-it/core";
 
+/** Memory adapter class. */
 export class StashItAdapterMemory implements StashItAdapterInterface {
   #data = new Map<Key, Item>();
 
