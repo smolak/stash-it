@@ -5,22 +5,23 @@ type SerializableObject = {
 type SerializableArray = Array<SerializableValue | SerializableObject>;
 type SerializableDataStructure = SerializableArray | SerializableObject;
 
-/** Type for the key used to store the item */
+/** Key used to store the item. */
 export type Key = string;
 
-/** Type for the value stored in the item */
+/** Value stored in the item. */
 export type Value = SerializableValue | SerializableDataStructure;
 
-/** Type for the extra data stored in the item */
+/** Extra data stored in the item. */
 export type Extra = SerializableObject;
 
-/** Type for the item stored in the stash */
+/** Item stored in the stash. */
 export type Item = {
   key: Key;
   value: Value;
   extra: Extra;
 };
 
+/** Event handler function. Accepts and returns the same args. */
 // eslint-disable-next-line no-unused-vars
 export type EventHandler<Args> = (args: Args) => Promise<Args>;
 
@@ -39,12 +40,15 @@ type PreGetExtraArgs = { key: Key };
 type PostGetExtraArgs = { key: Key; extra: GetExtraResult };
 
 type ExtraCouldNotBeSet = false;
+/** Result of setting extra data. */
 export type SetExtraResult = Extra | ExtraCouldNotBeSet;
 
 type ItemNotFound = undefined;
+/** Result of getting an item. */
 export type GetItemResult = Item | ItemNotFound;
 
 type ExtraNotFound = undefined;
+/** Result of getting extra data. */
 export type GetExtraResult = Extra | ExtraNotFound;
 
 interface CommonInterface {
@@ -63,6 +67,7 @@ interface CommonInterface {
 }
 
 // TODO: make this use BuiltInEvent to exhaust it
+/** All types of event handler args based on the event type. */
 export type EventHandlerArgs = {
   buildKey: BuildKeyArgs;
   preSetItem: PreSetItemArgs;
@@ -79,6 +84,7 @@ export type EventHandlerArgs = {
   postGetExtra: PostGetExtraArgs;
 };
 
+/** All event handlers possible to be stored in stash-it instance. */
 export type EventHandlers = {
   buildKey: ReadonlyArray<EventHandler<BuildKeyArgs>>;
   preSetItem: ReadonlyArray<EventHandler<PreSetItemArgs>>;
@@ -95,6 +101,7 @@ export type EventHandlers = {
   postGetExtra: ReadonlyArray<EventHandler<PostGetExtraArgs>>;
 };
 
+/** Plugin interface. */
 export type Plugin = {
   eventHandlers: {
     buildKey?: EventHandler<BuildKeyArgs>;
@@ -113,9 +120,11 @@ export type Plugin = {
   };
 };
 
+/** StashIt interface. */
 export interface StashItInterface extends CommonInterface {
   // eslint-disable-next-line no-unused-vars
   registerPlugins(plugins: Plugin[]): void;
 }
 
+/** StashIt adapter interface. */
 export interface StashItAdapterInterface extends CommonInterface {}
