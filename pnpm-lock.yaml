@@ -33,8 +33,8 @@ importers:
   packages/adapter-memory:
     dependencies:
       '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: npm:@jsr/stash-it__core@0.0.0-beta.4
+        version: '@jsr/stash-it__core@0.0.0-beta.4'
 
   packages/core:
     devDependencies:
@@ -81,8 +81,8 @@ importers:
         specifier: workspace:*
         version: link:../adapter-memory
       '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: npm:@jsr/stash-it__core@0.0.0-beta.4
+        version: '@jsr/stash-it__core@0.0.0-beta.4'
     devDependencies:
       vitest-mock-extended:
         specifier: ^1.3.2
@@ -384,6 +384,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@jsr/stash-it__core@0.0.0-beta.4':
+    resolution: {integrity: sha512-1vVHVgcS53lgp7jNMUzWg0VPw941xoEY/8P6Xg+RKald3148by9ErY7df6cLKyNU7vQZK4DirnZ9+tFTj9Amqw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.0-beta.4.tgz}
 
   '@microsoft/tsdoc-config@0.16.2':
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
@@ -2523,6 +2526,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@jsr/stash-it__core@0.0.0-beta.4': {}
 
   '@microsoft/tsdoc-config@0.16.2':
     dependencies:

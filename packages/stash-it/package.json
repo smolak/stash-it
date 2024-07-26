@@ -1,16 +1,17 @@
 {
   "name": "@stash-it/stash-it",
-  "version": "0.0.0",
+  "version": "0.0.0-beta.1",
   "private": true,
   "scripts": {
     "dev": "echo 'Add dev script here'",
     "build": "echo 'Add build script here'",
     "test": "vitest",
-    "lint": "echo 'Add lint script here'"
+    "lint": "echo 'Add lint script here'",
+    "publish": "pnpx jsr publish"
   },
   "dependencies": {
     "@stash-it/adapter-memory": "workspace:*",
-    "@stash-it/core": "workspace:*"
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.4"
   },
   "devDependencies": {
     "vitest-mock-extended": "^1.3.2"
