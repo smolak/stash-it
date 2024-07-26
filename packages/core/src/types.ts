@@ -5,9 +5,16 @@ type SerializableObject = {
 type SerializableArray = Array<SerializableValue | SerializableObject>;
 type SerializableDataStructure = SerializableArray | SerializableObject;
 
+/** Type for the key used to store the item */
 export type Key = string;
+
+/** Type for the value stored in the item */
 export type Value = SerializableValue | SerializableDataStructure;
+
+/** Type for the extra data stored in the item */
 export type Extra = SerializableObject;
+
+/** Type for the item stored in the stash */
 export type Item = {
   key: Key;
   value: Value;
