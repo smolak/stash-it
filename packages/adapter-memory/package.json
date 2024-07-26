@@ -12,6 +12,6 @@
     "test:watch": "vitest --watch"
   },
   "dependencies": {
-    "@stash-it/core": "workspace:*"
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.4"
   }
 }
