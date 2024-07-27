@@ -37,20 +37,20 @@ bunx jsr add @stash-it/stash-it
 ## Usage
 
 ```typescript
-// Import stash-it main class
+// Import stash-it main class.
 import { StashIt } from '@stash-it/stash-it';
 
 // For it to work you will also need an adapter.
 // You can use any of the @stash-it adapters or create your own.
 import { MemoryAdapter } from '@stash-it/adapter-memory';
 
-// Create an instance of the adapter
+// Create an instance of the adapter.
 const adapter = new MemoryAdapter();
 
-// Create an instance of the stash-it
+// Create an instance of stash-it.
 const stash = new StashIt(adapter);
 
-// Use it
+// Use it.
 await stash.set('key', 'value');
 const item = await stash.get('key');
 
