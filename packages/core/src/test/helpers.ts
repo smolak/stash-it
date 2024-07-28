@@ -2,7 +2,7 @@ import type { HookHandler, HookHandlerArgs, Hook, Plugin } from "../types";
 
 // TODO: given this is a first helper/util (and aimed for tests specifically), this can be moved to a separate package.
 // There will be most likely other helpers/utils that will be used in tests or for creation of plugins/adapters.
-export const getHandler = <H extends Hook>(hook: H, plugin: Plugin) => {
+export const getHandler = <H extends Hook>(hook: H, plugin: Plugin): HookHandler<HookHandlerArgs[H]> => {
   if (!plugin.hookHandlers[hook]) {
     throw new Error(
       `Handler '${hook}' was not found. Available handlers: ${Object.keys(plugin.hookHandlers).join(", ")}.`,
