@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpx jsr publish",
+    "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
     "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.7",
