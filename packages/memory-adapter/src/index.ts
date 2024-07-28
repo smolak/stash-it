@@ -10,7 +10,7 @@ import type {
 } from "@stash-it/core";
 
 /** Memory adapter class. */
-export class StashItAdapterMemory implements StashItAdapterInterface {
+export class MemoryAdapter implements StashItAdapterInterface {
   #data = new Map<Key, Item>();
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {

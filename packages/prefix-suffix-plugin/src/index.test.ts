@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { createPrefixSuffixPlugin } from "./index";
 import { getHandler } from "@stash-it/core";
 
-describe("plugin-prefix-suffix", () => {
+describe("prefix-suffix-plugin", () => {
   describe("when prefix is set", () => {
     it("builds key with set prefix", async () => {
       const plugin = createPrefixSuffixPlugin({ prefix: "prefix-" });

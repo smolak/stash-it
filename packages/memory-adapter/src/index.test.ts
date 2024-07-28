@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 
-import { StashItAdapterMemory } from "./index";
+import { MemoryAdapter } from "./index";
 
-describe("StashItAdapterMemory", () => {
+describe("MemoryAdapter", () => {
   describe("setting and getting an item", () => {
     it("should be able to get an existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
       const key = "key";
       const value = "value";
       const extra = { foo: "bar" };
@@ -18,7 +18,7 @@ describe("StashItAdapterMemory", () => {
     });
 
     it("should return undefined when item does not exist", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
 
       const item = await adapter.getItem("non-existing-key");
 
@@ -26,7 +26,7 @@ describe("StashItAdapterMemory", () => {
     });
 
     it("setting an item for existing key should overwrite the existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
       const key = "key";
       const value = "value";
       const extra = { foo: "bar" };
@@ -46,7 +46,7 @@ describe("StashItAdapterMemory", () => {
 
   describe("setting and getting extra", () => {
     it("should be able to set extra for an existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
       const key = "key";
       const value = "value";
 
@@ -62,7 +62,7 @@ describe("StashItAdapterMemory", () => {
     });
 
     it("should not be able to set extra on non-existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
       const key = "non-existing-key";
       const extra = { foo: "bar" };
 
@@ -72,7 +72,7 @@ describe("StashItAdapterMemory", () => {
     });
 
     it("setting extra should overwrite the existing extra", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
       const key = "key";
       const value = "value";
       const extra = { foo: "bar" };
@@ -91,7 +91,7 @@ describe("StashItAdapterMemory", () => {
 
   describe("removing an item", () => {
     it("should be able to remove an existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
       const key = "key";
       const value = "value";
 
@@ -108,7 +108,7 @@ describe("StashItAdapterMemory", () => {
     });
 
     it("should return false when trying to remove non-existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
 
       const result = await adapter.removeItem("non-existing-key");
 
@@ -118,7 +118,7 @@ describe("StashItAdapterMemory", () => {
 
   describe("checking if item exists", () => {
     it("should return true for existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
       const key = "key";
       const value = "value";
 
@@ -130,7 +130,7 @@ describe("StashItAdapterMemory", () => {
     });
 
     it("should return false for non-existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
 
       const check = await adapter.hasItem("non-existing-key");
 
@@ -140,7 +140,7 @@ describe("StashItAdapterMemory", () => {
 
   describe("removing an item", () => {
     it("should return true when removing an existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
       const key = "key";
       const value = "value";
 
@@ -152,7 +152,7 @@ describe("StashItAdapterMemory", () => {
     });
 
     it("should return false when removing non-existing item", async () => {
-      const adapter = new StashItAdapterMemory();
+      const adapter = new MemoryAdapter();
 
       const result = await adapter.removeItem("non-existing-key");
 

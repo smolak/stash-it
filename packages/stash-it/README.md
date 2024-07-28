@@ -42,7 +42,7 @@ import { StashIt } from '@stash-it/stash-it';
 
 // For it to work you will also need an adapter.
 // You can use any of the @stash-it adapters or create your own.
-import { MemoryAdapter } from '@stash-it/adapter-memory';
+import { MemoryAdapter } from '@stash-it/memory-adapter';
 
 // Create an instance of the adapter.
 const adapter = new MemoryAdapter();

@@ -1,1 +1,0 @@
-# `@stash-it/plugin-prefix-suffix`

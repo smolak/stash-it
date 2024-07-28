@@ -29,6 +29,7 @@ type RequiredProperties<Object, K extends keyof Object> = {
   [P in K]: Object[P];
 };
 
+/** All possible hooks. */
 export type Hook =
   | "buildKey"
   | "beforeSetItem"

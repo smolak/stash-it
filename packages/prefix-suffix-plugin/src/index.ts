@@ -1,7 +1,7 @@
-import type { Plugin } from "@stash-it/core";
+import { type Plugin } from "@stash-it/core";
 import z from "zod";
 
-const PrefixSuffixSchema = z.string().trim().min(1).or(z.literal("")).optional();
+const PrefixSuffixSchema = z.string().trim().min(1).optional();
 const PluginOptionsSchema = z
   .object({
     prefix: PrefixSuffixSchema,
@@ -25,13 +25,15 @@ const PluginOptionsSchema = z
 type PluginOptions = z.infer<typeof PluginOptionsSchema>;
 
 export const createPrefixSuffixPlugin = (options: PluginOptions): Plugin => {
-  const { prefix, suffix } = PluginOptionsSchema.parse(options);
+  const values = PluginOptionsSchema.parse(options);
+
+  // TODO: move this to schema at some point.
+  const prefix = values.prefix ?? "";
+  const suffix = values.suffix ?? "";
 
   return {
     hookHandlers: {
-      buildKey: ({ key }) => {
-        return Promise.resolve({ key: `${prefix ? prefix : ""}${key}${suffix ? suffix : ""}` });
-      },
+      buildKey: ({ key }) => Promise.resolve({ key: `${prefix}${key}${suffix}` }),
     },
   };
 };
