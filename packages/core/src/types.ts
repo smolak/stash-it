@@ -23,21 +23,40 @@ export type Item = {
 
 /** Event handler function. Accepts and returns the same args. */
 // eslint-disable-next-line no-unused-vars
-export type EventHandler<Args> = (args: Args) => Promise<Args>;
+export type HookHandler<Args> = (args: Args) => Promise<Args>;
+
+type RequiredProperties<Object, K extends keyof Object> = {
+  [P in K]: Object[P];
+};
+
+export type Hook =
+  | "buildKey"
+  | "beforeSetItem"
+  | "afterSetItem"
+  | "beforeGetItem"
+  | "afterGetItem"
+  | "beforeHasItem"
+  | "afterHasItem"
+  | "beforeRemoveItem"
+  | "afterRemoveItem"
+  | "beforeSetExtra"
+  | "afterSetExtra"
+  | "beforeGetExtra"
+  | "afterGetExtra";
 
 type BuildKeyArgs = { key: Key };
-type PreSetItemArgs = { key: Key; value: Value; extra: Extra };
-type PostSetItemArgs = { key: Key; value: Value; extra: Extra; item: Item };
-type PreGetItemArgs = { key: Key };
-type PostGetItemArgs = { key: Key; item: GetItemResult };
-type PreHasItemArgs = { key: Key };
-type PostHasItemArgs = { key: Key; result: boolean };
-type PreRemoveItemArgs = { key: Key };
-type PostRemoveItemArgs = { key: Key; result: boolean };
-type PreSetExtraArgs = { key: Key; extra: Extra };
-type PostSetExtraArgs = { key: Key; extra: SetExtraResult };
-type PreGetExtraArgs = { key: Key };
-type PostGetExtraArgs = { key: Key; extra: GetExtraResult };
+type BeforeSetItemArgs = { key: Key; value: Value; extra: Extra };
+type AfterSetItemArgs = { key: Key; value: Value; extra: Extra; item: Item };
+type BeforeGetItemArgs = { key: Key };
+type AfterGetItemArgs = { key: Key; item: GetItemResult };
+type BeforeHasItemArgs = { key: Key };
+type AfterHasItemArgs = { key: Key; result: boolean };
+type BeforeRemoveItemArgs = { key: Key };
+type AfterRemoveItemArgs = { key: Key; result: boolean };
+type BeforeSetExtraArgs = { key: Key; extra: Extra };
+type AfterSetExtraArgs = { key: Key; extra: SetExtraResult };
+type BeforeGetExtraArgs = { key: Key };
+type AfterGetExtraArgs = { key: Key; extra: GetExtraResult };
 
 type ExtraCouldNotBeSet = false;
 /** Result of setting extra data. */
@@ -66,58 +85,68 @@ interface CommonInterface {
   getExtra(key: Key): Promise<GetExtraResult>;
 }
 
-// TODO: make this use BuiltInEvent to exhaust it
-/** All types of event handler args based on the event type. */
-export type EventHandlerArgs = {
-  buildKey: BuildKeyArgs;
-  preSetItem: PreSetItemArgs;
-  postSetItem: PostSetItemArgs;
-  preGetItem: PreGetItemArgs;
-  postGetItem: PostGetItemArgs;
-  preHasItem: PreHasItemArgs;
-  postHasItem: PostHasItemArgs;
-  preRemoveItem: PreRemoveItemArgs;
-  postRemoveItem: PostRemoveItemArgs;
-  preSetExtra: PreSetExtraArgs;
-  postSetExtra: PostSetExtraArgs;
-  preGetExtra: PreGetExtraArgs;
-  postGetExtra: PostGetExtraArgs;
-};
+/** All types of hook handler args. */
+export type HookHandlerArgs = RequiredProperties<
+  {
+    buildKey: BuildKeyArgs;
+    beforeSetItem: BeforeSetItemArgs;
+    afterSetItem: AfterSetItemArgs;
+    beforeGetItem: BeforeGetItemArgs;
+    afterGetItem: AfterGetItemArgs;
+    beforeHasItem: BeforeHasItemArgs;
+    afterHasItem: AfterHasItemArgs;
+    beforeRemoveItem: BeforeRemoveItemArgs;
+    afterRemoveItem: AfterRemoveItemArgs;
+    beforeSetExtra: BeforeSetExtraArgs;
+    afterSetExtra: AfterSetExtraArgs;
+    beforeGetExtra: BeforeGetExtraArgs;
+    afterGetExtra: AfterGetExtraArgs;
+  },
+  Hook
+>;
 
-/** All event handlers possible to be stored in stash-it instance. */
-export type EventHandlers = {
-  buildKey: ReadonlyArray<EventHandler<BuildKeyArgs>>;
-  preSetItem: ReadonlyArray<EventHandler<PreSetItemArgs>>;
-  postSetItem: ReadonlyArray<EventHandler<PostSetItemArgs>>;
-  preGetItem: ReadonlyArray<EventHandler<PreGetItemArgs>>;
-  postGetItem: ReadonlyArray<EventHandler<PostGetItemArgs>>;
-  preHasItem: ReadonlyArray<EventHandler<PreHasItemArgs>>;
-  postHasItem: ReadonlyArray<EventHandler<PostHasItemArgs>>;
-  preRemoveItem: ReadonlyArray<EventHandler<PreRemoveItemArgs>>;
-  postRemoveItem: ReadonlyArray<EventHandler<PostRemoveItemArgs>>;
-  preSetExtra: ReadonlyArray<EventHandler<PreSetExtraArgs>>;
-  postSetExtra: ReadonlyArray<EventHandler<PostSetExtraArgs>>;
-  preGetExtra: ReadonlyArray<EventHandler<PreGetExtraArgs>>;
-  postGetExtra: ReadonlyArray<EventHandler<PostGetExtraArgs>>;
-};
+/** Type for holding registered hook handlers for all possible hooks. */
+export type RegisteredHookHandlers = RequiredProperties<
+  {
+    buildKey: ReadonlyArray<HookHandler<BuildKeyArgs>>;
+    beforeSetItem: ReadonlyArray<HookHandler<BeforeSetItemArgs>>;
+    afterSetItem: ReadonlyArray<HookHandler<AfterSetItemArgs>>;
+    beforeGetItem: ReadonlyArray<HookHandler<BeforeGetItemArgs>>;
+    afterGetItem: ReadonlyArray<HookHandler<AfterGetItemArgs>>;
+    beforeHasItem: ReadonlyArray<HookHandler<BeforeHasItemArgs>>;
+    afterHasItem: ReadonlyArray<HookHandler<AfterHasItemArgs>>;
+    beforeRemoveItem: ReadonlyArray<HookHandler<BeforeRemoveItemArgs>>;
+    afterRemoveItem: ReadonlyArray<HookHandler<AfterRemoveItemArgs>>;
+    beforeSetExtra: ReadonlyArray<HookHandler<BeforeSetExtraArgs>>;
+    afterSetExtra: ReadonlyArray<HookHandler<AfterSetExtraArgs>>;
+    beforeGetExtra: ReadonlyArray<HookHandler<BeforeGetExtraArgs>>;
+    afterGetExtra: ReadonlyArray<HookHandler<AfterGetExtraArgs>>;
+  },
+  Hook
+>;
+
+type PluginHookHandlers = RequiredProperties<
+  {
+    buildKey?: HookHandler<BuildKeyArgs>;
+    beforeSetItem?: HookHandler<BeforeSetItemArgs>;
+    afterSetItem?: HookHandler<AfterSetItemArgs>;
+    beforeGetItem?: HookHandler<BeforeGetItemArgs>;
+    afterGetItem?: HookHandler<AfterGetItemArgs>;
+    beforeHasItem?: HookHandler<BeforeHasItemArgs>;
+    afterHasItem?: HookHandler<AfterHasItemArgs>;
+    beforeRemoveItem?: HookHandler<BeforeRemoveItemArgs>;
+    afterRemoveItem?: HookHandler<AfterRemoveItemArgs>;
+    beforeSetExtra?: HookHandler<BeforeSetExtraArgs>;
+    afterSetExtra?: HookHandler<AfterSetExtraArgs>;
+    beforeGetExtra?: HookHandler<BeforeGetExtraArgs>;
+    afterGetExtra?: HookHandler<AfterGetExtraArgs>;
+  },
+  Hook
+>;
 
 /** Plugin interface. */
 export type Plugin = {
-  eventHandlers: {
-    buildKey?: EventHandler<BuildKeyArgs>;
-    preSetItem?: EventHandler<PreSetItemArgs>;
-    postSetItem?: EventHandler<PostSetItemArgs>;
-    preGetItem?: EventHandler<PreGetItemArgs>;
-    postGetItem?: EventHandler<PostGetItemArgs>;
-    preHasItem?: EventHandler<PreHasItemArgs>;
-    postHasItem?: EventHandler<PostHasItemArgs>;
-    preRemoveItem?: EventHandler<PreRemoveItemArgs>;
-    postRemoveItem?: EventHandler<PostRemoveItemArgs>;
-    preSetExtra?: EventHandler<PreSetExtraArgs>;
-    postSetExtra?: EventHandler<PostSetExtraArgs>;
-    preGetExtra?: EventHandler<PreGetExtraArgs>;
-    postGetExtra?: EventHandler<PostGetExtraArgs>;
-  };
+  hookHandlers: PluginHookHandlers;
 };
 
 /** StashIt interface. */
