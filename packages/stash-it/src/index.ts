@@ -43,6 +43,10 @@ export class StashIt implements StashItInterface {
   }
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
+    // TODO: add a solid data validation on key, value and extra
+    // E.g. sqlite, when searching over JSON in extra, uses `$.fieldname` notation
+    // Therefore, field should not consist of dots or a dollar signs. Best if only _azAZ09
+
     const preData = await this.#call("beforeSetItem", { key, value, extra });
     const setItem = await this.#adapter.setItem(await this.#buildKey(preData.key), preData.value, preData.extra);
     const postData = await this.#call("afterSetItem", { ...preData, item: setItem });
