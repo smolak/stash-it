@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 import { it, expect, afterAll, beforeAll, describe, beforeEach } from "vitest";
 import SqliteDatabase from "better-sqlite3";
-
+import { nanoid } from "nanoid";
 import { SqliteAdapter, type SqliteAdapterOptions } from "./index";
 
 const tempDir = path.join(__dirname, "..", "temp");
@@ -12,28 +12,17 @@ const valueColumnName = "value";
 const extraColumnName = "extra";
 
 let dbId = Date.now();
+let adapter: SqliteAdapter;
 
-const testDatabases = {
-  current: () => {
-    const dbName = `testdb_${dbId++}.db`;
-    const dbPath = path.join(tempDir, dbName);
-
-    const db = new SqliteDatabase(dbPath);
-    db.prepare(
-      `CREATE TABLE ${tableName} (${keyColumnName} TEXT PRIMARY KEY, ${valueColumnName} TEXT, ${extraColumnName} JSON)`,
-    ).run();
-
-    return { dbName, dbPath };
-  },
-  next: () => {
-    dbId++;
-
-    return testDatabases.current();
-  },
-};
+const dbName = `testdb_${dbId++}.db`;
+const dbPath = path.join(tempDir, dbName);
 
 const createAdapter = (options: Partial<SqliteAdapterOptions> = {}) => {
-  const { dbPath } = testDatabases.current();
+  const db = new SqliteDatabase(dbPath);
+
+  db.prepare(
+    `CREATE TABLE ${tableName} (${keyColumnName} TEXT PRIMARY KEY, ${valueColumnName} TEXT, ${extraColumnName} JSON)`,
+  ).run();
 
   return new SqliteAdapter({ ...options, dbPath });
 };
@@ -42,14 +31,12 @@ describe("sqlite-adapter", () => {
   beforeAll(() => {
     fs.removeSync(tempDir);
     fs.ensureDirSync(tempDir);
+
+    adapter = createAdapter();
   });
 
   afterAll(() => {
     fs.removeSync(tempDir);
-  });
-
-  beforeEach(() => {
-    testDatabases.next();
   });
 
   describe("validation", () => {
@@ -58,46 +45,37 @@ describe("sqlite-adapter", () => {
     });
 
     it("should throw when table does not exist", () => {
-      const { dbPath } = testDatabases.current();
-
       expect(() => new SqliteAdapter({ dbPath, tableName: "non_existent_table" })).to.toThrowError(
         "no such table: non_existent_table",
       );
     });
 
     it("should throw when key column doesn't exist", () => {
-      const { dbPath } = testDatabases.current();
-
       expect(() => new SqliteAdapter({ dbPath, keyColumnName: "non_existent_key_column" })).to.toThrowError(
         "no such column: non_existent_key_column",
       );
     });
 
     it("should throw when value column doesn't exist", () => {
-      const { dbPath } = testDatabases.current();
-
       expect(() => new SqliteAdapter({ dbPath, valueColumnName: "non_existent_value_column" })).to.toThrowError(
         "no such column: non_existent_value_column",
       );
     });
 
     it("should throw when extra column doesn't exist", () => {
-      const { dbPath } = testDatabases.current();
-
       expect(() => new SqliteAdapter({ dbPath, extraColumnName: "non_existent_extra_column" })).to.toThrowError(
         "no such column: non_existent_extra_column",
       );
     });
 
     it("should not throw when validation passes", () => {
-      expect(() => new SqliteAdapter({ dbPath: testDatabases.current().dbPath })).not.toThrow();
+      expect(() => new SqliteAdapter({ dbPath })).not.toThrow();
     });
   });
 
   describe("setting and getting an item", () => {
     it("should be able to get an existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
       const extra = { foo: "bar" };
 
@@ -109,16 +87,13 @@ describe("sqlite-adapter", () => {
     });
 
     it("should return undefined when item does not exist", async () => {
-      const adapter = createAdapter();
-
       const item = await adapter.getItem("non-existing-key");
 
       expect(item).toBeUndefined();
     });
 
     it("setting an item for existing key should overwrite the existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
       const extra = { foo: "bar" };
 
@@ -137,8 +112,7 @@ describe("sqlite-adapter", () => {
 
   describe("setting and getting extra", () => {
     it("should be able to set extra for an existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
 
       await adapter.setItem(key, value);
@@ -153,7 +127,6 @@ describe("sqlite-adapter", () => {
     });
 
     it("should not be able to set extra on non-existing item", async () => {
-      const adapter = createAdapter();
       const key = "non-existing-key";
       const extra = { foo: "bar" };
 
@@ -163,8 +136,7 @@ describe("sqlite-adapter", () => {
     });
 
     it("setting extra should overwrite the existing extra", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
       const extra = { foo: "bar" };
 
@@ -182,8 +154,7 @@ describe("sqlite-adapter", () => {
 
   describe("removing an item", () => {
     it("should be able to remove an existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
 
       await adapter.setItem(key, value);
@@ -199,8 +170,6 @@ describe("sqlite-adapter", () => {
     });
 
     it("should return false when trying to remove non-existing item", async () => {
-      const adapter = createAdapter();
-
       const result = await adapter.removeItem("non-existing-key");
 
       expect(result).toBe(false);
@@ -209,8 +178,7 @@ describe("sqlite-adapter", () => {
 
   describe("checking if item exists", () => {
     it("should return true for existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
 
       await adapter.setItem(key, value);
@@ -221,8 +189,6 @@ describe("sqlite-adapter", () => {
     });
 
     it("should return false for non-existing item", async () => {
-      const adapter = createAdapter();
-
       const check = await adapter.hasItem("non-existing-key");
 
       expect(check).toBe(false);
@@ -231,8 +197,7 @@ describe("sqlite-adapter", () => {
 
   describe("removing an item", () => {
     it("should return true when removing an existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
 
       await adapter.setItem(key, value);
@@ -243,8 +208,6 @@ describe("sqlite-adapter", () => {
     });
 
     it("should return false when removing non-existing item", async () => {
-      const adapter = createAdapter();
-
       const result = await adapter.removeItem("non-existing-key");
 
       expect(result).toBe(false);
