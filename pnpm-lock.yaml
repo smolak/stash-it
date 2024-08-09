@@ -65,6 +65,10 @@ importers:
       '@stash-it/core':
         specifier: npm:@jsr/stash-it__core@0.0.0-beta.7
         version: '@jsr/stash-it__core@0.0.0-beta.7'
+    devDependencies:
+      nanoid:
+        specifier: ^5.0.7
+        version: 5.0.7
 
   packages/prefix-suffix-plugin:
     dependencies:

@@ -17,5 +17,8 @@
   },
   "dependencies": {
     "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.7"
+  },
+  "devDependencies": {
+    "nanoid": "^5.0.7"
   }
 }

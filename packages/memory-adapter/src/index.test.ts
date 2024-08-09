@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
+import { nanoid } from "nanoid";
 
 import { MemoryAdapter } from "./index";
 
-const createAdapter = () => new MemoryAdapter();
+const adapter = new MemoryAdapter();
 
 describe("MemoryAdapter", () => {
   describe("setting and getting an item", () => {
     it("should be able to get an existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
       const extra = { foo: "bar" };
 
@@ -20,16 +20,13 @@ describe("MemoryAdapter", () => {
     });
 
     it("should return undefined when item does not exist", async () => {
-      const adapter = createAdapter();
-
       const item = await adapter.getItem("non-existing-key");
 
       expect(item).toBeUndefined();
     });
 
     it("setting an item for existing key should overwrite the existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
       const extra = { foo: "bar" };
 
@@ -48,8 +45,7 @@ describe("MemoryAdapter", () => {
 
   describe("setting and getting extra", () => {
     it("should be able to set extra for an existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
 
       await adapter.setItem(key, value);
@@ -64,7 +60,6 @@ describe("MemoryAdapter", () => {
     });
 
     it("should not be able to set extra on non-existing item", async () => {
-      const adapter = createAdapter();
       const key = "non-existing-key";
       const extra = { foo: "bar" };
 
@@ -74,8 +69,7 @@ describe("MemoryAdapter", () => {
     });
 
     it("setting extra should overwrite the existing extra", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
       const extra = { foo: "bar" };
 
@@ -93,8 +87,7 @@ describe("MemoryAdapter", () => {
 
   describe("removing an item", () => {
     it("should be able to remove an existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
 
       await adapter.setItem(key, value);
@@ -110,8 +103,6 @@ describe("MemoryAdapter", () => {
     });
 
     it("should return false when trying to remove non-existing item", async () => {
-      const adapter = createAdapter();
-
       const result = await adapter.removeItem("non-existing-key");
 
       expect(result).toBe(false);
@@ -120,8 +111,7 @@ describe("MemoryAdapter", () => {
 
   describe("checking if item exists", () => {
     it("should return true for existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
 
       await adapter.setItem(key, value);
@@ -132,8 +122,6 @@ describe("MemoryAdapter", () => {
     });
 
     it("should return false for non-existing item", async () => {
-      const adapter = createAdapter();
-
       const check = await adapter.hasItem("non-existing-key");
 
       expect(check).toBe(false);
@@ -142,8 +130,7 @@ describe("MemoryAdapter", () => {
 
   describe("removing an item", () => {
     it("should return true when removing an existing item", async () => {
-      const adapter = createAdapter();
-      const key = "key";
+      const key = nanoid();
       const value = "value";
 
       await adapter.setItem(key, value);
@@ -154,8 +141,6 @@ describe("MemoryAdapter", () => {
     });
 
     it("should return false when removing non-existing item", async () => {
-      const adapter = createAdapter();
-
       const result = await adapter.removeItem("non-existing-key");
 
       expect(result).toBe(false);
