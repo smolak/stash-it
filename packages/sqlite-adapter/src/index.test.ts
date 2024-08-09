@@ -103,7 +103,7 @@ describe("sqlite-adapter", () => {
 
       await adapter.setItem(key, value, extra);
 
-      const item = await adapter.getItem("key");
+      const item = await adapter.getItem(key);
 
       expect(item).toEqual({ key, value, extra });
     });
@@ -157,11 +157,9 @@ describe("sqlite-adapter", () => {
       const key = "non-existing-key";
       const extra = { foo: "bar" };
 
-      await adapter.setExtra(key, extra);
+      const result = await adapter.setExtra(key, extra);
 
-      const extraSetOnItem = await adapter.getExtra(key);
-
-      expect(extraSetOnItem).toBeUndefined();
+      expect(result).toBe(false);
     });
 
     it("setting extra should overwrite the existing extra", async () => {
@@ -172,7 +170,7 @@ describe("sqlite-adapter", () => {
 
       await adapter.setItem(key, value, extra);
 
-      const newExtra = { foo: "baz" };
+      const newExtra = { baz: "bam" };
 
       await adapter.setExtra(key, newExtra);
 
@@ -186,8 +184,9 @@ describe("sqlite-adapter", () => {
     it("should be able to remove an existing item", async () => {
       const adapter = createAdapter();
       const key = "key";
+      const value = "value";
 
-      await adapter.setItem(key, "value");
+      await adapter.setItem(key, value);
 
       const check = await adapter.hasItem(key);
       expect(check).toBe(true);
