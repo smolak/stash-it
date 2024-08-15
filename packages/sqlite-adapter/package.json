@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "echo 'Add dev script here'",
     "build": "echo 'Add build script here'",
+    "lint": "eslint .",
     "test": "vitest run",
-    "lint": "echo 'Add lint script here'"
+    "test:watch": "vitest --watch",
+    "publish": "pnpx jsr publish"
   },
   "dependencies": {
     "@stash-it/core": "workspace:*",
