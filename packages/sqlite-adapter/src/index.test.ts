@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
-import { it, expect, afterAll, beforeAll, describe, beforeEach } from "vitest";
+import { it, expect, afterAll, beforeAll, describe } from "vitest";
 import SqliteDatabase from "better-sqlite3";
 import { nanoid } from "nanoid";
 import { SqliteAdapter, type SqliteAdapterOptions } from "./index";
@@ -11,10 +11,9 @@ const keyColumnName = "key";
 const valueColumnName = "value";
 const extraColumnName = "extra";
 
-let dbId = Date.now();
 let adapter: SqliteAdapter;
 
-const dbName = `testdb_${dbId++}.db`;
+const dbName = `testdb_${nanoid()}.db`;
 const dbPath = path.join(tempDir, dbName);
 
 const createAdapter = (options: Partial<SqliteAdapterOptions> = {}) => {
