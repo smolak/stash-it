@@ -2,7 +2,7 @@ import { it, expect, afterAll, describe } from "vitest";
 import { nanoid } from "nanoid";
 import type { StashItAdapterInterface } from "@stash-it/core";
 
-export const runAdapterTests = (adapter: StashItAdapterInterface) => {
+export const runAdapterTests = (adapter: StashItAdapterInterface): void => {
   const keysToRemoveItemsBy: string[] = [];
 
   describe("adapter's functionality", () => {
