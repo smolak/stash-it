@@ -1,0 +1,20 @@
+{
+  "name": "@stash-it/dev-tools",
+  "version": "0.0.0-beta.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": "./mod.ts"
+  },
+  "scripts": {
+    "dev": "echo 'Add dev script here'",
+    "build": "echo 'Add build script here'",
+    "lint": "eslint .",
+    "publish": "pnpx jsr publish"
+  },
+  "dependencies": {
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.9",
+    "nanoid": "^5.0.7"
+  }
+}
