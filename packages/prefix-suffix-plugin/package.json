@@ -1,8 +1,11 @@
 {
   "name": "@stash-it/prefix-suffix-plugin",
-  "version": "0.0.0-beta.2",
+  "version": "0.0.0-beta.3",
   "publishConfig": {
     "access": "public"
+  },
+  "exports": {
+    ".": "./mod.ts"
   },
   "scripts": {
     "dev": "echo 'Add dev script here'",
@@ -14,7 +17,11 @@
     "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.7",
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.9",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.0-beta.3",
+    "vitest": "^2.0.5"
   }
 }

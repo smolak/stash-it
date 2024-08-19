@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
+import { getHandler } from "@stash-it/dev-tools";
 
 import { createPrefixSuffixPlugin } from "./index";
-import { getHandler } from "@stash-it/core";
 
 describe("prefix-suffix-plugin", () => {
   describe("when prefix is set", () => {
@@ -37,6 +37,12 @@ describe("prefix-suffix-plugin", () => {
       const result = await handler({ key });
 
       expect(result.key).toEqual(`prefix-${key}-suffix`);
+    });
+  });
+
+  describe("when neither prefix nor suffix is set", () => {
+    it("throws an error", () => {
+      expect(() => createPrefixSuffixPlugin({})).toThrowErrorMatchingSnapshot();
     });
   });
 });

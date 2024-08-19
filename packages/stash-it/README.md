@@ -30,7 +30,7 @@ pnpm dlx jsr add @stash-it/stash-it
 ```
 
 bun
-```baash
+```bash
 bunx jsr add @stash-it/stash-it
 ```
 

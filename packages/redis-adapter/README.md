@@ -1,0 +1,1 @@
+# `@stash-it/redis-adapter`

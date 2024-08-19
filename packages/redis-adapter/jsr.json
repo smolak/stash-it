@@ -1,0 +1,5 @@
+{
+  "name": "@stash-it/redis-adapter",
+  "version": "0.0.0-beta.1",
+  "exports": "./mod.ts"
+}

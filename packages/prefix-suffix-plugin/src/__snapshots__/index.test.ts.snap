@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`prefix-suffix-plugin > when neither prefix nor suffix is set > throws an error 1`] = `
+[ZodError: [
+  {
+    "message": "Either prefix or suffix should be set.",
+    "code": "custom",
+    "path": [
+      "prefix"
+    ]
+  },
+  {
+    "message": "Either prefix or suffix should be set.",
+    "code": "custom",
+    "path": [
+      "suffix"
+    ]
+  }
+]]
+`;

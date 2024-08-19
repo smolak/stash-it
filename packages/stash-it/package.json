@@ -1,8 +1,11 @@
 {
   "name": "@stash-it/stash-it",
-  "version": "0.0.0-beta.4",
+  "version": "0.0.0-beta.5",
   "publishConfig": {
     "access": "public"
+  },
+  "exports": {
+    ".": "./mod.ts"
   },
   "scripts": {
     "dev": "echo 'Add dev script here'",
@@ -13,9 +16,10 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.7"
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.9"
   },
   "devDependencies": {
+    "vitest": "^2.0.5",
     "vitest-mock-extended": "^1.3.2"
   }
 }

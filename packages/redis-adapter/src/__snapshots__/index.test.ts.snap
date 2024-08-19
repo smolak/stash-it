@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`redis-adapter > validation > when url is not provided > throws an error 1`] = `
+[ZodError: [
+  {
+    "validation": "url",
+    "code": "invalid_string",
+    "message": "Invalid url",
+    "path": [
+      "url"
+    ]
+  }
+]]
+`;
+
+exports[`redis-adapter > validation > when url is not valid > throws an error 1`] = `
+[ZodError: [
+  {
+    "validation": "url",
+    "code": "invalid_string",
+    "message": "Invalid url",
+    "path": [
+      "url"
+    ]
+  }
+]]
+`;

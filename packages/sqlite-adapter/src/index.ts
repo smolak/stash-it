@@ -58,7 +58,6 @@ export class SqliteAdapter implements StashItAdapterInterface {
   }
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
-    const item = { key, value, extra };
     const itemExists = await this.hasItem(key);
 
     if (itemExists) {
@@ -70,22 +69,24 @@ export class SqliteAdapter implements StashItAdapterInterface {
                   LIMIT 1`,
         )
         .run({
-          ...item,
-          extra: JSON.stringify(item.extra),
+          key,
+          value: JSON.stringify(value),
+          extra: JSON.stringify(extra),
         });
     } else {
       this.#database
         .prepare(
           `INSERT INTO ${this.#tableName} (${this.#keyColumnName}, ${this.#valueColumnName}, ${this.#extraColumnName})
-                VALUES (@key, @value, json_insert(@extra))`,
+                VALUES (@key, json_insert(@value), json_insert(@extra))`,
         )
         .run({
-          ...item,
-          extra: JSON.stringify(item.extra),
+          key,
+          value: JSON.stringify(value),
+          extra: JSON.stringify(extra),
         });
     }
 
-    return item;
+    return { key, value, extra };
   }
 
   async getItem(key: Key): Promise<GetItemResult> {
@@ -99,7 +100,8 @@ export class SqliteAdapter implements StashItAdapterInterface {
 
     if (item) {
       return {
-        ...item,
+        key,
+        value: JSON.parse(item.value),
         extra: JSON.parse(item.extra),
       };
     }
