@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/core",
-  "version": "0.0.0-beta.8",
+  "version": "0.0.0-beta.9",
   "publishConfig": {
     "access": "public"
   },
@@ -13,8 +13,5 @@
     "test": "echo 'Add test script here'",
     "lint": "eslint .",
     "publish": "pnpx jsr publish"
-  },
-  "devDependencies": {
-    "@repo/typescript-config": "workspace:*"
   }
 }

@@ -1,13 +1,11 @@
-type RecursiveType = string | number | boolean | null | RecursiveType[] | { [key: string]: RecursiveType };
-
 /** Key used to store the item. */
 export type Key = string;
 
 /** Value stored in the item. */
-export type Value = RecursiveType;
+export type Value = string | number | boolean | null | Value[] | { [key: string]: Value };
 
 /** Extra data stored in the item. */
-export type Extra = RecursiveType;
+export type Extra = string | number | boolean | null | Extra[] | { [key: string]: Extra };
 
 /** Item stored in the stash. */
 export type Item = {
