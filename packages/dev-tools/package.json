@@ -8,8 +8,6 @@
     ".": "./mod.ts"
   },
   "scripts": {
-    "dev": "echo 'Add dev script here'",
-    "build": "echo 'Add build script here'",
     "lint": "eslint .",
     "publish": "pnpx jsr publish"
   },

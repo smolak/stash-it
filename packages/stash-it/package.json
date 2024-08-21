@@ -8,8 +8,6 @@
     ".": "./mod.ts"
   },
   "scripts": {
-    "dev": "echo 'Add dev script here'",
-    "build": "echo 'Add build script here'",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
@@ -19,7 +17,6 @@
     "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.9"
   },
   "devDependencies": {
-    "vitest": "^2.0.5",
     "vitest-mock-extended": "^1.3.2"
   }
 }

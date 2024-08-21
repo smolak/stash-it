@@ -8,8 +8,6 @@
     ".": "./mod.ts"
   },
   "scripts": {
-    "dev": "echo 'Add dev script here'",
-    "build": "echo 'Add build script here'",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
@@ -24,7 +22,6 @@
     "@types/better-sqlite3": "^7.6.11",
     "@types/fs-extra": "^11.0.4",
     "fs-extra": "^11.2.0",
-    "nanoid": "^5.0.7",
-    "vitest": "^2.0.5"
+    "nanoid": "^5.0.7"
   }
 }

@@ -26,6 +26,9 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
+      vitest:
+        specifier: ^2.0.5
+        version: 2.0.5(@types/node@22.4.0)
 
   packages/core: {}
 
@@ -68,15 +71,12 @@ importers:
   packages/memory-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.0-beta.9
-        version: '@jsr/stash-it__core@0.0.0-beta.9'
+        specifier: npm:@jsr/stash-it__core@0.0.0-beta.10
+        version: '@jsr/stash-it__core@0.0.0-beta.10'
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.0-beta.3
-        version: '@jsr/stash-it__dev-tools@0.0.0-beta.3(@types/node@22.4.0)'
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.4.0)
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.0-beta.4
+        version: '@jsr/stash-it__dev-tools@0.0.0-beta.4(@types/node@22.4.0)'
 
   packages/prefix-suffix-plugin:
     dependencies:
@@ -90,9 +90,6 @@ importers:
       '@stash-it/dev-tools':
         specifier: npm:@jsr/stash-it__dev-tools@0.0.0-beta.3
         version: '@jsr/stash-it__dev-tools@0.0.0-beta.3(@types/node@22.4.0)'
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.4.0)
 
   packages/redis-adapter:
     dependencies:
@@ -109,9 +106,6 @@ importers:
       '@stash-it/dev-tools':
         specifier: npm:@jsr/stash-it__dev-tools@0.0.0-beta.3
         version: '@jsr/stash-it__dev-tools@0.0.0-beta.3(@types/node@22.4.0)'
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.4.0)
 
   packages/sqlite-adapter:
     dependencies:
@@ -137,9 +131,6 @@ importers:
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.4.0)
 
   packages/stash-it:
     dependencies:
@@ -147,9 +138,6 @@ importers:
         specifier: npm:@jsr/stash-it__core@0.0.0-beta.9
         version: '@jsr/stash-it__core@0.0.0-beta.9'
     devDependencies:
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.4.0)
       vitest-mock-extended:
         specifier: ^1.3.2
         version: 1.3.2(typescript@5.5.4)(vitest@2.0.5(@types/node@22.4.0))
@@ -443,6 +431,9 @@ packages:
 
   '@jsr/stash-it__dev-tools@0.0.0-beta.3':
     resolution: {integrity: sha512-bOa14NAFccYCPE09SfzA6S1Q8tT2O1oVDGpZ9CVX9/Z9y6BNcbfuB3XqATc9/yFDwKN+JkrXRTj5EZyVeGfOvg==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.0-beta.3.tgz}
+
+  '@jsr/stash-it__dev-tools@0.0.0-beta.4':
+    resolution: {integrity: sha512-RoNQJiSQSuWm0QzWDkNf8C2kLH07f1xCqm7sWyWZ0NMneJ8xsrYXbQFg9kahnN+nlaktFkC+oHq6dveRiGGsHg==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.0-beta.4.tgz}
 
   '@microsoft/tsdoc-config@0.16.2':
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
@@ -2757,6 +2748,27 @@ snapshots:
   '@jsr/stash-it__dev-tools@0.0.0-beta.3(@types/node@22.4.0)':
     dependencies:
       '@jsr/stash-it__core': 0.0.0-beta.9
+      nanoid: 5.0.7
+      vitest: 2.0.5(@types/node@22.4.0)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  '@jsr/stash-it__dev-tools@0.0.0-beta.4(@types/node@22.4.0)':
+    dependencies:
+      '@jsr/stash-it__core': 0.0.0-beta.10
       nanoid: 5.0.7
       vitest: 2.0.5(@types/node@22.4.0)
     transitivePeerDependencies:
