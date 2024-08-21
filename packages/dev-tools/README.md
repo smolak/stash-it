@@ -1,5 +1,7 @@
 # `@stash-it/dev-tools`
 
+![logo-stash-it-color-dark 2x](https://user-images.githubusercontent.com/1819138/30385483-99fd209c-98a7-11e7-85e2-595791d8d894.png)
+
 Set of tools for development purposes.
 
 ## Table of Contents

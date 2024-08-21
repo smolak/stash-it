@@ -32,8 +32,8 @@ importers:
   packages/dev-tools:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.0-beta.9
-        version: '@jsr/stash-it__core@0.0.0-beta.9'
+        specifier: npm:@jsr/stash-it__core@0.0.0-beta.10
+        version: '@jsr/stash-it__core@0.0.0-beta.10'
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -434,6 +434,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@jsr/stash-it__core@0.0.0-beta.10':
+    resolution: {integrity: sha512-UU7rgD4eyccEJNpGxD80dR+scRL0+Z68tOt6rdJRE0Of8V5diWUailAajLpeRjPnjS3n4JYa0avYZ77/bxrVZw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.0-beta.10.tgz}
 
   '@jsr/stash-it__core@0.0.0-beta.9':
     resolution: {integrity: sha512-YJdf+8QrOS/IytwZuAr6kwn1OSqJAvzbq4QCMUoaBtzNav2xCAg/nIDiip3nGyDFQ0MWTMgw59shX9gfPmhwxA==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.0-beta.9.tgz}
@@ -2746,6 +2749,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@jsr/stash-it__core@0.0.0-beta.10': {}
 
   '@jsr/stash-it__core@0.0.0-beta.9': {}
 
