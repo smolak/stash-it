@@ -3,7 +3,7 @@
   "version": "0.0.0-beta.12",
   "exports": "./mod.ts",
   "publish": {
-    "include": ["package.json", "LICENSE", "README.md", "src/**/*.ts"],
+    "include": ["package.json", "LICENSE", "README.md", "mod.ts", "src/**/*.ts"],
     "exclude": ["src/**/*.test.ts", ".eslintrc.js"]
   }
 }
