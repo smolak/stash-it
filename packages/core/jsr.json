@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/core",
-  "version": "0.0.0-beta.12",
+  "version": "0.0.0-beta.13",
   "exports": "./mod.ts",
   "publish": {
     "include": ["package.json", "LICENSE", "README.md", "mod.ts", "src/**/*.ts"],
