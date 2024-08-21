@@ -17,6 +17,10 @@
     "test": {
       "dependsOn": ["lint"],
       "cache": false
+    },
+    "publish": {
+      "dependsOn": ["lint", "test"],
+      "cache": false
     }
   }
 }
