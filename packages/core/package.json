@@ -1,12 +1,17 @@
 {
   "name": "@stash-it/core",
   "version": "0.0.0-beta.10",
+  "type": "module",
   "publishConfig": {
     "access": "public"
   },
-  "exports": {
-    ".": "./mod.ts"
-  },
+  "exports": "./mod.ts",
+  "files": [
+    "src",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
   "scripts": {
     "lint": "eslint .",
     "publish": "pnpx jsr publish"

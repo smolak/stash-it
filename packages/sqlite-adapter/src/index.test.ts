@@ -2,10 +2,12 @@ import fs from "fs-extra";
 import path from "path";
 import { it, expect, afterAll, describe } from "vitest";
 import SqliteDatabase from "better-sqlite3";
-import { nanoid } from "nanoid";
 import { runAdapterTests } from "@stash-it/dev-tools";
+import { createHmac } from "node:crypto";
 
 import { SqliteAdapter, type SqliteAdapterOptions } from "./index";
+
+const generateRandomString = () => createHmac("sha256", "stash-it").digest("hex");
 
 const tempDir = path.join(__dirname, "..", "temp");
 const tableName = "items";
@@ -15,7 +17,7 @@ const extraColumnName = "extra";
 
 let adapter: SqliteAdapter;
 
-const dbName = `testdb_${nanoid()}.db`;
+const dbName = `testdb_${generateRandomString()}.db`;
 const dbPath = path.join(tempDir, dbName);
 
 const createAdapter = (options: Partial<SqliteAdapterOptions> = {}) => {

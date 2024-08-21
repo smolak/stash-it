@@ -11,6 +11,8 @@ Set of tools for development purposes.
 - [License](#license)
 - [Contribution](#contribution)
 
+## Installation
+
 npm
 ```bash
 npm install @stash-it/dev-tools

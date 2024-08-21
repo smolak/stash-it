@@ -1,12 +1,41 @@
 # `@stash-it/prefix-suffix-plugin`
 
-## Description
+![logo-stash-it-color-dark 2x](https://user-images.githubusercontent.com/1819138/30385483-99fd209c-98a7-11e7-85e2-595791d8d894.png)
+
+### Description
 
 `PrefixSuffixPlugin` is a plugin for `@stash-it/stash-it` that allows you to add a prefix and/or suffix to the key before persisting the value.
 
-## When to use it?
+### When to use it?
 
 Let's say you're using a storage that doesn't support namespaces, but you want to separate the keys for different parts of your application. You can use this plugin to add a prefix and/or suffix to the key.
+
+## Installation
+
+npm
+```bash
+npm install @stash-it/prefix-suffix-plugin
+```
+
+deno
+```bash
+deno add @stash-it/prefix-suffix-plugin
+```
+
+yarn
+```bash
+yarn dlx jsr add @stash-it/prefix-suffix-plugin
+```
+
+pnpm
+```bash
+pnpm dlx jsr add @stash-it/prefix-suffix-plugin
+```
+
+bun
+```bash
+bunx jsr add @stash-it/prefix-suffix-plugin
+```
 
 ## Usage
 

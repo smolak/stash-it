@@ -2,7 +2,7 @@
 
 ![logo-stash-it-color-dark 2x](https://user-images.githubusercontent.com/1819138/30385483-99fd209c-98a7-11e7-85e2-595791d8d894.png)
 
-Set of interfaces and types for `@stash-it`, both main class and adapters.
+Set of interfaces and types for `@stash-it`, for main class, adapters and plugins (and some other things).
 
 The main ones you'll be interested in are:
 
@@ -10,13 +10,6 @@ The main ones you'll be interested in are:
 - `StashItPlugin` type to create your own plugins
 
 See [usage](#usage) for examples.
-
-## Table of contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
-- [Contribution](#contribution)
 
 ## Installation
 
