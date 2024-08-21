@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/core",
-  "version": "0.0.0-beta.11",
+  "version": "0.0.0-beta.12",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -11,6 +11,18 @@
     "_dist",
     "README.md",
     "package.json"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "stash-it",
+    "plugins",
+    "cache",
+    "data",
+    "storage",
+    "adapter",
+    "memory",
+    "redis",
+    "sqlite"
   ],
   "scripts": {
     "lint": "eslint .",

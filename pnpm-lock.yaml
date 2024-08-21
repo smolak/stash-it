@@ -128,9 +128,6 @@ importers:
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
-      nanoid:
-        specifier: ^5.0.7
-        version: 5.0.7
 
   packages/stash-it:
     dependencies:
