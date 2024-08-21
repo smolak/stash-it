@@ -138,15 +138,15 @@ type PluginHookHandlers = RequiredProperties<
   Hook
 >;
 
-/** Plugin interface. */
-export type Plugin = {
+/** StashIt plugin type. */
+export type StashItPlugin = {
   hookHandlers: PluginHookHandlers;
 };
 
 /** StashIt interface. */
 export interface StashItInterface extends CommonInterface {
   // eslint-disable-next-line no-unused-vars
-  registerPlugins(plugins: Plugin[]): void;
+  registerPlugins(plugins: StashItPlugin[]): void;
 }
 
 /** StashIt adapter interface. */
