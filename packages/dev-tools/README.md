@@ -38,13 +38,16 @@ bunx jsr add @stash-it/dev-tools
 ### `runAdapterTests`
 
 If you want to create an adapter, it should pass all of those tests. Here's how you can use them.
-Let's say you use vitest:
+Oh, and you should use `vitest` for testing, the function uses it under the hood.
+If you're not using `vitest` yet, you should start using it. It's awesome.
+
+Perhaps in the future, I'll add support for other testing libraries or be more abstract, but for now it is what it is.
 
 ```typescript
 // Vitest stuff
 import { describe } from "vitest";
 
-import { adapterTestCases } from '@stash-it/dev-tools';
+import { runAdapterTests } from '@stash-it/dev-tools';
 
 // Your adapter.
 import { YourAdapter } from './your-adapter';
@@ -55,12 +58,12 @@ describe('YourAdapter', () => {
   // Add whatever validation or other stuff you need.
   
   // Run the tests.
-  adapterTestCases(adapter);
+  runAdapterTests(adapter);
 });
 ```
 
 This helper function accepts an adapter instance and runs tests on it. It will throw an error if any of the tests fail.
-It is also capable of cleaning up after self. Meaning, if you're operating on a persistent storage, it will delete all of the
+It is also capable of cleaning up after self. Meaning, if you're operating on a persistent storage, it will delete all the
 items created during the tests.
 
 ### `getHandler`
