@@ -72,6 +72,36 @@ describe("sqlite-adapter", () => {
     it("should not throw when validation passes", () => {
       expect(() => new SqliteAdapter({ dbPath })).not.toThrow();
     });
+
+    describe("optional parameters", () => {
+      describe("tableName", () => {
+        it("should throw if passed value is not a string", () => {
+          // @ts-ignore
+          expect(() => new SqliteAdapter({ dbPath, tableName: 1 })).toThrowErrorMatchingSnapshot();
+        });
+      });
+
+      describe("keyColumnName", () => {
+        it("should throw if passed value is not a string", () => {
+          // @ts-ignore
+          expect(() => new SqliteAdapter({ dbPath, keyColumnName: 1 })).toThrowErrorMatchingSnapshot();
+        });
+      });
+
+      describe("valueColumnName", () => {
+        it("should throw if passed value is not a string", () => {
+          // @ts-ignore
+          expect(() => new SqliteAdapter({ dbPath, valueColumnName: 1 })).toThrowErrorMatchingSnapshot();
+        });
+      });
+
+      describe("extraColumnName", () => {
+        it("should throw if passed value is not a string", () => {
+          // @ts-ignore
+          expect(() => new SqliteAdapter({ dbPath, extraColumnName: 1 })).toThrowErrorMatchingSnapshot();
+        });
+      });
+    });
   });
 
   runAdapterTests(adapter);

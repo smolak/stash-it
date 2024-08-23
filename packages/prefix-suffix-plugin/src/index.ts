@@ -1,4 +1,4 @@
-import { type Plugin } from "@stash-it/core";
+import { type StashItPlugin } from "@stash-it/core";
 import z from "zod";
 
 const PrefixSuffixSchema = z.string().trim().min(1).optional();
@@ -24,7 +24,7 @@ const PluginOptionsSchema = z
 
 type PluginOptions = z.infer<typeof PluginOptionsSchema>;
 
-export const createPrefixSuffixPlugin = (options: PluginOptions): Plugin => {
+export const createPrefixSuffixPlugin = (options: PluginOptions): StashItPlugin => {
   const values = PluginOptionsSchema.parse(options);
 
   // TODO: move this to schema at some point.
@@ -33,7 +33,7 @@ export const createPrefixSuffixPlugin = (options: PluginOptions): Plugin => {
 
   return {
     hookHandlers: {
-      buildKey: ({ key }) => Promise.resolve({ key: `${prefix}${key}${suffix}` }),
+      buildKey: async ({ key }) => ({ key: `${prefix}${key}${suffix}` }),
     },
   };
 };

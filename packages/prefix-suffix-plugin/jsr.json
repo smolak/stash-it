@@ -1,5 +1,9 @@
 {
   "name": "@stash-it/prefix-suffix-plugin",
   "version": "0.0.0-beta.3",
-  "exports": "./mod.ts"
+  "exports": "./mod.ts",
+  "publish": {
+    "include": ["package.json", "README.md", "mod.ts", "src/**/*.ts"],
+    "exclude": ["src/**/*.test.ts", "src/__snapshots__"]
+  }
 }

@@ -1,12 +1,27 @@
 {
   "name": "@stash-it/memory-adapter",
   "version": "0.0.0-beta-2",
+  "type": "module",
   "publishConfig": {
     "access": "public"
   },
-  "exports": {
-    ".": "./mod.ts"
-  },
+  "exports": "./mod.ts",
+  "files": [
+    "mod.ts",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "memory",
+    "adapter"
+  ],
   "scripts": {
     "lint": "eslint .",
     "test": "vitest run",
@@ -14,7 +29,7 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.10"
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.13"
   },
   "devDependencies": {
     "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.0-beta.4"

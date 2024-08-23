@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { toHaveBeenCalledBefore } from "jest-extended";
-import type { StashItAdapterInterface, Plugin } from "@stash-it/core";
+import type { StashItAdapterInterface, StashItPlugin } from "@stash-it/core";
 import { mock } from "vitest-mock-extended";
 import { StashIt } from "./index";
 
@@ -16,7 +16,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for buildKey hook", () => {
       it("should be used to build the key", async () => {
         const buildKeyEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyEventHandler,
           },
@@ -47,7 +47,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for beforeSetItem hook", () => {
       it("should call that event handler with arguments passed to the setItem method", async () => {
         const beforeSetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeSetItem: beforeSetItemEventHandler,
           },
@@ -63,7 +63,7 @@ describe("stash-it class", () => {
       });
 
       it("adapter's setItem method is called with arguments returned from beforeSetItem event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeSetItem: () => Promise.resolve({ key: "new-key", value: "new-value", extra: { new: "extra" } }),
           },
@@ -82,7 +82,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for afterSetItem hook", () => {
       it("should call that handler with the arguments passed to the setItem method and item set by the adapter", async () => {
         const afterSetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterSetItem: afterSetItemEventHandler,
           },
@@ -98,7 +98,7 @@ describe("stash-it class", () => {
       });
 
       it("returned value is the one coming from afterSetItem event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterSetItem: () =>
               Promise.resolve({
@@ -124,7 +124,7 @@ describe("stash-it class", () => {
     describe("when event handlers are set for both beforeSetItem and afterSetItem hooks", () => {
       it("should call afterSetItem event handler with arguments returned from beforeSetItem event handler", async () => {
         const afterSetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeSetItem: () => Promise.resolve({ key: "new-key", value: "new-value", extra: { new: "extra" } }),
             afterSetItem: afterSetItemEventHandler,
@@ -174,7 +174,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for beforeGetItem hook", () => {
       it("should call that event handler with arguments passed to the getItem method", async () => {
         const beforeGetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetItem: beforeGetItemEventHandler,
           },
@@ -190,7 +190,7 @@ describe("stash-it class", () => {
       });
 
       it("adapter's getItem method is called with arguments returned from beforeGetItem event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetItem: () => Promise.resolve({ key: "new-key" }),
           },
@@ -209,7 +209,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for afterGetItem hook", () => {
       it("should call that event handler with the arguments passed to the getItem method and retrieved item", async () => {
         const afterGetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterGetItem: afterGetItemEventHandler,
           },
@@ -225,7 +225,7 @@ describe("stash-it class", () => {
       });
 
       it("returned value is the one coming from afterGetItem event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterGetItem: () =>
               Promise.resolve({
@@ -249,7 +249,7 @@ describe("stash-it class", () => {
     describe("when event handlers are set for both beforeGetItem and afterGetItem hooks", () => {
       it("should call afterGetItem event handler with arguments returned from beforeGetItem event handler", async () => {
         const afterGetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetItem: () => Promise.resolve({ key: "new-key" }),
             afterGetItem: afterGetItemEventHandler,
@@ -305,7 +305,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for beforeHasItem hook", () => {
       it("should call that event handler with arguments passed to the hasItem method", async () => {
         const beforeHasItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeHasItem: beforeHasItemEventHandler,
           },
@@ -321,7 +321,7 @@ describe("stash-it class", () => {
       });
 
       it("adapter's hasItem method is called with arguments returned from beforeHasItem event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeHasItem: () => Promise.resolve({ key: "new-key" }),
           },
@@ -340,7 +340,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for afterHasItem hook", () => {
       it("should call that event handler with the arguments passed to the hasItem method and result of finding that item", async () => {
         const afterHasItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterHasItem: afterHasItemEventHandler,
           },
@@ -357,7 +357,7 @@ describe("stash-it class", () => {
       });
 
       it("returned value is the one coming from afterHasItem event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterHasItem: () =>
               Promise.resolve({
@@ -381,7 +381,7 @@ describe("stash-it class", () => {
     describe("when event handlers are set for both beforeHasItem and afterHasItem hooks", () => {
       it("should call afterHasItem event handler with arguments returned from beforeHasItem event handler", async () => {
         const afterHasItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeHasItem: () => Promise.resolve({ key: "new-key" }),
             afterHasItem: afterHasItemEventHandler,
@@ -437,7 +437,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for beforeRemoveItem hook", () => {
       it("should call that event handler with arguments passed to the removeItem method", async () => {
         const beforeRemoveItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeRemoveItem: beforeRemoveItemEventHandler,
           },
@@ -453,7 +453,7 @@ describe("stash-it class", () => {
       });
 
       it("adapter's removeItem method is called with arguments returned from beforeRemoveItem event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeRemoveItem: () => Promise.resolve({ key: "new-key" }),
           },
@@ -472,7 +472,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for afterRemoveItem hook", () => {
       it("should call that event handler with the arguments passed to removeItem method and result of removing that item", async () => {
         const afterRemoveItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterRemoveItem: afterRemoveItemEventHandler,
           },
@@ -489,7 +489,7 @@ describe("stash-it class", () => {
       });
 
       it("returned value is the one coming from afterRemoveItem event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterRemoveItem: () =>
               Promise.resolve({
@@ -513,7 +513,7 @@ describe("stash-it class", () => {
     describe("when event handlers are set for both beforeRemoveItem and afterRemoveItem hooks", () => {
       it("should call afterRemoveItem event handler with arguments returned from beforeRemoveItem event handler", async () => {
         const afterRemoveItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeRemoveItem: () => Promise.resolve({ key: "new-key" }),
             afterRemoveItem: afterRemoveItemEventHandler,
@@ -558,7 +558,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for beforeSetExtra hook", () => {
       it("should call that event handler with arguments passed to the setExtra method", async () => {
         const beforeSetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeSetExtra: beforeSetExtraEventHandler,
           },
@@ -574,7 +574,7 @@ describe("stash-it class", () => {
       });
 
       it("adapter's setExtra method is called with arguments returned from beforeSetExtra event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeSetExtra: () => Promise.resolve({ key: "new-key", extra: { new: "extra" } }),
           },
@@ -593,7 +593,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for afterSetExtra hook", () => {
       it("should call that event handler with the arguments passed to the setExtra method and extra set", async () => {
         const afterSetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterSetExtra: afterSetExtraEventHandler,
           },
@@ -611,7 +611,7 @@ describe("stash-it class", () => {
       });
 
       it("returned value is the one coming from afterSetExtra event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterSetExtra: () =>
               Promise.resolve({
@@ -635,7 +635,7 @@ describe("stash-it class", () => {
     describe("when event handlers are set for both beforeSetExtra and afterSetExtra hooks", () => {
       it("should call afterSetExtra event handler with arguments returned from beforeSetExtra event handler", async () => {
         const afterSetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeSetExtra: () => Promise.resolve({ key: "new-key", extra: { new: "extra" } }),
             afterSetExtra: afterSetExtraEventHandler,
@@ -680,7 +680,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for beforeGetExtra hook", () => {
       it("should call that event handler with arguments passed to the getExtra method", async () => {
         const beforeGetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetExtra: beforeGetExtraEventHandler,
           },
@@ -696,7 +696,7 @@ describe("stash-it class", () => {
       });
 
       it("adapter's getExtra method is called with arguments returned from beforeGetExtra event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetExtra: () => Promise.resolve({ key: "new-key" }),
           },
@@ -715,7 +715,7 @@ describe("stash-it class", () => {
     describe("when an event handler is registered for afterGetExtra hook", () => {
       it("should call that event handler with the arguments passed to the getExtra method and extra retrieved", async () => {
         const afterGetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterGetExtra: afterGetExtraEventHandler,
           },
@@ -731,7 +731,7 @@ describe("stash-it class", () => {
       });
 
       it("returned value is the one coming from afterGetExtra event handler", async () => {
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             afterGetExtra: () =>
               Promise.resolve({
@@ -755,7 +755,7 @@ describe("stash-it class", () => {
     describe("when event handlers are set for both beforeGetExtra and afterGetExtra hooks", () => {
       it("should call afterGetExtra event handler with arguments returned from beforeGetExtra event handler", async () => {
         const afterGetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
-        const plugin: Plugin = {
+        const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetExtra: () => Promise.resolve({ key: "new-key", extra: { new: "extra" } }),
             afterGetExtra: afterGetExtraEventHandler,
@@ -781,12 +781,12 @@ describe("stash-it class", () => {
       it("should call all event handlers for that hook in the order they were registered", async () => {
         const eventHandler1 = vi.fn();
         const eventHandler2 = vi.fn();
-        const plugin1: Plugin = {
+        const plugin1: StashItPlugin = {
           hookHandlers: {
             beforeSetItem: eventHandler1,
           },
         };
-        const plugin2: Plugin = {
+        const plugin2: StashItPlugin = {
           hookHandlers: {
             beforeSetItem: eventHandler2,
           },

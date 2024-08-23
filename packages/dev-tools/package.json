@@ -1,18 +1,32 @@
 {
   "name": "@stash-it/dev-tools",
   "version": "0.0.0-beta.4",
+  "type": "module",
   "publishConfig": {
     "access": "public"
   },
-  "exports": {
-    ".": "./mod.ts"
-  },
+  "exports": "./mod.ts",
+  "files": [
+    "mod.ts",
+    "src",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "dev-tools",
+    "tools"
+  ],
   "scripts": {
     "lint": "eslint .",
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.10",
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.13",
     "nanoid": "^5.0.7",
     "vitest": "^2.0.5"
   }

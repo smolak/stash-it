@@ -1,0 +1,57 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sqlite-adapter > validation > optional parameters > extraColumnName > should throw if passed value is not a string 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "extraColumnName"
+    ],
+    "message": "Expected string, received number"
+  }
+]]
+`;
+
+exports[`sqlite-adapter > validation > optional parameters > keyColumnName > should throw if passed value is not a string 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "keyColumnName"
+    ],
+    "message": "Expected string, received number"
+  }
+]]
+`;
+
+exports[`sqlite-adapter > validation > optional parameters > tableName > should throw if passed value is not a string 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "tableName"
+    ],
+    "message": "Expected string, received number"
+  }
+]]
+`;
+
+exports[`sqlite-adapter > validation > optional parameters > valueColumnName > should throw if passed value is not a string 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "valueColumnName"
+    ],
+    "message": "Expected string, received number"
+  }
+]]
+`;

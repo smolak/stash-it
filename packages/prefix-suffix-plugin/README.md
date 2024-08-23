@@ -4,7 +4,7 @@
 
 ### Description
 
-`PrefixSuffixPlugin` is a plugin for `@stash-it/stash-it` that allows you to add a prefix and/or suffix to the key before persisting the value.
+`@stash-it/prefix-suffix-plugin` is a plugin for `@stash-it/stash-it` that allows you to add a prefix and/or suffix to the key before persisting the value.
 
 ### When to use it?
 

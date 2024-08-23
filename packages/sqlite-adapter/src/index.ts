@@ -1,5 +1,4 @@
-import SqliteDatabase, { type Options as BetterSqlite3Options, type Database } from "better-sqlite3";
-
+import SqliteDatabase, { type Database } from "better-sqlite3";
 import type {
   StashItAdapterInterface,
   Extra,
@@ -10,41 +9,40 @@ import type {
   SetExtraResult,
   Value,
 } from "@stash-it/core";
+import { z } from "zod";
 
 /**
  * Ideas:
  * - provide a default table creation script: this.db.prepare('CREATE TABLE stash (key TEXT PRIMARY KEY, value TEXT, extra TEXT)').run();
  *    this will make sure that the table is created if it does not exist and is ready to be used and efficient
- * -
  */
 
-// TODO add schema for this, too many checks to be done. zod
-export type SqliteAdapterOptions = {
-  dbPath: string;
-  extraColumnName?: string;
-  keyColumnName?: string;
-  tableName?: string;
-  valueColumnName?: string;
-} & Pick<BetterSqlite3Options, "verbose" | "timeout">;
+const sqliteAdapterOptionsSchema = z.object({
+  dbPath: z.string().trim(),
+  tableName: z.string().trim().default("items"),
+  keyColumnName: z.string().trim().default("key"),
+  valueColumnName: z.string().trim().default("value"),
+  extraColumnName: z.string().trim().default("extra"),
+});
+
+export type SqliteAdapterOptions = z.input<typeof sqliteAdapterOptionsSchema>;
 
 export class SqliteAdapter implements StashItAdapterInterface {
   readonly #database: Database;
-  readonly #tableName: string = "items";
-  readonly #keyColumnName: string = "key";
-  readonly #valueColumnName: string = "value";
-  readonly #extraColumnName: string = "extra";
+  readonly #tableName: string;
+  readonly #keyColumnName: string;
+  readonly #valueColumnName: string;
+  readonly #extraColumnName: string;
 
   constructor(options: SqliteAdapterOptions) {
-    const mergedOptions: SqliteAdapterOptions & Pick<BetterSqlite3Options, "fileMustExist"> = {
-      ...options,
-      fileMustExist: true,
-    };
+    const { dbPath, tableName, keyColumnName, valueColumnName, extraColumnName } =
+      sqliteAdapterOptionsSchema.parse(options);
 
-    this.#database = new SqliteDatabase(options.dbPath, mergedOptions);
-    this.#tableName = mergedOptions.tableName || this.#tableName;
-    this.#keyColumnName = mergedOptions.keyColumnName || this.#keyColumnName;
-    this.#valueColumnName = mergedOptions.valueColumnName || this.#valueColumnName;
-    this.#extraColumnName = mergedOptions.extraColumnName || this.#extraColumnName;
+    this.#database = new SqliteDatabase(dbPath, { fileMustExist: true });
+    this.#tableName = tableName;
+    this.#keyColumnName = keyColumnName;
+    this.#valueColumnName = valueColumnName;
+    this.#extraColumnName = extraColumnName;
 
     this.#checkTable();
   }

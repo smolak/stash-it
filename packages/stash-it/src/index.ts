@@ -5,7 +5,7 @@ import type {
   HookHandlerArgs,
   Item,
   Key,
-  Plugin,
+  StashItPlugin,
   RegisteredHookHandlers,
   SetExtraResult,
   StashItAdapterInterface,
@@ -47,54 +47,58 @@ export class StashIt implements StashItInterface {
     // E.g. sqlite, when searching over JSON in extra, uses `$.fieldname` notation
     // Therefore, field should not consist of dots or a dollar signs. Best if only _azAZ09
 
-    const preData = await this.#call("beforeSetItem", { key, value, extra });
-    const setItem = await this.#adapter.setItem(await this.#buildKey(preData.key), preData.value, preData.extra);
-    const postData = await this.#call("afterSetItem", { ...preData, item: setItem });
+    const beforeData = await this.#call("beforeSetItem", { key, value, extra });
+    const setItem = await this.#adapter.setItem(
+      await this.#buildKey(beforeData.key),
+      beforeData.value,
+      beforeData.extra,
+    );
+    const afterData = await this.#call("afterSetItem", { ...beforeData, item: setItem });
 
-    return postData.item;
+    return afterData.item;
   }
 
   async getItem(key: Key): Promise<GetItemResult> {
-    const preData = await this.#call("beforeGetItem", { key });
-    const item = await this.#adapter.getItem(await this.#buildKey(preData.key));
-    const postData = await this.#call("afterGetItem", { ...preData, item });
+    const beforeData = await this.#call("beforeGetItem", { key });
+    const item = await this.#adapter.getItem(await this.#buildKey(beforeData.key));
+    const afterData = await this.#call("afterGetItem", { ...beforeData, item });
 
-    return postData.item;
+    return afterData.item;
   }
 
   async hasItem(key: Key): Promise<boolean> {
-    const preData = await this.#call("beforeHasItem", { key });
-    const result = await this.#adapter.hasItem(await this.#buildKey(preData.key));
-    const postData = await this.#call("afterHasItem", { ...preData, result });
+    const beforeData = await this.#call("beforeHasItem", { key });
+    const result = await this.#adapter.hasItem(await this.#buildKey(beforeData.key));
+    const afterData = await this.#call("afterHasItem", { ...beforeData, result });
 
-    return postData.result;
+    return afterData.result;
   }
 
   async removeItem(key: Key): Promise<boolean> {
-    const preData = await this.#call("beforeRemoveItem", { key });
-    const result = await this.#adapter.removeItem(await this.#buildKey(preData.key));
-    const postData = await this.#call("afterRemoveItem", { ...preData, result });
+    const beforeData = await this.#call("beforeRemoveItem", { key });
+    const result = await this.#adapter.removeItem(await this.#buildKey(beforeData.key));
+    const afterData = await this.#call("afterRemoveItem", { ...beforeData, result });
 
-    return postData.result;
+    return afterData.result;
   }
 
   async setExtra(key: Key, extra: Extra): Promise<SetExtraResult> {
-    const preData = await this.#call("beforeSetExtra", { key, extra });
-    const extraSet = await this.#adapter.setExtra(await this.#buildKey(preData.key), preData.extra);
-    const postData = await this.#call("afterSetExtra", { ...preData, extra: extraSet });
+    const beforeData = await this.#call("beforeSetExtra", { key, extra });
+    const extraSet = await this.#adapter.setExtra(await this.#buildKey(beforeData.key), beforeData.extra);
+    const afterData = await this.#call("afterSetExtra", { ...beforeData, extra: extraSet });
 
-    return postData.extra;
+    return afterData.extra;
   }
 
   async getExtra(key: Key): Promise<GetExtraResult> {
-    const preData = await this.#call("beforeGetExtra", { key });
-    const extra = await this.#adapter.getExtra(await this.#buildKey(preData.key));
-    const postData = await this.#call("afterGetExtra", { ...preData, extra });
+    const beforeData = await this.#call("beforeGetExtra", { key });
+    const extra = await this.#adapter.getExtra(await this.#buildKey(beforeData.key));
+    const afterData = await this.#call("afterGetExtra", { ...beforeData, extra });
 
-    return postData.extra;
+    return afterData.extra;
   }
 
-  registerPlugins(plugins: Plugin[]) {
+  registerPlugins(plugins: StashItPlugin[]) {
     plugins.forEach((plugin) => {
       const { hookHandlers } = plugin;
       let hook: keyof RegisteredHookHandlers;
