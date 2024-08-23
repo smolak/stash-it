@@ -141,8 +141,8 @@ importers:
   packages/stash-it:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.0-beta.13
-        version: '@jsr/stash-it__core@0.0.0-beta.13'
+        specifier: npm:@jsr/stash-it__core@0.0.2
+        version: '@jsr/stash-it__core@0.0.2'
     devDependencies:
       vitest-mock-extended:
         specifier: ^2.0.0

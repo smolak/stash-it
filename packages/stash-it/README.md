@@ -64,8 +64,10 @@ const loggerPlugin: StashItPlugin = {
 stash.registerPlugins([loggerPlugin]);
 
 await stash.setItem('the key', 'some value', { optional: 'extra data' });
-
 // console.log: Item with key "the key" was set.
+
+await stash.getItem('the key');
+// no logging, as no logger was set for getItem lifecycle method
 ```
 
 How does it work?
