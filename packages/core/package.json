@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -14,6 +14,7 @@
     "package.json"
   ],
   "license": "MIT",
+  "description": "Core package for @stash-it ecosystem, containing interfaces and types for main class, adapters and plugins (and some other things).",
   "keywords": [
     "@stash-it",
     "stash it",
