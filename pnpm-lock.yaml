@@ -81,15 +81,21 @@ importers:
   packages/prefix-suffix-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.0-beta.13
-        version: '@jsr/stash-it__core@0.0.0-beta.13'
+        specifier: npm:@jsr/stash-it__core@0.0.2
+        version: '@jsr/stash-it__core@0.0.2'
       zod:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.0-beta.4
-        version: '@jsr/stash-it__dev-tools@0.0.0-beta.4(@types/node@22.5.0)'
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.2
+        version: '@jsr/stash-it__dev-tools@0.0.2(@types/node@22.5.0)'
+      '@stash-it/memory-adapter':
+        specifier: npm:@jsr/stash-it__memory-adapter@0.0.2
+        version: '@jsr/stash-it__memory-adapter@0.0.2'
+      '@stash-it/stash-it':
+        specifier: npm:@jsr/stash-it__stash-it@0.0.0-beta.5
+        version: '@jsr/stash-it__stash-it@0.0.0-beta.5'
 
   packages/redis-adapter:
     dependencies:
@@ -429,6 +435,9 @@ packages:
   '@jsr/stash-it__core@0.0.0-beta.13':
     resolution: {integrity: sha512-fIp0OlR3oK9pszLOoI7xKInVYIOpVZcjSe6Xu+kZCS9cHWMYnTC3HzqNR+xq0gy2WBubK6BCqpBwgtoAt+0Omw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.0-beta.13.tgz}
 
+  '@jsr/stash-it__core@0.0.0-beta.9':
+    resolution: {integrity: sha512-YJdf+8QrOS/IytwZuAr6kwn1OSqJAvzbq4QCMUoaBtzNav2xCAg/nIDiip3nGyDFQ0MWTMgw59shX9gfPmhwxA==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.0-beta.9.tgz}
+
   '@jsr/stash-it__core@0.0.2':
     resolution: {integrity: sha512-Em/TYe1I0HV4rllVqE404wkiLIuD6OZQ8QypT+gJ+XNhXUKjfvcdUd99vzJdkqMXw/nDedsvxs0GNYGquh/2aw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.2.tgz}
 
@@ -437,6 +446,12 @@ packages:
 
   '@jsr/stash-it__dev-tools@0.0.2':
     resolution: {integrity: sha512-0Gum6He9YpxGecAmzDReObGxU29IN/Ej7Sdqvj6VI5xzuhDWk4QvHY/nESKlTYxSEoVMDlh/emjXoGAic0pIng==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.2.tgz}
+
+  '@jsr/stash-it__memory-adapter@0.0.2':
+    resolution: {integrity: sha512-eTQi3YO3Rfegq+1PzjncLyuql3IT9YoACvqUTS18KiUNqgjjtTS/Wqb3zE0ec18m2zPwLPYNtBnBkfqLcrmv7w==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__memory-adapter/0.0.2.tgz}
+
+  '@jsr/stash-it__stash-it@0.0.0-beta.5':
+    resolution: {integrity: sha512-1Dz34eEO/LYWxfalfEy/xNmD2eFyCjWeBkQZtXTtxkg4JIZiGg3mTQOt4Cf3lXHTyupP6hydZ7Q9qRFQn0pskg==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.0.0-beta.5.tgz}
 
   '@microsoft/tsdoc-config@0.16.2':
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
@@ -2748,6 +2763,8 @@ snapshots:
 
   '@jsr/stash-it__core@0.0.0-beta.13': {}
 
+  '@jsr/stash-it__core@0.0.0-beta.9': {}
+
   '@jsr/stash-it__core@0.0.2': {}
 
   '@jsr/stash-it__dev-tools@0.0.0-beta.4(@types/node@22.5.0)':
@@ -2791,6 +2808,14 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  '@jsr/stash-it__memory-adapter@0.0.2':
+    dependencies:
+      '@jsr/stash-it__core': 0.0.2
+
+  '@jsr/stash-it__stash-it@0.0.0-beta.5':
+    dependencies:
+      '@jsr/stash-it__core': 0.0.0-beta.9
 
   '@microsoft/tsdoc-config@0.16.2':
     dependencies:

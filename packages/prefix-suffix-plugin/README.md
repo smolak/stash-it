@@ -2,13 +2,11 @@
 
 ![logo-stash-it-color-dark 2x](https://user-images.githubusercontent.com/1819138/30385483-99fd209c-98a7-11e7-85e2-595791d8d894.png)
 
-### Description
-
 `@stash-it/prefix-suffix-plugin` is a plugin for `@stash-it/stash-it` that allows you to add a prefix and/or suffix to the key before persisting the value.
 
 ### When to use it?
 
-Let's say you're using a storage that doesn't support namespaces, but you want to separate the keys for different parts of your application. You can use this plugin to add a prefix and/or suffix to the key.
+Let's say you're using a storage that doesn't support namespaces, but you want to separate the keys for different parts of your application. You can use this plugin to add a prefix and/or suffix to the key. Now your team can save an item for key `user1` and so can the other team(s).
 
 ## Installation
 
@@ -69,5 +67,5 @@ stash.registerPlugins([plugin]);
 await stash.set('key', 'value');
 const item = await stash.get('key');
 
-console.log(item.key); // 'prefix-key-suffix'
+console.log(item.key); // 'key', same key! but the data is persisted with prefix and suffix
 ```
