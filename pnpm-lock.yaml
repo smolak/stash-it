@@ -35,8 +35,8 @@ importers:
   packages/dev-tools:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.0-beta.13
-        version: '@jsr/stash-it__core@0.0.0-beta.13'
+        specifier: npm:@jsr/stash-it__core@0.0.2
+        version: '@jsr/stash-it__core@0.0.2'
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -71,12 +71,12 @@ importers:
   packages/memory-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.0-beta.13
-        version: '@jsr/stash-it__core@0.0.0-beta.13'
+        specifier: npm:@jsr/stash-it__core@0.0.2
+        version: '@jsr/stash-it__core@0.0.2'
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.0-beta.4
-        version: '@jsr/stash-it__dev-tools@0.0.0-beta.4(@types/node@22.5.0)'
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.2
+        version: '@jsr/stash-it__dev-tools@0.0.2(@types/node@22.5.0)'
 
   packages/prefix-suffix-plugin:
     dependencies:
@@ -429,8 +429,14 @@ packages:
   '@jsr/stash-it__core@0.0.0-beta.13':
     resolution: {integrity: sha512-fIp0OlR3oK9pszLOoI7xKInVYIOpVZcjSe6Xu+kZCS9cHWMYnTC3HzqNR+xq0gy2WBubK6BCqpBwgtoAt+0Omw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.0-beta.13.tgz}
 
+  '@jsr/stash-it__core@0.0.2':
+    resolution: {integrity: sha512-Em/TYe1I0HV4rllVqE404wkiLIuD6OZQ8QypT+gJ+XNhXUKjfvcdUd99vzJdkqMXw/nDedsvxs0GNYGquh/2aw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.2.tgz}
+
   '@jsr/stash-it__dev-tools@0.0.0-beta.4':
     resolution: {integrity: sha512-RoNQJiSQSuWm0QzWDkNf8C2kLH07f1xCqm7sWyWZ0NMneJ8xsrYXbQFg9kahnN+nlaktFkC+oHq6dveRiGGsHg==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.0-beta.4.tgz}
+
+  '@jsr/stash-it__dev-tools@0.0.2':
+    resolution: {integrity: sha512-0Gum6He9YpxGecAmzDReObGxU29IN/Ej7Sdqvj6VI5xzuhDWk4QvHY/nESKlTYxSEoVMDlh/emjXoGAic0pIng==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.2.tgz}
 
   '@microsoft/tsdoc-config@0.16.2':
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
@@ -2742,9 +2748,32 @@ snapshots:
 
   '@jsr/stash-it__core@0.0.0-beta.13': {}
 
+  '@jsr/stash-it__core@0.0.2': {}
+
   '@jsr/stash-it__dev-tools@0.0.0-beta.4(@types/node@22.5.0)':
     dependencies:
       '@jsr/stash-it__core': 0.0.0-beta.10
+      nanoid: 5.0.7
+      vitest: 2.0.5(@types/node@22.5.0)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  '@jsr/stash-it__dev-tools@0.0.2(@types/node@22.5.0)':
+    dependencies:
+      '@jsr/stash-it__core': 0.0.2
       nanoid: 5.0.7
       vitest: 2.0.5(@types/node@22.5.0)
     transitivePeerDependencies:
