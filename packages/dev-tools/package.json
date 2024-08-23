@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/dev-tools",
-  "version": "0.0.0-beta.4",
+  "version": "0.0.1",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -26,7 +26,7 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.0-beta.13",
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.2",
     "nanoid": "^5.0.7",
     "vitest": "^2.0.5"
   }

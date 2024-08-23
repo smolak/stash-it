@@ -2,6 +2,19 @@ import type { HookHandler, HookHandlerArgs, Hook, StashItPlugin } from "@stash-i
 
 // TODO: given this is a first helper/util (and aimed for tests specifically), this can be moved to a separate package.
 // There will be most likely other helpers/utils that will be used in tests or for creation of plugins/adapters.
+
+/**
+ * Get handler for a given hook.
+ *
+ * @param hook Name of the hook you want to get handler for.
+ * @param plugin Plugin that contains the hook handler(s).
+ * @returns Handler for a given hook.
+ * @throws Error if handler for a given hook was not found.
+ *
+ * ```ts
+ * getHandler("beforeSetItem", plugin);
+ * ```
+ */
 export const getHandler = <H extends Hook>(hook: H, plugin: StashItPlugin): HookHandler<HookHandlerArgs[H]> => {
   if (!plugin.hookHandlers[hook]) {
     throw new Error(

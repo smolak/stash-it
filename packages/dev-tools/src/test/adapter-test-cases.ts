@@ -2,6 +2,19 @@ import { it, expect, afterAll, describe } from "vitest";
 import { nanoid } from "nanoid";
 import type { StashItAdapterInterface } from "@stash-it/core";
 
+/**
+ * Run tests for a given adapter.
+ * If you want to create an adapter, you should run this function in your test file.
+ * If all the tests pass, your adapter is good to go.
+ *
+ * @param adapter Adapter's instance to test
+ *
+ * ```ts
+ * const yourAdapter = new YourAdapter();
+ *
+ * runAdapterTests(yourAdapter);
+ * ```
+ */
 export const runAdapterTests = (adapter: StashItAdapterInterface): void => {
   const keysToRemoveItemsBy: string[] = [];
 
