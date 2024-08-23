@@ -4,7 +4,7 @@
 
 Set of tools for development purposes.
 
-If you wan to create an adapter or a plugin for stash-it, you can use this package to help you with that.
+If you want to create an adapter or a plugin for stash-it, you can use this package to help you with that.
 
 ## Installation
 
