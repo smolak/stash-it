@@ -40,6 +40,11 @@ const dropSuffix = (key: Key, suffix: string): Key => {
   return key;
 };
 
+/**
+ * Create a plugin that prefixes and/or suffixes the key.
+ *
+ * @param options Plugin options
+ */
 export const createPrefixSuffixPlugin = (options: PluginOptions): StashItPlugin => {
   const values = PluginOptionsSchema.parse(options);
 
