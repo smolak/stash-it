@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/redis-adapter",
-  "version": "0.0.0-beta.1",
+  "version": "0.0.1",
   "exports": "./mod.ts",
   "publish": {
     "include": ["package.json", "README.md", "mod.ts", "src/**/*.ts"],
