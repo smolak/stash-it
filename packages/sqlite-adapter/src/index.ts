@@ -25,8 +25,14 @@ const sqliteAdapterOptionsSchema = z.object({
   extraColumnName: z.string().trim().default("extra"),
 });
 
+/**
+ * Sqlite adapter options.
+ */
 export type SqliteAdapterOptions = z.input<typeof sqliteAdapterOptionsSchema>;
 
+/**
+ * Sqlite adapter class.
+ */
 export class SqliteAdapter implements StashItAdapterInterface {
   readonly #database: Database;
   readonly #tableName: string;
