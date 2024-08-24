@@ -15,8 +15,11 @@ const redisAdapterOptionsSchema = z.object({
   url: z.string().url(),
 });
 
-export type RedisAdapterOptions = z.infer<typeof redisAdapterOptionsSchema>;
+type RedisAdapterOptions = z.infer<typeof redisAdapterOptionsSchema>;
 
+/**
+ * Redis adapter class.
+ */
 export class RedisAdapter implements StashItAdapterInterface {
   readonly #database: RedisClientType;
 
