@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/sqlite-adapter",
-  "version": "0.0.0-beta.1",
+  "version": "0.0.1",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -27,7 +27,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpx jsr publish",
+    "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
     "@stash-it/core": "npm:@jsr/stash-it__core@0.0.2",
