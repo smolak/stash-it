@@ -31,12 +31,12 @@
     "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.0.2",
+    "@stash-it/core": "workspace:*",
     "better-sqlite3": "^11.1.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.2",
+    "@stash-it/dev-tools": "workspace:*",
     "@types/better-sqlite3": "^7.6.11",
     "@types/fs-extra": "^11.0.4",
     "fs-extra": "^11.2.0"

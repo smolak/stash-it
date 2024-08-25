@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { toHaveBeenCalledBefore } from "jest-extended";
-import type { StashItAdapterInterface, StashItPlugin } from "@stash-it/core";
+import { StashItAdapter, type StashItPlugin } from "@stash-it/core";
 import { mock } from "vitest-mock-extended";
 import { StashIt } from "./index";
 
@@ -28,7 +28,7 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        expect(buildKeyEventHandler).toHaveBeenCalledWith({ key });
+        expect(buildKeyEventHandler).toHaveBeenCalledWith({ adapter, key });
       });
     });
   });
@@ -59,7 +59,7 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        expect(beforeSetItemEventHandler).toHaveBeenCalledWith(item);
+        expect(beforeSetItemEventHandler).toHaveBeenCalledWith({ adapter, key, value, extra });
       });
 
       it("adapter's setItem method is called with arguments returned from beforeSetItem event handler", async () => {
@@ -94,7 +94,7 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        expect(afterSetItemEventHandler).toHaveBeenCalledWith({ key, value, extra, item });
+        expect(afterSetItemEventHandler).toHaveBeenCalledWith({ adapter, key, value, extra, item });
       });
 
       it("returned value is the one coming from afterSetItem event handler", async () => {
@@ -139,6 +139,7 @@ describe("stash-it class", () => {
         await stashIt.setItem(key, value, extra);
 
         expect(afterSetItemEventHandler).toHaveBeenCalledWith({
+          adapter,
           key: "new-key",
           value: "new-value",
           extra: { new: "extra" },
@@ -186,7 +187,7 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        expect(beforeGetItemEventHandler).toHaveBeenCalledWith({ key });
+        expect(beforeGetItemEventHandler).toHaveBeenCalledWith({ adapter, key });
       });
 
       it("adapter's getItem method is called with arguments returned from beforeGetItem event handler", async () => {
@@ -221,7 +222,7 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        expect(afterGetItemEventHandler).toHaveBeenCalledWith({ key, item: { key, value, extra } });
+        expect(afterGetItemEventHandler).toHaveBeenCalledWith({ adapter, key, item: { key, value, extra } });
       });
 
       it("returned value is the one coming from afterGetItem event handler", async () => {
@@ -263,7 +264,7 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        expect(afterGetItemEventHandler).toHaveBeenCalledWith({ key: "new-key", item });
+        expect(afterGetItemEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", item });
       });
     });
   });
@@ -317,7 +318,7 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        expect(beforeHasItemEventHandler).toHaveBeenCalledWith({ key });
+        expect(beforeHasItemEventHandler).toHaveBeenCalledWith({ adapter, key });
       });
 
       it("adapter's hasItem method is called with arguments returned from beforeHasItem event handler", async () => {
@@ -353,7 +354,7 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        expect(afterHasItemEventHandler).toHaveBeenCalledWith({ key, result: true });
+        expect(afterHasItemEventHandler).toHaveBeenCalledWith({ adapter, key, result: true });
       });
 
       it("returned value is the one coming from afterHasItem event handler", async () => {
@@ -395,7 +396,7 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        expect(afterHasItemEventHandler).toHaveBeenCalledWith({ key: "new-key", result: true });
+        expect(afterHasItemEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", result: true });
       });
     });
   });
@@ -449,7 +450,7 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        expect(beforeRemoveItemEventHandler).toHaveBeenCalledWith({ key });
+        expect(beforeRemoveItemEventHandler).toHaveBeenCalledWith({ adapter, key });
       });
 
       it("adapter's removeItem method is called with arguments returned from beforeRemoveItem event handler", async () => {
@@ -485,7 +486,7 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        expect(afterRemoveItemEventHandler).toHaveBeenCalledWith({ key, result: true });
+        expect(afterRemoveItemEventHandler).toHaveBeenCalledWith({ adapter, key, result: true });
       });
 
       it("returned value is the one coming from afterRemoveItem event handler", async () => {
@@ -527,7 +528,7 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        expect(afterRemoveItemEventHandler).toHaveBeenCalledWith({ key: "new-key", result: true });
+        expect(afterRemoveItemEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", result: true });
       });
     });
   });
@@ -570,7 +571,7 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        expect(beforeSetExtraEventHandler).toHaveBeenCalledWith({ key, extra });
+        expect(beforeSetExtraEventHandler).toHaveBeenCalledWith({ adapter, key, extra });
       });
 
       it("adapter's setExtra method is called with arguments returned from beforeSetExtra event handler", async () => {
@@ -607,7 +608,7 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        expect(afterSetExtraEventHandler).toHaveBeenCalledWith({ key, extra });
+        expect(afterSetExtraEventHandler).toHaveBeenCalledWith({ adapter, key, extra });
       });
 
       it("returned value is the one coming from afterSetExtra event handler", async () => {
@@ -649,7 +650,7 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        expect(afterSetExtraEventHandler).toHaveBeenCalledWith({ key: "new-key", extra });
+        expect(afterSetExtraEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", extra });
       });
     });
   });
@@ -692,7 +693,7 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        expect(beforeGetExtraEventHandler).toHaveBeenCalledWith({ key });
+        expect(beforeGetExtraEventHandler).toHaveBeenCalledWith({ adapter, key });
       });
 
       it("adapter's getExtra method is called with arguments returned from beforeGetExtra event handler", async () => {
@@ -727,7 +728,7 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        expect(afterGetExtraEventHandler).toHaveBeenCalledWith({ key, extra });
+        expect(afterGetExtraEventHandler).toHaveBeenCalledWith({ adapter, key, extra });
       });
 
       it("returned value is the one coming from afterGetExtra event handler", async () => {
@@ -769,7 +770,7 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        expect(afterGetExtraEventHandler).toHaveBeenCalledWith({ key: "new-key", extra });
+        expect(afterGetExtraEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", extra });
       });
     });
   });
@@ -806,7 +807,7 @@ describe("stash-it class", () => {
 });
 
 const createDummyAdapter = () => {
-  const dummyAdapter = mock<StashItAdapterInterface>();
+  const dummyAdapter = mock<StashItAdapter>();
 
   dummyAdapter.setItem.mockResolvedValue(item);
   dummyAdapter.getItem.mockResolvedValue(item);

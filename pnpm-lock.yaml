@@ -35,8 +35,8 @@ importers:
   packages/dev-tools:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.2
-        version: '@jsr/stash-it__core@0.0.2'
+        specifier: workspace:*
+        version: link:../core
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -71,37 +71,37 @@ importers:
   packages/memory-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.2
-        version: '@jsr/stash-it__core@0.0.2'
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.2
-        version: '@jsr/stash-it__dev-tools@0.0.2(@types/node@22.5.0)'
+        specifier: workspace:*
+        version: link:../dev-tools
 
   packages/prefix-suffix-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.2
-        version: '@jsr/stash-it__core@0.0.2'
+        specifier: workspace:*
+        version: link:../core
       zod:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.2
-        version: '@jsr/stash-it__dev-tools@0.0.2(@types/node@22.5.0)'
+        specifier: workspace:*
+        version: link:../dev-tools
       '@stash-it/memory-adapter':
-        specifier: npm:@jsr/stash-it__memory-adapter@0.0.2
-        version: '@jsr/stash-it__memory-adapter@0.0.2'
+        specifier: workspace:*
+        version: link:../memory-adapter
       '@stash-it/stash-it':
-        specifier: npm:@jsr/stash-it__stash-it@0.0.1
-        version: '@jsr/stash-it__stash-it@0.0.1'
+        specifier: workspace:*
+        version: link:../stash-it
 
   packages/redis-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.2
-        version: '@jsr/stash-it__core@0.0.2'
+        specifier: workspace:*
+        version: link:../core
       redis:
         specifier: ^4.7.0
         version: 4.7.0
@@ -110,14 +110,14 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.2
-        version: '@jsr/stash-it__dev-tools@0.0.2(@types/node@22.5.0)'
+        specifier: workspace:*
+        version: link:../dev-tools
 
   packages/sqlite-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.2
-        version: '@jsr/stash-it__core@0.0.2'
+        specifier: workspace:*
+        version: link:../core
       better-sqlite3:
         specifier: ^11.1.2
         version: 11.2.1
@@ -126,8 +126,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.2
-        version: '@jsr/stash-it__dev-tools@0.0.2(@types/node@22.5.0)'
+        specifier: workspace:*
+        version: link:../dev-tools
       '@types/better-sqlite3':
         specifier: ^7.6.11
         version: 7.6.11
@@ -141,8 +141,8 @@ importers:
   packages/stash-it:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.0.2
-        version: '@jsr/stash-it__core@0.0.2'
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       vitest-mock-extended:
         specifier: ^2.0.0
@@ -428,18 +428,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
-
-  '@jsr/stash-it__core@0.0.2':
-    resolution: {integrity: sha512-Em/TYe1I0HV4rllVqE404wkiLIuD6OZQ8QypT+gJ+XNhXUKjfvcdUd99vzJdkqMXw/nDedsvxs0GNYGquh/2aw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.0.2.tgz}
-
-  '@jsr/stash-it__dev-tools@0.0.2':
-    resolution: {integrity: sha512-0Gum6He9YpxGecAmzDReObGxU29IN/Ej7Sdqvj6VI5xzuhDWk4QvHY/nESKlTYxSEoVMDlh/emjXoGAic0pIng==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.2.tgz}
-
-  '@jsr/stash-it__memory-adapter@0.0.2':
-    resolution: {integrity: sha512-eTQi3YO3Rfegq+1PzjncLyuql3IT9YoACvqUTS18KiUNqgjjtTS/Wqb3zE0ec18m2zPwLPYNtBnBkfqLcrmv7w==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__memory-adapter/0.0.2.tgz}
-
-  '@jsr/stash-it__stash-it@0.0.1':
-    resolution: {integrity: sha512-T4RBQGjE4WwkfGIcC458xsPOQSLm6tK2pM5UbBRg4nfxPA/uFiNWCp1dKDoco6P34wxRhQDNVI9hx4FrAlThew==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.0.1.tgz}
 
   '@microsoft/tsdoc-config@0.16.2':
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
@@ -873,8 +861,8 @@ packages:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
 
-  caniuse-lite@1.0.30001651:
-    resolution: {integrity: sha512-9Cf+Xv1jJNe1xPZLGuUXLNkE1BoDkqRqYyFJ9TDYSqhduqA4hu4oR9HluGoWYQC/aj8WHjsGVV+bwkh0+tegRg==}
+  caniuse-lite@1.0.30001653:
+    resolution: {integrity: sha512-XGWQVB8wFQ2+9NZwZ10GxTYC5hk0Fa+q8cSkr0tgvMhYhMHP/QC+WTgrePMDBWiWc/pV+1ik82Al20XOK25Gcw==}
 
   chai@5.1.1:
     resolution: {integrity: sha512-pT1ZgP8rPNqUgieVaEY+ryQr6Q4HXNg8Ei9UnLUrjN4IA7dvQC5JB+/kxVcPNDHyBcc/26CXPkbNzq3qwrOEKA==}
@@ -2747,37 +2735,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@jsr/stash-it__core@0.0.2': {}
-
-  '@jsr/stash-it__dev-tools@0.0.2(@types/node@22.5.0)':
-    dependencies:
-      '@jsr/stash-it__core': 0.0.2
-      nanoid: 5.0.7
-      vitest: 2.0.5(@types/node@22.5.0)
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@types/node'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - happy-dom
-      - jsdom
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  '@jsr/stash-it__memory-adapter@0.0.2':
-    dependencies:
-      '@jsr/stash-it__core': 0.0.2
-
-  '@jsr/stash-it__stash-it@0.0.1':
-    dependencies:
-      '@jsr/stash-it__core': 0.0.2
-
   '@microsoft/tsdoc-config@0.16.2':
     dependencies:
       '@microsoft/tsdoc': 0.14.2
@@ -3248,7 +3205,7 @@ snapshots:
 
   browserslist@4.23.3:
     dependencies:
-      caniuse-lite: 1.0.30001651
+      caniuse-lite: 1.0.30001653
       electron-to-chromium: 1.5.13
       node-releases: 2.0.18
       update-browserslist-db: 1.1.0(browserslist@4.23.3)
@@ -3272,7 +3229,7 @@ snapshots:
 
   callsites@3.1.0: {}
 
-  caniuse-lite@1.0.30001651: {}
+  caniuse-lite@1.0.30001653: {}
 
   chai@5.1.1:
     dependencies:

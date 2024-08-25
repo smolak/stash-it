@@ -1,16 +1,8 @@
-import type {
-  StashItAdapterInterface,
-  Extra,
-  GetExtraResult,
-  GetItemResult,
-  Item,
-  Key,
-  SetExtraResult,
-  Value,
-} from "@stash-it/core";
+import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, Value } from "@stash-it/core";
+import { StashItAdapter } from "@stash-it/core";
 
 /** Memory adapter class. */
-export class MemoryAdapter implements StashItAdapterInterface {
+export class MemoryAdapter extends StashItAdapter {
   #data = new Map<Key, Item>();
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {

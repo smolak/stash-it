@@ -5,6 +5,9 @@ import { MemoryAdapter } from "@stash-it/memory-adapter";
 
 import { createPrefixSuffixPlugin } from "./index";
 
+// Any adapter can be used here.
+const adapter = new MemoryAdapter();
+
 describe("prefix-suffix-plugin", () => {
   describe("when prefix is set", () => {
     it("builds key with set prefix", async () => {
@@ -12,7 +15,7 @@ describe("prefix-suffix-plugin", () => {
       const key = "key";
       const handler = getHandler("buildKey", plugin);
 
-      const result = await handler({ key });
+      const result = await handler({ adapter, key });
 
       expect(result.key).toEqual(`prefix-${key}`);
     });
@@ -24,7 +27,7 @@ describe("prefix-suffix-plugin", () => {
       const key = "key";
       const handler = getHandler("buildKey", plugin);
 
-      const result = await handler({ key });
+      const result = await handler({ adapter, key });
 
       expect(result.key).toEqual(`${key}-suffix`);
     });
@@ -36,7 +39,7 @@ describe("prefix-suffix-plugin", () => {
       const key = "key";
       const handler = getHandler("buildKey", plugin);
 
-      const result = await handler({ key });
+      const result = await handler({ adapter, key });
 
       expect(result.key).toEqual(`prefix-${key}-suffix`);
     });

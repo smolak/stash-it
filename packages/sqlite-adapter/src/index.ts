@@ -1,14 +1,6 @@
 import SqliteDatabase, { type Database } from "better-sqlite3";
-import type {
-  StashItAdapterInterface,
-  Extra,
-  GetExtraResult,
-  GetItemResult,
-  Item,
-  Key,
-  SetExtraResult,
-  Value,
-} from "@stash-it/core";
+import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, Value } from "@stash-it/core";
+import { StashItAdapter } from "@stash-it/core";
 import { z } from "zod";
 
 /**
@@ -33,7 +25,7 @@ export type SqliteAdapterOptions = z.input<typeof sqliteAdapterOptionsSchema>;
 /**
  * Sqlite adapter class.
  */
-export class SqliteAdapter implements StashItAdapterInterface {
+export class SqliteAdapter extends StashItAdapter {
   readonly #database: Database;
   readonly #tableName: string;
   readonly #keyColumnName: string;
@@ -41,6 +33,8 @@ export class SqliteAdapter implements StashItAdapterInterface {
   readonly #extraColumnName: string;
 
   constructor(options: SqliteAdapterOptions) {
+    super();
+
     const { dbPath, tableName, keyColumnName, valueColumnName, extraColumnName } =
       sqliteAdapterOptionsSchema.parse(options);
 

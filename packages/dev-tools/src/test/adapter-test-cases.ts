@@ -1,6 +1,6 @@
-import { it, expect, afterAll, describe } from "vitest";
+import { it, expect, afterAll, describe, beforeAll } from "vitest";
 import { nanoid } from "nanoid";
-import type { StashItAdapterInterface } from "@stash-it/core";
+import type { StashItAdapter } from "@stash-it/core";
 
 /**
  * Run tests for a given adapter.
@@ -15,14 +15,20 @@ import type { StashItAdapterInterface } from "@stash-it/core";
  * runAdapterTests(yourAdapter);
  * ```
  */
-export const runAdapterTests = (adapter: StashItAdapterInterface): void => {
+export const runAdapterTests = (adapter: StashItAdapter): void => {
   const keysToRemoveItemsBy: string[] = [];
 
   describe("adapter's functionality", () => {
+    beforeAll(async () => {
+      await adapter.connect();
+    });
+
     afterAll(async () => {
       for (const key of keysToRemoveItemsBy) {
         await adapter.removeItem(key);
       }
+
+      await adapter.disconnect();
     });
 
     describe("setting and getting an item", () => {

@@ -1,13 +1,5 @@
-import type {
-  Extra,
-  GetExtraResult,
-  GetItemResult,
-  Item,
-  Key,
-  SetExtraResult,
-  StashItAdapterInterface,
-  Value,
-} from "@stash-it/core";
+import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, Value } from "@stash-it/core";
+import { StashItAdapter } from "@stash-it/core";
 import { createClient, type RedisClientType } from "redis";
 import { z } from "zod";
 
@@ -20,10 +12,12 @@ type RedisAdapterOptions = z.infer<typeof redisAdapterOptionsSchema>;
 /**
  * Redis adapter class.
  */
-export class RedisAdapter implements StashItAdapterInterface {
+export class RedisAdapter extends StashItAdapter {
   readonly #database: RedisClientType;
 
   constructor(options: RedisAdapterOptions) {
+    super();
+
     const { url } = redisAdapterOptionsSchema.parse(options);
 
     this.#database = createClient({
@@ -31,86 +25,64 @@ export class RedisAdapter implements StashItAdapterInterface {
     });
   }
 
-  async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
+  override async connect() {
     await this.#database.connect();
+  }
 
+  override async disconnect() {
+    await this.#database.disconnect();
+  }
+
+  async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
     await this.#database.HSET(key, {
       value: JSON.stringify(value),
       extra: JSON.stringify(extra),
     });
 
-    await this.#database.disconnect();
-
     return { key, value, extra };
   }
 
   async getItem(key: Key): Promise<GetItemResult> {
-    await this.#database.connect();
-
     const item = await this.#database.HGETALL(key);
 
     if (item && item.value && item.extra) {
-      await this.#database.disconnect();
-
       return {
         key,
         value: JSON.parse(item.value),
         extra: JSON.parse(item.extra),
       };
     }
-
-    await this.#database.disconnect();
   }
 
   async hasItem(key: Key): Promise<boolean> {
-    await this.#database.connect();
-
     const result = await this.#database.EXISTS(key);
-
-    await this.#database.disconnect();
 
     return result === 1;
   }
 
   async removeItem(key: Key): Promise<boolean> {
-    await this.#database.connect();
-
     const result = await this.#database.DEL(key);
-
-    await this.#database.disconnect();
 
     return result === 1;
   }
 
   async setExtra(key: Key, extra: Extra): Promise<SetExtraResult> {
-    await this.#database.connect();
-
     const item = await this.#database.HGETALL(key);
 
     if (item && item.extra) {
       await this.#database.HSET(key, "extra", JSON.stringify(extra));
 
-      await this.#database.disconnect();
-
       return extra;
     }
-
-    await this.#database.disconnect();
 
     return false;
   }
 
   async getExtra(key: Key): Promise<GetExtraResult> {
-    await this.#database.connect();
-
     const item = await this.#database.HGETALL(key);
 
     if (item && item.extra) {
-      await this.#database.disconnect();
-
       return JSON.parse(item.extra);
     }
-
-    await this.#database.disconnect();
   }
 }

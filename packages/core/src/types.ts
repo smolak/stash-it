@@ -16,7 +16,7 @@ export type Item = {
 
 /** Event handler function. Accepts and returns the same args. */
 // eslint-disable-next-line no-unused-vars
-export type HookHandler<Args> = (args: Args) => Promise<Args>;
+export type HookHandler<Args> = (args: Args) => Promise<Omit<Args, "adapter">>;
 
 type RequiredProperties<Object, K extends keyof Object> = {
   [P in K]: Object[P];
@@ -38,19 +38,20 @@ export type Hook =
   | "beforeGetExtra"
   | "afterGetExtra";
 
-type BuildKeyArgs = { key: Key };
-type BeforeSetItemArgs = { key: Key; value: Value; extra: Extra };
-type AfterSetItemArgs = { key: Key; value: Value; extra: Extra; item: Item };
-type BeforeGetItemArgs = { key: Key };
-type AfterGetItemArgs = { key: Key; item: GetItemResult };
-type BeforeHasItemArgs = { key: Key };
-type AfterHasItemArgs = { key: Key; result: boolean };
-type BeforeRemoveItemArgs = { key: Key };
-type AfterRemoveItemArgs = { key: Key; result: boolean };
-type BeforeSetExtraArgs = { key: Key; extra: Extra };
-type AfterSetExtraArgs = { key: Key; extra: SetExtraResult };
-type BeforeGetExtraArgs = { key: Key };
-type AfterGetExtraArgs = { key: Key; extra: GetExtraResult };
+type AdapterArg = { adapter: StashItAdapter };
+type BuildKeyArgs = AdapterArg & { key: Key };
+type BeforeSetItemArgs = AdapterArg & { key: Key; value: Value; extra: Extra };
+type AfterSetItemArgs = AdapterArg & { key: Key; value: Value; extra: Extra; item: Item };
+type BeforeGetItemArgs = AdapterArg & { key: Key };
+type AfterGetItemArgs = AdapterArg & { key: Key; item: GetItemResult };
+type BeforeHasItemArgs = AdapterArg & { key: Key };
+type AfterHasItemArgs = AdapterArg & { key: Key; result: boolean };
+type BeforeRemoveItemArgs = AdapterArg & { key: Key };
+type AfterRemoveItemArgs = AdapterArg & { key: Key; result: boolean };
+type BeforeSetExtraArgs = AdapterArg & { key: Key; extra: Extra };
+type AfterSetExtraArgs = AdapterArg & { key: Key; extra: SetExtraResult };
+type BeforeGetExtraArgs = AdapterArg & { key: Key };
+type AfterGetExtraArgs = AdapterArg & { key: Key; extra: GetExtraResult };
 
 type ExtraCouldNotBeSet = false;
 /** Result of setting extra data. */
@@ -149,5 +150,28 @@ export interface StashItInterface extends CommonInterface {
   registerPlugins(plugins: StashItPlugin[]): void;
 }
 
-/** StashIt adapter interface. */
-export interface StashItAdapterInterface extends CommonInterface {}
+/** StashIt adapter abstract class. */
+export abstract class StashItAdapter implements CommonInterface {
+  // eslint-disable-next-line no-unused-vars
+  abstract setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
+  // eslint-disable-next-line no-unused-vars
+  abstract getItem(key: Key): Promise<GetItemResult>;
+  // eslint-disable-next-line no-unused-vars
+  abstract hasItem(key: Key): Promise<boolean>;
+  // eslint-disable-next-line no-unused-vars
+  abstract removeItem(key: Key): Promise<boolean>;
+  // eslint-disable-next-line no-unused-vars
+  abstract setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
+  // eslint-disable-next-line no-unused-vars
+  abstract getExtra(key: Key): Promise<GetExtraResult>;
+
+  async connect(): Promise<void> {
+    // Do nothing by default. Implement in subclass if needed.
+    // It's useful for adapters that need to open connections or set up resources.
+  }
+
+  async disconnect(): Promise<void> {
+    // Do nothing by default. Implement in subclass if needed.
+    // It's useful for adapters that need to close connections or clean up resources.
+  }
+}
