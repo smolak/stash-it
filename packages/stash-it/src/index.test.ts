@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { toHaveBeenCalledBefore } from "jest-extended";
-import { StashItAdapter, type StashItPlugin } from "@stash-it/core";
+import { type HookHandlerArgs, StashItAdapter, type StashItPlugin } from "@stash-it/core";
 import { mock } from "vitest-mock-extended";
 import { StashIt } from "./index";
 
@@ -12,6 +12,30 @@ const extra = { foo: "bar" };
 const item = { key, value, extra };
 
 describe("stash-it class", () => {
+  describe("because adapter is passed to hook handlers", () => {
+    it("should not be possible to alter it (plugins could try to do it)", () => {
+      expect(async () => {
+        const plugin: StashItPlugin = {
+          hookHandlers: {
+            beforeSetItem: async (args) => {
+              // @ts-ignore
+              args.adapter.getItem = null;
+
+              return args;
+            },
+          },
+        };
+
+        const adapter = createDummyAdapter();
+        const stashIt = new StashIt(adapter);
+
+        stashIt.registerPlugins([plugin]);
+
+        await stashIt.setItem(key, value, extra);
+      }).rejects.toThrowErrorMatchingSnapshot();
+    });
+  });
+
   describe("buildKey hook", () => {
     describe("when an event handler is registered for buildKey hook", () => {
       it("should be used to build the key", async () => {
@@ -28,7 +52,13 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        expect(buildKeyEventHandler).toHaveBeenCalledWith({ adapter, key });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(buildKeyEventHandler).toHaveBeenCalled();
+
+        const args = buildKeyEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key });
       });
     });
   });
@@ -59,7 +89,13 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        expect(beforeSetItemEventHandler).toHaveBeenCalledWith({ adapter, key, value, extra });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(beforeSetItemEventHandler).toHaveBeenCalled();
+
+        const args = beforeSetItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key, value, extra });
       });
 
       it("adapter's setItem method is called with arguments returned from beforeSetItem event handler", async () => {
@@ -94,7 +130,13 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        expect(afterSetItemEventHandler).toHaveBeenCalledWith({ adapter, key, value, extra, item });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterSetItemEventHandler).toHaveBeenCalled();
+
+        const args = afterSetItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key, value, extra, item });
       });
 
       it("returned value is the one coming from afterSetItem event handler", async () => {
@@ -138,13 +180,13 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        expect(afterSetItemEventHandler).toHaveBeenCalledWith({
-          adapter,
-          key: "new-key",
-          value: "new-value",
-          extra: { new: "extra" },
-          item,
-        });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterSetItemEventHandler).toHaveBeenCalled();
+
+        const args = afterSetItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key: "new-key", value: "new-value", extra: { new: "extra" }, item });
       });
     });
   });
@@ -178,6 +220,7 @@ describe("stash-it class", () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetItem: beforeGetItemEventHandler,
+            // beforeGetItem: spy,
           },
         };
         const adapter = createDummyAdapter();
@@ -187,7 +230,13 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        expect(beforeGetItemEventHandler).toHaveBeenCalledWith({ adapter, key });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(beforeGetItemEventHandler).toHaveBeenCalled();
+
+        const args = beforeGetItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key });
       });
 
       it("adapter's getItem method is called with arguments returned from beforeGetItem event handler", async () => {
@@ -222,7 +271,13 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        expect(afterGetItemEventHandler).toHaveBeenCalledWith({ adapter, key, item: { key, value, extra } });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterGetItemEventHandler).toHaveBeenCalled();
+
+        const args = afterGetItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key, item: { key, value, extra } });
       });
 
       it("returned value is the one coming from afterGetItem event handler", async () => {
@@ -264,7 +319,13 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        expect(afterGetItemEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", item });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterGetItemEventHandler).toHaveBeenCalled();
+
+        const args = afterGetItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key: "new-key", item });
       });
     });
   });
@@ -318,7 +379,13 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        expect(beforeHasItemEventHandler).toHaveBeenCalledWith({ adapter, key });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(beforeHasItemEventHandler).toHaveBeenCalled();
+
+        const args = beforeHasItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key });
       });
 
       it("adapter's hasItem method is called with arguments returned from beforeHasItem event handler", async () => {
@@ -354,7 +421,13 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        expect(afterHasItemEventHandler).toHaveBeenCalledWith({ adapter, key, result: true });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterHasItemEventHandler).toHaveBeenCalled();
+
+        const args = afterHasItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key, result: true });
       });
 
       it("returned value is the one coming from afterHasItem event handler", async () => {
@@ -396,7 +469,13 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        expect(afterHasItemEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", result: true });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterHasItemEventHandler).toHaveBeenCalled();
+
+        const args = afterHasItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key: "new-key", result: true });
       });
     });
   });
@@ -450,7 +529,13 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        expect(beforeRemoveItemEventHandler).toHaveBeenCalledWith({ adapter, key });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(beforeRemoveItemEventHandler).toHaveBeenCalled();
+
+        const args = beforeRemoveItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key });
       });
 
       it("adapter's removeItem method is called with arguments returned from beforeRemoveItem event handler", async () => {
@@ -486,7 +571,13 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        expect(afterRemoveItemEventHandler).toHaveBeenCalledWith({ adapter, key, result: true });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterRemoveItemEventHandler).toHaveBeenCalled();
+
+        const args = afterRemoveItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key, result: true });
       });
 
       it("returned value is the one coming from afterRemoveItem event handler", async () => {
@@ -528,7 +619,13 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        expect(afterRemoveItemEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", result: true });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterRemoveItemEventHandler).toHaveBeenCalled();
+
+        const args = afterRemoveItemEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key: "new-key", result: true });
       });
     });
   });
@@ -571,7 +668,13 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        expect(beforeSetExtraEventHandler).toHaveBeenCalledWith({ adapter, key, extra });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(beforeSetExtraEventHandler).toHaveBeenCalled();
+
+        const args = beforeSetExtraEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key, extra });
       });
 
       it("adapter's setExtra method is called with arguments returned from beforeSetExtra event handler", async () => {
@@ -608,7 +711,13 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        expect(afterSetExtraEventHandler).toHaveBeenCalledWith({ adapter, key, extra });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterSetExtraEventHandler).toHaveBeenCalled();
+
+        const args = afterSetExtraEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key, extra });
       });
 
       it("returned value is the one coming from afterSetExtra event handler", async () => {
@@ -650,7 +759,13 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        expect(afterSetExtraEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", extra });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterSetExtraEventHandler).toHaveBeenCalled();
+
+        const args = afterSetExtraEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key: "new-key", extra });
       });
     });
   });
@@ -693,7 +808,13 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        expect(beforeGetExtraEventHandler).toHaveBeenCalledWith({ adapter, key });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(beforeGetExtraEventHandler).toHaveBeenCalled();
+
+        const args = beforeGetExtraEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key });
       });
 
       it("adapter's getExtra method is called with arguments returned from beforeGetExtra event handler", async () => {
@@ -728,7 +849,13 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        expect(afterGetExtraEventHandler).toHaveBeenCalledWith({ adapter, key, extra });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterGetExtraEventHandler).toHaveBeenCalled();
+
+        const args = afterGetExtraEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key, extra });
       });
 
       it("returned value is the one coming from afterGetExtra event handler", async () => {
@@ -770,7 +897,13 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        expect(afterGetExtraEventHandler).toHaveBeenCalledWith({ adapter, key: "new-key", extra });
+        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // as vitest internals want to do something with adapter, and it being frozen, throws an error.
+        // That way, it doesn't.
+        expect(afterGetExtraEventHandler).toHaveBeenCalled();
+
+        const args = afterGetExtraEventHandler.mock.calls[0]?.[0];
+        expect(args).toEqual({ adapter, key: "new-key", extra });
       });
     });
   });
@@ -809,6 +942,8 @@ describe("stash-it class", () => {
 const createDummyAdapter = () => {
   const dummyAdapter = mock<StashItAdapter>();
 
+  dummyAdapter.connect.mockResolvedValue(undefined);
+  dummyAdapter.disconnect.mockResolvedValue(undefined);
   dummyAdapter.setItem.mockResolvedValue(item);
   dummyAdapter.getItem.mockResolvedValue(item);
   dummyAdapter.hasItem.mockResolvedValue(true);

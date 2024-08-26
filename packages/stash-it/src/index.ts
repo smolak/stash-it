@@ -33,7 +33,7 @@ export class StashIt implements StashItInterface {
   };
 
   constructor(adapter: StashItAdapter) {
-    this.#adapter = adapter;
+    this.#adapter = Object.freeze(adapter);
   }
 
   async #buildKey(key: Key): Promise<Key> {
