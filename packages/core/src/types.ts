@@ -1,11 +1,14 @@
 /** Key used to store the item. */
 export type Key = string;
 
+/** Recursive type for values that can be safely stringified **/
+export type RecursiveType = string | number | boolean | null | RecursiveType[] | { [key: string]: RecursiveType };
+
 /** Value stored in the item. */
-export type Value = string | number | boolean | null | Value[] | { [key: string]: Value };
+export type Value = RecursiveType;
 
 /** Extra data stored in the item. */
-export type Extra = string | number | boolean | null | Extra[] | { [key: string]: Extra };
+export type Extra = { [key: string]: RecursiveType };
 
 /** Item stored in the stash. */
 export type Item = {
