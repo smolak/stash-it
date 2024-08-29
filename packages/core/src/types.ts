@@ -1,7 +1,7 @@
 /** Key used to store the item. */
 export type Key = string;
 
-/** Recursive type for values that can be safely stringified */
+/** Recursive type for values that can be safely stringified. */
 export type RecursiveType = string | number | boolean | null | RecursiveType[] | { [key: string]: RecursiveType };
 
 /** Value stored in the item. */
