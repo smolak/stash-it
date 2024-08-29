@@ -6,7 +6,7 @@ Set of interfaces and types for `@stash-it`, for main class, adapters and plugin
 
 The main ones you'll be interested in are:
 
-- `StashItAdapterInterface` - interface used to create your own adapters
+- `StashItAdapter` - base class used to create your own adapters
 - `StashItPlugin` type to create your own plugins
 
 See [usage](#usage) for examples.
@@ -40,21 +40,42 @@ bunx jsr add @stash-it/core
 
 ## Usage
 
-### `StashItAdapterInterface`
+### `StashItAdapter`
 
 ```typescript
-import { StashItAdapterInterface } from '@stash-it/core';
+import { StashItAdapter } from '@stash-it/core';
 
-// Your adapter class should implement this interface.
-class MyAdapter implements StashItAdapterInterface {
+// Your adapter class should extend from the base abstract class.
+class MyAdapter extends StashItAdapter {
   // Your implementation here.
+}
+```
+
+The base class contains two methods, that you should implement if your adapter requires establishing a connection and/or disconnecting from a storage.
+
+For instance:
+
+```typescript
+import { StashItAdapter } from '@stash-it/core';
+
+// Your adapter class should extend from the base abstract class.
+class MyAdapter extends StashItAdapter {
+  override async connect(): Promise<void> {
+    // Depending on the storage, it can look different.
+    // For example:
+    this.#database.connect();
+  }
+
+  override async disconnect(): Promise<void> {
+    this.#database.connect();
+  }
 }
 ```
 
 ### `StashItPlugin`
 
 ```typescript
-import { StashItPlugin } from '@stash-it/core';
+import { type StashItPlugin } from '@stash-it/core';
 
 // Your plugin can be a function that returns StashItPlugin:
 const myPlugin = (someArgsIfNeedBe): StashItPlugin => {
