@@ -141,8 +141,8 @@ importers:
   packages/stash-it:
     dependencies:
       '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: npm:@jsr/stash-it__core@0.1.1
+        version: '@jsr/stash-it__core@0.1.1'
     devDependencies:
       vitest-mock-extended:
         specifier: ^2.0.0
@@ -447,6 +447,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@jsr/stash-it__core@0.1.1':
+    resolution: {integrity: sha512-fR1zXk9dcGsPa27YaUz9KldFi+mi3SnmWXAcY9gqzJej8CzxeIrMwvxb081NX/He1BJg4s0y8mV5PdSK/UA85g==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.1.1.tgz}
 
   '@microsoft/tsdoc-config@0.16.2':
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
@@ -2766,6 +2769,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@jsr/stash-it__core@0.1.1': {}
 
   '@microsoft/tsdoc-config@0.16.2':
     dependencies:

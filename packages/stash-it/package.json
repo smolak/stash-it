@@ -34,7 +34,7 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "workspace:*"
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.1.1"
   },
   "devDependencies": {
     "vitest-mock-extended": "^2.0.0"
