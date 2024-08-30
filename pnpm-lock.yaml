@@ -71,12 +71,12 @@ importers:
   packages/memory-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: npm:@jsr/stash-it__core@0.1.2
+        version: '@jsr/stash-it__core@0.1.2'
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: workspace:*
-        version: link:../dev-tools
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.3
+        version: '@jsr/stash-it__dev-tools@0.0.3(@types/node@22.5.1)'
 
   packages/prefix-suffix-plugin:
     dependencies:
@@ -450,6 +450,9 @@ packages:
 
   '@jsr/stash-it__core@0.1.2':
     resolution: {integrity: sha512-GgSsZAha4pEmcxMemp1X8tfPo3pMtENefYI41YIiYFDlbx0Emk35c118nrQwcMP9N5TwwmouQawU/wEaRNY8+A==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.1.2.tgz}
+
+  '@jsr/stash-it__dev-tools@0.0.3':
+    resolution: {integrity: sha512-TcIcWHHmcTZJz8zfZV1nx0FTf5sSGABTkMD4xAJ/u70lZG7QWxHCzf47IPoD59VpEoR4qyVgEQpkocrcp2nlWw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.3.tgz}
 
   '@microsoft/tsdoc-config@0.16.2':
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
@@ -2771,6 +2774,27 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@jsr/stash-it__core@0.1.2': {}
+
+  '@jsr/stash-it__dev-tools@0.0.3(@types/node@22.5.1)':
+    dependencies:
+      '@jsr/stash-it__core': 0.1.2
+      nanoid: 5.0.7
+      vitest: 2.0.5(@types/node@22.5.1)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
 
   '@microsoft/tsdoc-config@0.16.2':
     dependencies:

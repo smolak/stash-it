@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/memory-adapter",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -29,9 +29,9 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "workspace:*"
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.1.2"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "workspace:*"
+    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.3"
   }
 }
