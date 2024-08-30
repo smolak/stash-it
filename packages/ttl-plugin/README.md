@@ -61,7 +61,7 @@ const plugin = createPrefixSuffixPlugin({
   ttl: 3_600, // 1 hour
 });
 
-// Register the plugin to the stash-it instance.
+// Register plugin
 stash.registerPlugins([plugin]);
 
 // Use it.
