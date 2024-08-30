@@ -30,12 +30,12 @@
     "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
-    "@stash-it/core": "workspace:*",
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.1.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "workspace:*",
-    "@stash-it/memory-adapter": "workspace:*",
-    "@stash-it/stash-it": "workspace:*"
+    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.3",
+    "@stash-it/memory-adapter": "npm:@jsr/stash-it__memory-adapter@0.1.0",
+    "@stash-it/stash-it": "npm:@jsr/stash-it__stash-it@0.1.0"
   }
 }

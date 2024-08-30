@@ -22,9 +22,6 @@ describe("ttl-plugin", () => {
     vi.useRealTimers();
   });
 
-  // Dodać sprawdzanie, czy extra nie zawiera __ttl, żeby nie nadpisać istniejącego LUB utworzyć takowy, skoro to plugin robi
-  // rzucić wyjątkiem, że __ttl jest zarezerwowane
-
   describe("setting an item", () => {
     it("adds ttl data to an item when it's stored", async () => {
       const plugin = createTtlPlugin({ ttl: 10 });
