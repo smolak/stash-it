@@ -35,8 +35,8 @@ importers:
   packages/dev-tools:
     dependencies:
       '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: npm:@jsr/stash-it__core@0.1.2
+        version: '@jsr/stash-it__core@0.1.2'
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
