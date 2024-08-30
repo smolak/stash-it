@@ -100,8 +100,8 @@ importers:
   packages/redis-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: npm:@jsr/stash-it__core@0.1.2
+        version: '@jsr/stash-it__core@0.1.2'
       redis:
         specifier: ^4.7.0
         version: 4.7.0
@@ -110,8 +110,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: workspace:*
-        version: link:../dev-tools
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.3
+        version: '@jsr/stash-it__dev-tools@0.0.3(@types/node@22.5.1)'
 
   packages/sqlite-adapter:
     dependencies:
