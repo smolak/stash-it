@@ -155,6 +155,22 @@ export interface StashItInterface extends CommonInterface {
 
 /** StashIt adapter abstract class. */
 export abstract class StashItAdapter implements CommonInterface {
+  /**
+   * Connect to the storage (DB, file system, resource of any kind where the items are stored).
+   */
+  async connect(): Promise<void> {
+    // Do nothing by default. Implement in subclass if needed.
+    // It's useful for adapters that need to open connections or set up resources.
+  }
+
+  /**
+   * Disconnect from the storage.
+   */
+  async disconnect(): Promise<void> {
+    // Do nothing by default. Implement in subclass if needed.
+    // It's useful for adapters that need to close connections or clean up resources.
+  }
+
   // eslint-disable-next-line no-unused-vars
   abstract setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
   // eslint-disable-next-line no-unused-vars
@@ -167,14 +183,4 @@ export abstract class StashItAdapter implements CommonInterface {
   abstract setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
   // eslint-disable-next-line no-unused-vars
   abstract getExtra(key: Key): Promise<GetExtraResult>;
-
-  async connect(): Promise<void> {
-    // Do nothing by default. Implement in subclass if needed.
-    // It's useful for adapters that need to open connections or set up resources.
-  }
-
-  async disconnect(): Promise<void> {
-    // Do nothing by default. Implement in subclass if needed.
-    // It's useful for adapters that need to close connections or clean up resources.
-  }
 }
