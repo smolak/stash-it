@@ -37,7 +37,7 @@ export class StashIt implements StashItInterface {
   }
 
   async #buildKey(key: Key): Promise<Key> {
-    const result = await this.#call<"buildKey">("buildKey", { adapter: this.#adapter, key });
+    const result = await this.#call("buildKey", { adapter: this.#adapter, key });
 
     return result.key;
   }
