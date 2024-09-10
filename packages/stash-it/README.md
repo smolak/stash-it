@@ -1,5 +1,7 @@
 # `@stash-it/stash-it`
 
+![logo-stash-it-color-dark 2x](https://user-images.githubusercontent.com/1819138/30385483-99fd209c-98a7-11e7-85e2-595791d8d894.png)
+
 `@stash-it` is a simple, yet powerful, key-value storage library. It is designed to be easy to use and to have a clear API. It is also extensible, so you can create your own adapters and use them with `@stash-it`. The storage of your choice is not supported (yet)? No problem, you can create an adapter for it and use it with `@stash-it`.
 
 `@stash-it` is designed to be used in any environment, provided that the storage is directly available in that environment. For example, you can use `MemoryAdapter` anywhere, but `RedisAdapter` can be used only in a Node.js (or Bun, or Deno).

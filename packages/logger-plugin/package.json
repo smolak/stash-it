@@ -1,6 +1,6 @@
 {
-  "name": "@stash-it/stash-it",
-  "version": "0.1.1",
+  "name": "@stash-it/logger-plugin",
+  "version": "0.0.1",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -8,7 +8,8 @@
   "exports": "./mod.ts",
   "files": [
     "mod.ts",
-    "src",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
     "_dist",
     "README.md",
     "package.json"
@@ -18,25 +19,23 @@
     "@stash-it",
     "stash it",
     "stash-it",
-    "plugins",
-    "cache",
-    "data",
-    "storage",
-    "adapter",
-    "memory",
-    "redis",
-    "sqlite"
+    "plugin",
+    "logger",
+    "logging"
   ],
   "scripts": {
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpx jsr publish",
+    "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
     "@stash-it/core": "npm:@jsr/stash-it__core@0.1.2"
   },
   "devDependencies": {
-    "vitest-mock-extended": "^2.0.0"
+    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.3",
+    "@stash-it/memory-adapter": "npm:@jsr/stash-it__memory-adapter@0.1.0",
+    "@stash-it/stash-it": "npm:@jsr/stash-it__stash-it@0.1.1"
   }
 }

@@ -64,5 +64,36 @@ describe("prefix-suffix-plugin", () => {
       expect(createdItem.key).toEqual(key);
       expect(retrievedItem?.key).toEqual(key);
     });
+
+    it("using sames storage and different prefixes allows for setting/getting items for the same key", async () => {
+      // Simulating single storage by using the same memory for each instance of stash-it
+      // otherwise those would be different storages (different memory allocations).
+      const adapter = new MemoryAdapter();
+
+      const stash1 = new StashIt(adapter);
+      const stash2 = new StashIt(adapter);
+
+      const plugin1 = createPrefixSuffixPlugin({ prefix: "prefix1-" });
+      const plugin2 = createPrefixSuffixPlugin({ prefix: "prefix2-" });
+
+      stash1.registerPlugins([plugin1]);
+      stash2.registerPlugins([plugin2]);
+
+      await stash1.setItem("key", "value1");
+      await stash2.setItem("key", "value2");
+
+      expect(stash1.hasItem("key")).resolves.toBe(true);
+      expect(stash2.hasItem("key")).resolves.toBe(true);
+
+      const item1 = await stash1.getItem("key");
+      const item2 = await stash2.getItem("key");
+
+      expect(item1?.value).not.toEqual(item2?.value);
+
+      await stash1.removeItem("key");
+
+      expect(stash1.hasItem("key")).resolves.toBe(false);
+      expect(stash2.hasItem("key")).resolves.toBe(true);
+    });
   });
 });
