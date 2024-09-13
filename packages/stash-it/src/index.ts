@@ -50,12 +50,14 @@ export class StashIt implements StashItInterface {
     await this.#adapter.connect();
 
     const beforeData = await this.#call("beforeSetItem", { adapter: this.#adapter, key, value, extra });
-    const setItem = await this.#adapter.setItem(
-      await this.#buildKey(beforeData.key),
-      beforeData.value,
-      beforeData.extra,
-    );
-    const afterData = await this.#call("afterSetItem", { ...beforeData, adapter: this.#adapter, item: setItem });
+    const builtKey = await this.#buildKey(beforeData.key);
+    const setItem = await this.#adapter.setItem(builtKey, beforeData.value, beforeData.extra);
+    const afterData = await this.#call("afterSetItem", {
+      ...beforeData,
+      key: builtKey,
+      adapter: this.#adapter,
+      item: setItem,
+    });
 
     await this.#adapter.disconnect();
 
@@ -66,8 +68,9 @@ export class StashIt implements StashItInterface {
     await this.#adapter.connect();
 
     const beforeData = await this.#call("beforeGetItem", { adapter: this.#adapter, key });
-    const item = await this.#adapter.getItem(await this.#buildKey(beforeData.key));
-    const afterData = await this.#call("afterGetItem", { ...beforeData, adapter: this.#adapter, item });
+    const builtKey = await this.#buildKey(beforeData.key);
+    const item = await this.#adapter.getItem(builtKey);
+    const afterData = await this.#call("afterGetItem", { ...beforeData, key: builtKey, adapter: this.#adapter, item });
 
     await this.#adapter.disconnect();
 
@@ -78,8 +81,14 @@ export class StashIt implements StashItInterface {
     await this.#adapter.connect();
 
     const beforeData = await this.#call("beforeHasItem", { adapter: this.#adapter, key });
-    const result = await this.#adapter.hasItem(await this.#buildKey(beforeData.key));
-    const afterData = await this.#call("afterHasItem", { ...beforeData, adapter: this.#adapter, result });
+    const builtKey = await this.#buildKey(beforeData.key);
+    const result = await this.#adapter.hasItem(builtKey);
+    const afterData = await this.#call("afterHasItem", {
+      ...beforeData,
+      key: builtKey,
+      adapter: this.#adapter,
+      result,
+    });
 
     await this.#adapter.disconnect();
 
@@ -90,8 +99,14 @@ export class StashIt implements StashItInterface {
     await this.#adapter.connect();
 
     const beforeData = await this.#call("beforeRemoveItem", { adapter: this.#adapter, key });
-    const result = await this.#adapter.removeItem(await this.#buildKey(beforeData.key));
-    const afterData = await this.#call("afterRemoveItem", { ...beforeData, adapter: this.#adapter, result });
+    const builtKey = await this.#buildKey(beforeData.key);
+    const result = await this.#adapter.removeItem(builtKey);
+    const afterData = await this.#call("afterRemoveItem", {
+      ...beforeData,
+      key: builtKey,
+      adapter: this.#adapter,
+      result,
+    });
 
     await this.#adapter.disconnect();
 
@@ -102,8 +117,14 @@ export class StashIt implements StashItInterface {
     await this.#adapter.connect();
 
     const beforeData = await this.#call("beforeSetExtra", { adapter: this.#adapter, key, extra });
-    const extraSet = await this.#adapter.setExtra(await this.#buildKey(beforeData.key), beforeData.extra);
-    const afterData = await this.#call("afterSetExtra", { ...beforeData, adapter: this.#adapter, extra: extraSet });
+    const builtKey = await this.#buildKey(beforeData.key);
+    const extraSet = await this.#adapter.setExtra(builtKey, beforeData.extra);
+    const afterData = await this.#call("afterSetExtra", {
+      ...beforeData,
+      key: builtKey,
+      adapter: this.#adapter,
+      extra: extraSet,
+    });
 
     await this.#adapter.disconnect();
 
@@ -114,8 +135,14 @@ export class StashIt implements StashItInterface {
     await this.#adapter.connect();
 
     const beforeData = await this.#call("beforeGetExtra", { adapter: this.#adapter, key });
-    const extra = await this.#adapter.getExtra(await this.#buildKey(beforeData.key));
-    const afterData = await this.#call("afterGetExtra", { ...beforeData, adapter: this.#adapter, extra });
+    const builtKey = await this.#buildKey(beforeData.key);
+    const extra = await this.#adapter.getExtra(builtKey);
+    const afterData = await this.#call("afterGetExtra", {
+      ...beforeData,
+      key: builtKey,
+      adapter: this.#adapter,
+      extra,
+    });
 
     await this.#adapter.disconnect();
 
