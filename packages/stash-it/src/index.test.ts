@@ -116,10 +116,17 @@ describe("stash-it class", () => {
     });
 
     describe("when an event handler is registered for afterSetItem hook", () => {
-      it("should call that handler with the arguments passed to the setItem method and item set by the adapter", async () => {
+      it("should call that handler with the arguments passed to the setItem method, built key and item set by the adapter", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterSetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             afterSetItem: afterSetItemEventHandler,
           },
         };
@@ -136,7 +143,8 @@ describe("stash-it class", () => {
         expect(afterSetItemEventHandler).toHaveBeenCalled();
 
         const args = afterSetItemEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key, value, extra, item });
+
+        expect(args).toEqual({ adapter, key: "key_built-key", value, extra, item });
       });
 
       it("returned value is the one coming from afterSetItem event handler", async () => {
@@ -164,11 +172,19 @@ describe("stash-it class", () => {
     });
 
     describe("when event handlers are set for both beforeSetItem and afterSetItem hooks", () => {
-      it("should call afterSetItem event handler with arguments returned from beforeSetItem event handler", async () => {
+      it("should call afterSetItem event handler with arguments returned from beforeSetItem event handler and built key", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterSetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
-            beforeSetItem: () => Promise.resolve({ key: "new-key", value: "new-value", extra: { new: "extra" } }),
+            buildKey: buildKeyHookHandler,
+            beforeSetItem: () =>
+              Promise.resolve({ adapter, key: "new-key", value: "new-value", extra: { new: "extra" } }),
             afterSetItem: afterSetItemEventHandler,
           },
         };
@@ -186,7 +202,7 @@ describe("stash-it class", () => {
         expect(afterSetItemEventHandler).toHaveBeenCalled();
 
         const args = afterSetItemEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key: "new-key", value: "new-value", extra: { new: "extra" }, item });
+        expect(args).toEqual({ adapter, key: "new-key_built-key", value: "new-value", extra: { new: "extra" }, item });
       });
     });
   });
@@ -257,10 +273,17 @@ describe("stash-it class", () => {
     });
 
     describe("when an event handler is registered for afterGetItem hook", () => {
-      it("should call that event handler with the arguments passed to the getItem method and retrieved item", async () => {
+      it("should call that event handler with the arguments passed to the getItem method, built key and retrieved item", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterGetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             afterGetItem: afterGetItemEventHandler,
           },
         };
@@ -277,7 +300,7 @@ describe("stash-it class", () => {
         expect(afterGetItemEventHandler).toHaveBeenCalled();
 
         const args = afterGetItemEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key, item: { key, value, extra } });
+        expect(args).toEqual({ adapter, key: "key_built-key", item: { key, value, extra } });
       });
 
       it("returned value is the one coming from afterGetItem event handler", async () => {
@@ -303,10 +326,17 @@ describe("stash-it class", () => {
     });
 
     describe("when event handlers are set for both beforeGetItem and afterGetItem hooks", () => {
-      it("should call afterGetItem event handler with arguments returned from beforeGetItem event handler", async () => {
+      it("should call afterGetItem event handler with arguments returned from beforeGetItem event handler and built key", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterGetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             beforeGetItem: () => Promise.resolve({ key: "new-key" }),
             afterGetItem: afterGetItemEventHandler,
           },
@@ -325,7 +355,7 @@ describe("stash-it class", () => {
         expect(afterGetItemEventHandler).toHaveBeenCalled();
 
         const args = afterGetItemEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key: "new-key", item });
+        expect(args).toEqual({ adapter, key: "new-key_built-key", item });
       });
     });
   });
@@ -406,10 +436,17 @@ describe("stash-it class", () => {
     });
 
     describe("when an event handler is registered for afterHasItem hook", () => {
-      it("should call that event handler with the arguments passed to the hasItem method and result of finding that item", async () => {
+      it("should call that event handler with the arguments passed to the hasItem method, built key and result of finding that item", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterHasItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             afterHasItem: afterHasItemEventHandler,
           },
         };
@@ -427,7 +464,7 @@ describe("stash-it class", () => {
         expect(afterHasItemEventHandler).toHaveBeenCalled();
 
         const args = afterHasItemEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key, result: true });
+        expect(args).toEqual({ adapter, key: "key_built-key", result: true });
       });
 
       it("returned value is the one coming from afterHasItem event handler", async () => {
@@ -453,10 +490,17 @@ describe("stash-it class", () => {
     });
 
     describe("when event handlers are set for both beforeHasItem and afterHasItem hooks", () => {
-      it("should call afterHasItem event handler with arguments returned from beforeHasItem event handler", async () => {
+      it("should call afterHasItem event handler with arguments returned from beforeHasItem event handler and built key", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterHasItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             beforeHasItem: () => Promise.resolve({ key: "new-key" }),
             afterHasItem: afterHasItemEventHandler,
           },
@@ -475,7 +519,7 @@ describe("stash-it class", () => {
         expect(afterHasItemEventHandler).toHaveBeenCalled();
 
         const args = afterHasItemEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key: "new-key", result: true });
+        expect(args).toEqual({ adapter, key: "new-key_built-key", result: true });
       });
     });
   });
@@ -556,10 +600,17 @@ describe("stash-it class", () => {
     });
 
     describe("when an event handler is registered for afterRemoveItem hook", () => {
-      it("should call that event handler with the arguments passed to removeItem method and result of removing that item", async () => {
+      it("should call that event handler with the arguments passed to removeItem method, built key and result of removing that item", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterRemoveItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             afterRemoveItem: afterRemoveItemEventHandler,
           },
         };
@@ -577,7 +628,7 @@ describe("stash-it class", () => {
         expect(afterRemoveItemEventHandler).toHaveBeenCalled();
 
         const args = afterRemoveItemEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key, result: true });
+        expect(args).toEqual({ adapter, key: "key_built-key", result: true });
       });
 
       it("returned value is the one coming from afterRemoveItem event handler", async () => {
@@ -603,10 +654,17 @@ describe("stash-it class", () => {
     });
 
     describe("when event handlers are set for both beforeRemoveItem and afterRemoveItem hooks", () => {
-      it("should call afterRemoveItem event handler with arguments returned from beforeRemoveItem event handler", async () => {
+      it("should call afterRemoveItem event handler with arguments returned from beforeRemoveItem event handler and built key", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterRemoveItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             beforeRemoveItem: () => Promise.resolve({ key: "new-key" }),
             afterRemoveItem: afterRemoveItemEventHandler,
           },
@@ -625,7 +683,7 @@ describe("stash-it class", () => {
         expect(afterRemoveItemEventHandler).toHaveBeenCalled();
 
         const args = afterRemoveItemEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key: "new-key", result: true });
+        expect(args).toEqual({ adapter, key: "new-key_built-key", result: true });
       });
     });
   });
@@ -695,10 +753,17 @@ describe("stash-it class", () => {
     });
 
     describe("when an event handler is registered for afterSetExtra hook", () => {
-      it("should call that event handler with the arguments passed to the setExtra method and extra set", async () => {
+      it("should call that event handler with the arguments passed to the setExtra method, built key and extra set", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterSetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             afterSetExtra: afterSetExtraEventHandler,
           },
         };
@@ -717,7 +782,7 @@ describe("stash-it class", () => {
         expect(afterSetExtraEventHandler).toHaveBeenCalled();
 
         const args = afterSetExtraEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key, extra });
+        expect(args).toEqual({ adapter, key: "key_built-key", extra });
       });
 
       it("returned value is the one coming from afterSetExtra event handler", async () => {
@@ -743,10 +808,17 @@ describe("stash-it class", () => {
     });
 
     describe("when event handlers are set for both beforeSetExtra and afterSetExtra hooks", () => {
-      it("should call afterSetExtra event handler with arguments returned from beforeSetExtra event handler", async () => {
+      it("should call afterSetExtra event handler with arguments returned from beforeSetExtra event handler and built key", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterSetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             beforeSetExtra: () => Promise.resolve({ key: "new-key", extra: { new: "extra" } }),
             afterSetExtra: afterSetExtraEventHandler,
           },
@@ -765,7 +837,7 @@ describe("stash-it class", () => {
         expect(afterSetExtraEventHandler).toHaveBeenCalled();
 
         const args = afterSetExtraEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key: "new-key", extra });
+        expect(args).toEqual({ adapter, key: "new-key_built-key", extra });
       });
     });
   });
@@ -835,10 +907,17 @@ describe("stash-it class", () => {
     });
 
     describe("when an event handler is registered for afterGetExtra hook", () => {
-      it("should call that event handler with the arguments passed to the getExtra method and extra retrieved", async () => {
+      it("should call that event handler with the arguments passed to the getExtra method, built key and extra retrieved", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterGetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             afterGetExtra: afterGetExtraEventHandler,
           },
         };
@@ -855,7 +934,7 @@ describe("stash-it class", () => {
         expect(afterGetExtraEventHandler).toHaveBeenCalled();
 
         const args = afterGetExtraEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key, extra });
+        expect(args).toEqual({ adapter, key: "key_built-key", extra });
       });
 
       it("returned value is the one coming from afterGetExtra event handler", async () => {
@@ -881,10 +960,17 @@ describe("stash-it class", () => {
     });
 
     describe("when event handlers are set for both beforeGetExtra and afterGetExtra hooks", () => {
-      it("should call afterGetExtra event handler with arguments returned from beforeGetExtra event handler", async () => {
+      it("should call afterGetExtra event handler with arguments returned from beforeGetExtra event handler and built key", async () => {
+        // In order to verify that the result of building the key is passed to "after..." hook, I need to
+        // make sure a value from building the key is used, and not the value of "key" argument passed.
+        const buildKeyHookHandler = vi
+          .fn()
+          .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
+
         const afterGetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
+            buildKey: buildKeyHookHandler,
             beforeGetExtra: () => Promise.resolve({ key: "new-key", extra: { new: "extra" } }),
             afterGetExtra: afterGetExtraEventHandler,
           },
@@ -903,7 +989,7 @@ describe("stash-it class", () => {
         expect(afterGetExtraEventHandler).toHaveBeenCalled();
 
         const args = afterGetExtraEventHandler.mock.calls[0]?.[0];
-        expect(args).toEqual({ adapter, key: "new-key", extra });
+        expect(args).toEqual({ adapter, key: "new-key_built-key", extra });
       });
     });
   });
