@@ -56,11 +56,19 @@ export const createPrefixSuffixPlugin = (options: PluginOptions): StashItPlugin 
     hookHandlers: {
       buildKey: async ({ key }) => ({ key: `${prefix}${key}${suffix}` }),
       afterSetItem: async (args) => {
-        return { ...args, item: { ...args.item, key: dropPrefix(dropSuffix(args.item.key, suffix), prefix) } };
+        return {
+          ...args,
+          key: dropPrefix(dropSuffix(args.key, suffix), prefix),
+          item: { ...args.item, key: dropPrefix(dropSuffix(args.item.key, suffix), prefix) },
+        };
       },
       afterGetItem: async (args) => {
         if (args.item) {
-          return { ...args, item: { ...args.item, key: dropPrefix(dropSuffix(args.item.key, suffix), prefix) } };
+          return {
+            ...args,
+            key: dropPrefix(dropSuffix(args.key, suffix), prefix),
+            item: { ...args.item, key: dropPrefix(dropSuffix(args.item.key, suffix), prefix) },
+          };
         }
 
         return args;
