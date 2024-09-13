@@ -37,12 +37,12 @@ describe("stash-it class", () => {
   });
 
   describe("buildKey hook", () => {
-    describe("when an event handler is registered for buildKey hook", () => {
+    describe("when a hook handler is registered for buildKey hook", () => {
       it("should be used to build the key", async () => {
-        const buildKeyEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const buildKeyHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
-            buildKey: buildKeyEventHandler,
+            buildKey: buildKeyHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -52,12 +52,12 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(buildKeyEventHandler).toHaveBeenCalled();
+        expect(buildKeyHookHandler).toHaveBeenCalled();
 
-        const args = buildKeyEventHandler.mock.calls[0]?.[0];
+        const args = buildKeyHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key });
       });
     });
@@ -74,12 +74,12 @@ describe("stash-it class", () => {
       expect(itemSet).toEqual(item);
     });
 
-    describe("when an event handler is registered for beforeSetItem hook", () => {
-      it("should call that event handler with arguments passed to the setItem method", async () => {
-        const beforeSetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+    describe("when a hook handler is registered for beforeSetItem hook", () => {
+      it("should call that hook handler with arguments passed to the setItem method", async () => {
+        const beforeSetItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
-            beforeSetItem: beforeSetItemEventHandler,
+            beforeSetItem: beforeSetItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -89,16 +89,16 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(beforeSetItemEventHandler).toHaveBeenCalled();
+        expect(beforeSetItemHookHandler).toHaveBeenCalled();
 
-        const args = beforeSetItemEventHandler.mock.calls[0]?.[0];
+        const args = beforeSetItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key, value, extra });
       });
 
-      it("adapter's setItem method is called with arguments returned from beforeSetItem event handler", async () => {
+      it("adapter's setItem method is called with arguments returned from beforeSetItem hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             beforeSetItem: () => Promise.resolve({ key: "new-key", value: "new-value", extra: { new: "extra" } }),
@@ -115,7 +115,7 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for afterSetItem hook", () => {
+    describe("when a hook handler is registered for afterSetItem hook", () => {
       it("should call that handler with the arguments passed to the setItem method, built key and item set by the adapter", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
@@ -123,11 +123,11 @@ describe("stash-it class", () => {
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterSetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterSetItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
-            afterSetItem: afterSetItemEventHandler,
+            afterSetItem: afterSetItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -137,17 +137,17 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterSetItemEventHandler).toHaveBeenCalled();
+        expect(afterSetItemHookHandler).toHaveBeenCalled();
 
-        const args = afterSetItemEventHandler.mock.calls[0]?.[0];
+        const args = afterSetItemHookHandler.mock.calls[0]?.[0];
 
         expect(args).toEqual({ adapter, key: "key_built-key", value, extra, item });
       });
 
-      it("returned value is the one coming from afterSetItem event handler", async () => {
+      it("returned value is the one coming from afterSetItem hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             afterSetItem: () =>
@@ -171,21 +171,21 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when event handlers are set for both beforeSetItem and afterSetItem hooks", () => {
-      it("should call afterSetItem event handler with arguments returned from beforeSetItem event handler and built key", async () => {
+    describe("when hook handlers are set for both beforeSetItem and afterSetItem hooks", () => {
+      it("should call afterSetItem hook handler with arguments returned from beforeSetItem hook handler and built key", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterSetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterSetItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
             beforeSetItem: () =>
               Promise.resolve({ adapter, key: "new-key", value: "new-value", extra: { new: "extra" } }),
-            afterSetItem: afterSetItemEventHandler,
+            afterSetItem: afterSetItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -196,12 +196,12 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterSetItemEventHandler).toHaveBeenCalled();
+        expect(afterSetItemHookHandler).toHaveBeenCalled();
 
-        const args = afterSetItemEventHandler.mock.calls[0]?.[0];
+        const args = afterSetItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "new-key_built-key", value: "new-value", extra: { new: "extra" }, item });
       });
     });
@@ -230,12 +230,12 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for beforeGetItem hook", () => {
-      it("should call that event handler with arguments passed to the getItem method", async () => {
-        const beforeGetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+    describe("when a hook handler is registered for beforeGetItem hook", () => {
+      it("should call that hook handler with arguments passed to the getItem method", async () => {
+        const beforeGetItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
-            beforeGetItem: beforeGetItemEventHandler,
+            beforeGetItem: beforeGetItemHookHandler,
             // beforeGetItem: spy,
           },
         };
@@ -246,16 +246,16 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(beforeGetItemEventHandler).toHaveBeenCalled();
+        expect(beforeGetItemHookHandler).toHaveBeenCalled();
 
-        const args = beforeGetItemEventHandler.mock.calls[0]?.[0];
+        const args = beforeGetItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key });
       });
 
-      it("adapter's getItem method is called with arguments returned from beforeGetItem event handler", async () => {
+      it("adapter's getItem method is called with arguments returned from beforeGetItem hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetItem: () => Promise.resolve({ key: "new-key" }),
@@ -272,19 +272,19 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for afterGetItem hook", () => {
-      it("should call that event handler with the arguments passed to the getItem method, built key and retrieved item", async () => {
+    describe("when a hook handler is registered for afterGetItem hook", () => {
+      it("should call that hook handler with the arguments passed to the getItem method, built key and retrieved item", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterGetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterGetItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
-            afterGetItem: afterGetItemEventHandler,
+            afterGetItem: afterGetItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -294,16 +294,16 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterGetItemEventHandler).toHaveBeenCalled();
+        expect(afterGetItemHookHandler).toHaveBeenCalled();
 
-        const args = afterGetItemEventHandler.mock.calls[0]?.[0];
+        const args = afterGetItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "key_built-key", item: { key, value, extra } });
       });
 
-      it("returned value is the one coming from afterGetItem event handler", async () => {
+      it("returned value is the one coming from afterGetItem hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             afterGetItem: () =>
@@ -325,20 +325,20 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when event handlers are set for both beforeGetItem and afterGetItem hooks", () => {
-      it("should call afterGetItem event handler with arguments returned from beforeGetItem event handler and built key", async () => {
+    describe("when hook handlers are set for both beforeGetItem and afterGetItem hooks", () => {
+      it("should call afterGetItem hook handler with arguments returned from beforeGetItem hook handler and built key", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterGetItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterGetItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
             beforeGetItem: () => Promise.resolve({ key: "new-key" }),
-            afterGetItem: afterGetItemEventHandler,
+            afterGetItem: afterGetItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -349,12 +349,12 @@ describe("stash-it class", () => {
 
         await stashIt.getItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterGetItemEventHandler).toHaveBeenCalled();
+        expect(afterGetItemHookHandler).toHaveBeenCalled();
 
-        const args = afterGetItemEventHandler.mock.calls[0]?.[0];
+        const args = afterGetItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "new-key_built-key", item });
       });
     });
@@ -394,12 +394,12 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for beforeHasItem hook", () => {
-      it("should call that event handler with arguments passed to the hasItem method", async () => {
-        const beforeHasItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+    describe("when a hook handler is registered for beforeHasItem hook", () => {
+      it("should call that hook handler with arguments passed to the hasItem method", async () => {
+        const beforeHasItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
-            beforeHasItem: beforeHasItemEventHandler,
+            beforeHasItem: beforeHasItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -409,16 +409,16 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(beforeHasItemEventHandler).toHaveBeenCalled();
+        expect(beforeHasItemHookHandler).toHaveBeenCalled();
 
-        const args = beforeHasItemEventHandler.mock.calls[0]?.[0];
+        const args = beforeHasItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key });
       });
 
-      it("adapter's hasItem method is called with arguments returned from beforeHasItem event handler", async () => {
+      it("adapter's hasItem method is called with arguments returned from beforeHasItem hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             beforeHasItem: () => Promise.resolve({ key: "new-key" }),
@@ -435,19 +435,19 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for afterHasItem hook", () => {
-      it("should call that event handler with the arguments passed to the hasItem method, built key and result of finding that item", async () => {
+    describe("when a hook handler is registered for afterHasItem hook", () => {
+      it("should call that hook handler with the arguments passed to the hasItem method, built key and result of finding that item", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterHasItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterHasItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
-            afterHasItem: afterHasItemEventHandler,
+            afterHasItem: afterHasItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -458,16 +458,16 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterHasItemEventHandler).toHaveBeenCalled();
+        expect(afterHasItemHookHandler).toHaveBeenCalled();
 
-        const args = afterHasItemEventHandler.mock.calls[0]?.[0];
+        const args = afterHasItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "key_built-key", result: true });
       });
 
-      it("returned value is the one coming from afterHasItem event handler", async () => {
+      it("returned value is the one coming from afterHasItem hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             afterHasItem: () =>
@@ -489,20 +489,20 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when event handlers are set for both beforeHasItem and afterHasItem hooks", () => {
-      it("should call afterHasItem event handler with arguments returned from beforeHasItem event handler and built key", async () => {
+    describe("when hook handlers are set for both beforeHasItem and afterHasItem hooks", () => {
+      it("should call afterHasItem hook handler with arguments returned from beforeHasItem hook handler and built key", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterHasItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterHasItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
             beforeHasItem: () => Promise.resolve({ key: "new-key" }),
-            afterHasItem: afterHasItemEventHandler,
+            afterHasItem: afterHasItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -513,12 +513,12 @@ describe("stash-it class", () => {
 
         await stashIt.hasItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterHasItemEventHandler).toHaveBeenCalled();
+        expect(afterHasItemHookHandler).toHaveBeenCalled();
 
-        const args = afterHasItemEventHandler.mock.calls[0]?.[0];
+        const args = afterHasItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "new-key_built-key", result: true });
       });
     });
@@ -558,12 +558,12 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for beforeRemoveItem hook", () => {
-      it("should call that event handler with arguments passed to the removeItem method", async () => {
-        const beforeRemoveItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+    describe("when a hook handler is registered for beforeRemoveItem hook", () => {
+      it("should call that hook handler with arguments passed to the removeItem method", async () => {
+        const beforeRemoveItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
-            beforeRemoveItem: beforeRemoveItemEventHandler,
+            beforeRemoveItem: beforeRemoveItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -573,16 +573,16 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(beforeRemoveItemEventHandler).toHaveBeenCalled();
+        expect(beforeRemoveItemHookHandler).toHaveBeenCalled();
 
-        const args = beforeRemoveItemEventHandler.mock.calls[0]?.[0];
+        const args = beforeRemoveItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key });
       });
 
-      it("adapter's removeItem method is called with arguments returned from beforeRemoveItem event handler", async () => {
+      it("adapter's removeItem method is called with arguments returned from beforeRemoveItem hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             beforeRemoveItem: () => Promise.resolve({ key: "new-key" }),
@@ -599,19 +599,19 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for afterRemoveItem hook", () => {
-      it("should call that event handler with the arguments passed to removeItem method, built key and result of removing that item", async () => {
+    describe("when a hook handler is registered for afterRemoveItem hook", () => {
+      it("should call that hook handler with the arguments passed to removeItem method, built key and result of removing that item", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterRemoveItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterRemoveItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
-            afterRemoveItem: afterRemoveItemEventHandler,
+            afterRemoveItem: afterRemoveItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -622,16 +622,16 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterRemoveItemEventHandler).toHaveBeenCalled();
+        expect(afterRemoveItemHookHandler).toHaveBeenCalled();
 
-        const args = afterRemoveItemEventHandler.mock.calls[0]?.[0];
+        const args = afterRemoveItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "key_built-key", result: true });
       });
 
-      it("returned value is the one coming from afterRemoveItem event handler", async () => {
+      it("returned value is the one coming from afterRemoveItem hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             afterRemoveItem: () =>
@@ -653,20 +653,20 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when event handlers are set for both beforeRemoveItem and afterRemoveItem hooks", () => {
-      it("should call afterRemoveItem event handler with arguments returned from beforeRemoveItem event handler and built key", async () => {
+    describe("when hook handlers are set for both beforeRemoveItem and afterRemoveItem hooks", () => {
+      it("should call afterRemoveItem hook handler with arguments returned from beforeRemoveItem hook handler and built key", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterRemoveItemEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterRemoveItemHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
             beforeRemoveItem: () => Promise.resolve({ key: "new-key" }),
-            afterRemoveItem: afterRemoveItemEventHandler,
+            afterRemoveItem: afterRemoveItemHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -677,12 +677,12 @@ describe("stash-it class", () => {
 
         await stashIt.removeItem(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterRemoveItemEventHandler).toHaveBeenCalled();
+        expect(afterRemoveItemHookHandler).toHaveBeenCalled();
 
-        const args = afterRemoveItemEventHandler.mock.calls[0]?.[0];
+        const args = afterRemoveItemHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "new-key_built-key", result: true });
       });
     });
@@ -711,12 +711,12 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for beforeSetExtra hook", () => {
-      it("should call that event handler with arguments passed to the setExtra method", async () => {
-        const beforeSetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+    describe("when a hook handler is registered for beforeSetExtra hook", () => {
+      it("should call that hook handler with arguments passed to the setExtra method", async () => {
+        const beforeSetExtraHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
-            beforeSetExtra: beforeSetExtraEventHandler,
+            beforeSetExtra: beforeSetExtraHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -726,16 +726,16 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(beforeSetExtraEventHandler).toHaveBeenCalled();
+        expect(beforeSetExtraHookHandler).toHaveBeenCalled();
 
-        const args = beforeSetExtraEventHandler.mock.calls[0]?.[0];
+        const args = beforeSetExtraHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key, extra });
       });
 
-      it("adapter's setExtra method is called with arguments returned from beforeSetExtra event handler", async () => {
+      it("adapter's setExtra method is called with arguments returned from beforeSetExtra hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             beforeSetExtra: () => Promise.resolve({ key: "new-key", extra: { new: "extra" } }),
@@ -752,19 +752,19 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for afterSetExtra hook", () => {
-      it("should call that event handler with the arguments passed to the setExtra method, built key and extra set", async () => {
+    describe("when a hook handler is registered for afterSetExtra hook", () => {
+      it("should call that hook handler with the arguments passed to the setExtra method, built key and extra set", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterSetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterSetExtraHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
-            afterSetExtra: afterSetExtraEventHandler,
+            afterSetExtra: afterSetExtraHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -776,16 +776,16 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterSetExtraEventHandler).toHaveBeenCalled();
+        expect(afterSetExtraHookHandler).toHaveBeenCalled();
 
-        const args = afterSetExtraEventHandler.mock.calls[0]?.[0];
+        const args = afterSetExtraHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "key_built-key", extra });
       });
 
-      it("returned value is the one coming from afterSetExtra event handler", async () => {
+      it("returned value is the one coming from afterSetExtra hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             afterSetExtra: () =>
@@ -807,20 +807,20 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when event handlers are set for both beforeSetExtra and afterSetExtra hooks", () => {
-      it("should call afterSetExtra event handler with arguments returned from beforeSetExtra event handler and built key", async () => {
+    describe("when hook handlers are set for both beforeSetExtra and afterSetExtra hooks", () => {
+      it("should call afterSetExtra hook handler with arguments returned from beforeSetExtra hook handler and built key", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterSetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterSetExtraHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
             beforeSetExtra: () => Promise.resolve({ key: "new-key", extra: { new: "extra" } }),
-            afterSetExtra: afterSetExtraEventHandler,
+            afterSetExtra: afterSetExtraHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -831,12 +831,12 @@ describe("stash-it class", () => {
 
         await stashIt.setExtra(key, extra);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterSetExtraEventHandler).toHaveBeenCalled();
+        expect(afterSetExtraHookHandler).toHaveBeenCalled();
 
-        const args = afterSetExtraEventHandler.mock.calls[0]?.[0];
+        const args = afterSetExtraHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "new-key_built-key", extra });
       });
     });
@@ -865,12 +865,12 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for beforeGetExtra hook", () => {
-      it("should call that event handler with arguments passed to the getExtra method", async () => {
-        const beforeGetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+    describe("when a hook handler is registered for beforeGetExtra hook", () => {
+      it("should call that hook handler with arguments passed to the getExtra method", async () => {
+        const beforeGetExtraHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
-            beforeGetExtra: beforeGetExtraEventHandler,
+            beforeGetExtra: beforeGetExtraHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -880,16 +880,16 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(beforeGetExtraEventHandler).toHaveBeenCalled();
+        expect(beforeGetExtraHookHandler).toHaveBeenCalled();
 
-        const args = beforeGetExtraEventHandler.mock.calls[0]?.[0];
+        const args = beforeGetExtraHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key });
       });
 
-      it("adapter's getExtra method is called with arguments returned from beforeGetExtra event handler", async () => {
+      it("adapter's getExtra method is called with arguments returned from beforeGetExtra hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             beforeGetExtra: () => Promise.resolve({ key: "new-key" }),
@@ -906,19 +906,19 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when an event handler is registered for afterGetExtra hook", () => {
-      it("should call that event handler with the arguments passed to the getExtra method, built key and extra retrieved", async () => {
+    describe("when a hook handler is registered for afterGetExtra hook", () => {
+      it("should call that hook handler with the arguments passed to the getExtra method, built key and extra retrieved", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterGetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterGetExtraHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
-            afterGetExtra: afterGetExtraEventHandler,
+            afterGetExtra: afterGetExtraHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -928,16 +928,16 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterGetExtraEventHandler).toHaveBeenCalled();
+        expect(afterGetExtraHookHandler).toHaveBeenCalled();
 
-        const args = afterGetExtraEventHandler.mock.calls[0]?.[0];
+        const args = afterGetExtraHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "key_built-key", extra });
       });
 
-      it("returned value is the one coming from afterGetExtra event handler", async () => {
+      it("returned value is the one coming from afterGetExtra hook handler", async () => {
         const plugin: StashItPlugin = {
           hookHandlers: {
             afterGetExtra: () =>
@@ -959,20 +959,20 @@ describe("stash-it class", () => {
       });
     });
 
-    describe("when event handlers are set for both beforeGetExtra and afterGetExtra hooks", () => {
-      it("should call afterGetExtra event handler with arguments returned from beforeGetExtra event handler and built key", async () => {
+    describe("when hook handlers are set for both beforeGetExtra and afterGetExtra hooks", () => {
+      it("should call afterGetExtra hook handler with arguments returned from beforeGetExtra hook handler and built key", async () => {
         // In order to verify that the result of building the key is passed to "after..." hook, I need to
         // make sure a value from building the key is used, and not the value of "key" argument passed.
         const buildKeyHookHandler = vi
           .fn()
           .mockImplementationOnce((args) => Promise.resolve({ ...args, key: `${args.key}_built-key` }));
 
-        const afterGetExtraEventHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
+        const afterGetExtraHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
           hookHandlers: {
             buildKey: buildKeyHookHandler,
             beforeGetExtra: () => Promise.resolve({ key: "new-key", extra: { new: "extra" } }),
-            afterGetExtra: afterGetExtraEventHandler,
+            afterGetExtra: afterGetExtraHookHandler,
           },
         };
         const adapter = createDummyAdapter();
@@ -983,12 +983,12 @@ describe("stash-it class", () => {
 
         await stashIt.getExtra(key);
 
-        // I need to check the arguments passed to the event handler instead of doing toHaveBeenCalledWith,
+        // I need to check the arguments passed to the hook handler instead of doing toHaveBeenCalledWith,
         // as vitest internals want to do something with adapter, and it being frozen, throws an error.
         // That way, it doesn't.
-        expect(afterGetExtraEventHandler).toHaveBeenCalled();
+        expect(afterGetExtraHookHandler).toHaveBeenCalled();
 
-        const args = afterGetExtraEventHandler.mock.calls[0]?.[0];
+        const args = afterGetExtraHookHandler.mock.calls[0]?.[0];
         expect(args).toEqual({ adapter, key: "new-key_built-key", extra });
       });
     });
@@ -998,17 +998,17 @@ describe("stash-it class", () => {
     // Each hook is tested in its own test suite.
     // Testing general use for the method.
     describe("when more than one plugin is registered for a given hook", () => {
-      it("should call all event handlers for that hook in the order they were registered", async () => {
-        const eventHandler1 = vi.fn();
-        const eventHandler2 = vi.fn();
+      it("should call all hook handlers for that hook in the order they were registered", async () => {
+        const HookHandler1 = vi.fn();
+        const HookHandler2 = vi.fn();
         const plugin1: StashItPlugin = {
           hookHandlers: {
-            beforeSetItem: eventHandler1,
+            beforeSetItem: HookHandler1,
           },
         };
         const plugin2: StashItPlugin = {
           hookHandlers: {
-            beforeSetItem: eventHandler2,
+            beforeSetItem: HookHandler2,
           },
         };
 
@@ -1019,7 +1019,7 @@ describe("stash-it class", () => {
 
         await stashIt.setItem(key, value, extra);
 
-        expect(eventHandler1).toHaveBeenCalledBefore(eventHandler2);
+        expect(HookHandler1).toHaveBeenCalledBefore(HookHandler2);
       });
     });
   });
