@@ -37,7 +37,7 @@ export class StashIt implements StashItInterface {
   }
 
   async #buildKey(key: Key): Promise<Key> {
-    const result = await this.#call("buildKey", { adapter: this.#adapter, key });
+    const result = await this.#call("buildKey", { key });
 
     return result.key;
   }
@@ -49,15 +49,10 @@ export class StashIt implements StashItInterface {
 
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeSetItem", { adapter: this.#adapter, key, value, extra });
+    const beforeData = await this.#call("beforeSetItem", { key, value, extra });
     const builtKey = await this.#buildKey(beforeData.key);
     const setItem = await this.#adapter.setItem(builtKey, beforeData.value, beforeData.extra);
-    const afterData = await this.#call("afterSetItem", {
-      ...beforeData,
-      key: builtKey,
-      adapter: this.#adapter,
-      item: setItem,
-    });
+    const afterData = await this.#call("afterSetItem", { ...beforeData, key: builtKey, item: setItem });
 
     await this.#adapter.disconnect();
 
@@ -67,10 +62,10 @@ export class StashIt implements StashItInterface {
   async getItem(key: Key): Promise<GetItemResult> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeGetItem", { adapter: this.#adapter, key });
+    const beforeData = await this.#call("beforeGetItem", { key });
     const builtKey = await this.#buildKey(beforeData.key);
     const item = await this.#adapter.getItem(builtKey);
-    const afterData = await this.#call("afterGetItem", { ...beforeData, key: builtKey, adapter: this.#adapter, item });
+    const afterData = await this.#call("afterGetItem", { ...beforeData, key: builtKey, item });
 
     await this.#adapter.disconnect();
 
@@ -80,15 +75,10 @@ export class StashIt implements StashItInterface {
   async hasItem(key: Key): Promise<boolean> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeHasItem", { adapter: this.#adapter, key });
+    const beforeData = await this.#call("beforeHasItem", { key });
     const builtKey = await this.#buildKey(beforeData.key);
     const result = await this.#adapter.hasItem(builtKey);
-    const afterData = await this.#call("afterHasItem", {
-      ...beforeData,
-      key: builtKey,
-      adapter: this.#adapter,
-      result,
-    });
+    const afterData = await this.#call("afterHasItem", { ...beforeData, key: builtKey, result });
 
     await this.#adapter.disconnect();
 
@@ -98,15 +88,10 @@ export class StashIt implements StashItInterface {
   async removeItem(key: Key): Promise<boolean> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeRemoveItem", { adapter: this.#adapter, key });
+    const beforeData = await this.#call("beforeRemoveItem", { key });
     const builtKey = await this.#buildKey(beforeData.key);
     const result = await this.#adapter.removeItem(builtKey);
-    const afterData = await this.#call("afterRemoveItem", {
-      ...beforeData,
-      key: builtKey,
-      adapter: this.#adapter,
-      result,
-    });
+    const afterData = await this.#call("afterRemoveItem", { ...beforeData, key: builtKey, result });
 
     await this.#adapter.disconnect();
 
@@ -116,15 +101,10 @@ export class StashIt implements StashItInterface {
   async setExtra(key: Key, extra: Extra): Promise<SetExtraResult> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeSetExtra", { adapter: this.#adapter, key, extra });
+    const beforeData = await this.#call("beforeSetExtra", { key, extra });
     const builtKey = await this.#buildKey(beforeData.key);
     const extraSet = await this.#adapter.setExtra(builtKey, beforeData.extra);
-    const afterData = await this.#call("afterSetExtra", {
-      ...beforeData,
-      key: builtKey,
-      adapter: this.#adapter,
-      extra: extraSet,
-    });
+    const afterData = await this.#call("afterSetExtra", { ...beforeData, key: builtKey, extra: extraSet });
 
     await this.#adapter.disconnect();
 
@@ -134,15 +114,10 @@ export class StashIt implements StashItInterface {
   async getExtra(key: Key): Promise<GetExtraResult> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeGetExtra", { adapter: this.#adapter, key });
+    const beforeData = await this.#call("beforeGetExtra", { key });
     const builtKey = await this.#buildKey(beforeData.key);
     const extra = await this.#adapter.getExtra(builtKey);
-    const afterData = await this.#call("afterGetExtra", {
-      ...beforeData,
-      key: builtKey,
-      adapter: this.#adapter,
-      extra,
-    });
+    const afterData = await this.#call("afterGetExtra", { ...beforeData, key: builtKey, extra });
 
     await this.#adapter.disconnect();
 
@@ -168,8 +143,8 @@ export class StashIt implements StashItInterface {
 
   async #call<Hook extends keyof RegisteredHookHandlers>(
     hook: Hook,
-    args: HookHandlerArgs[Hook],
-  ): Promise<HookHandlerArgs[Hook]> {
+    args: Omit<HookHandlerArgs[Hook], "adapter">,
+  ): Promise<Omit<HookHandlerArgs[Hook], "adapter">> {
     const hookHandlers = this.#registeredHookHandlers[hook];
     let newArgs = args;
 
@@ -177,7 +152,7 @@ export class StashIt implements StashItInterface {
       for (const handler of hookHandlers) {
         // I know this is right (covered by tests), but I don't know how to TS guard it :/
         // @ts-ignore
-        const result = await handler(newArgs);
+        const result = await handler({ ...newArgs, adapter: this.#adapter });
 
         newArgs = { ...newArgs, ...result };
       }
