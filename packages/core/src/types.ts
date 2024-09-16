@@ -17,7 +17,7 @@ export type Item = {
   extra: Extra;
 };
 
-/** Event handler function. Accepts and returns the same args. */
+/** Hook handler function. Accepts and returns the same args, apart from the adapter, which is injected each time. */
 // eslint-disable-next-line no-unused-vars
 export type HookHandler<Args> = (args: Args) => Promise<Omit<Args, "adapter">>;
 
