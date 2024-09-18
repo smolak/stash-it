@@ -49,10 +49,10 @@ export class StashIt implements StashItInterface {
 
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeSetItem", { key, value, extra });
-    const builtKey = await this.#buildKey(beforeData.key);
-    const setItem = await this.#adapter.setItem(builtKey, beforeData.value, beforeData.extra);
-    const afterData = await this.#call("afterSetItem", { ...beforeData, key: builtKey, item: setItem });
+    const builtKey = await this.#buildKey(key);
+    const beforeData = await this.#call("beforeSetItem", { key: builtKey, value, extra });
+    const setItem = await this.#adapter.setItem(beforeData.key, beforeData.value, beforeData.extra);
+    const afterData = await this.#call("afterSetItem", { ...beforeData, item: setItem });
 
     await this.#adapter.disconnect();
 
@@ -62,10 +62,10 @@ export class StashIt implements StashItInterface {
   async getItem(key: Key): Promise<GetItemResult> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeGetItem", { key });
-    const builtKey = await this.#buildKey(beforeData.key);
-    const item = await this.#adapter.getItem(builtKey);
-    const afterData = await this.#call("afterGetItem", { ...beforeData, key: builtKey, item });
+    const builtKey = await this.#buildKey(key);
+    const beforeData = await this.#call("beforeGetItem", { key: builtKey });
+    const item = await this.#adapter.getItem(beforeData.key);
+    const afterData = await this.#call("afterGetItem", { ...beforeData, item });
 
     await this.#adapter.disconnect();
 
@@ -75,10 +75,10 @@ export class StashIt implements StashItInterface {
   async hasItem(key: Key): Promise<boolean> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeHasItem", { key });
-    const builtKey = await this.#buildKey(beforeData.key);
-    const result = await this.#adapter.hasItem(builtKey);
-    const afterData = await this.#call("afterHasItem", { ...beforeData, key: builtKey, result });
+    const builtKey = await this.#buildKey(key);
+    const beforeData = await this.#call("beforeHasItem", { key: builtKey });
+    const result = await this.#adapter.hasItem(beforeData.key);
+    const afterData = await this.#call("afterHasItem", { ...beforeData, result });
 
     await this.#adapter.disconnect();
 
@@ -88,10 +88,10 @@ export class StashIt implements StashItInterface {
   async removeItem(key: Key): Promise<boolean> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeRemoveItem", { key });
-    const builtKey = await this.#buildKey(beforeData.key);
-    const result = await this.#adapter.removeItem(builtKey);
-    const afterData = await this.#call("afterRemoveItem", { ...beforeData, key: builtKey, result });
+    const builtKey = await this.#buildKey(key);
+    const beforeData = await this.#call("beforeRemoveItem", { key: builtKey });
+    const result = await this.#adapter.removeItem(beforeData.key);
+    const afterData = await this.#call("afterRemoveItem", { ...beforeData, result });
 
     await this.#adapter.disconnect();
 
@@ -101,10 +101,10 @@ export class StashIt implements StashItInterface {
   async setExtra(key: Key, extra: Extra): Promise<SetExtraResult> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeSetExtra", { key, extra });
-    const builtKey = await this.#buildKey(beforeData.key);
-    const extraSet = await this.#adapter.setExtra(builtKey, beforeData.extra);
-    const afterData = await this.#call("afterSetExtra", { ...beforeData, key: builtKey, extra: extraSet });
+    const builtKey = await this.#buildKey(key);
+    const beforeData = await this.#call("beforeSetExtra", { key: builtKey, extra });
+    const extraSet = await this.#adapter.setExtra(beforeData.key, beforeData.extra);
+    const afterData = await this.#call("afterSetExtra", { ...beforeData, extra: extraSet });
 
     await this.#adapter.disconnect();
 
@@ -114,10 +114,10 @@ export class StashIt implements StashItInterface {
   async getExtra(key: Key): Promise<GetExtraResult> {
     await this.#adapter.connect();
 
-    const beforeData = await this.#call("beforeGetExtra", { key });
-    const builtKey = await this.#buildKey(beforeData.key);
-    const extra = await this.#adapter.getExtra(builtKey);
-    const afterData = await this.#call("afterGetExtra", { ...beforeData, key: builtKey, extra });
+    const builtKey = await this.#buildKey(key);
+    const beforeData = await this.#call("beforeGetExtra", { key: builtKey });
+    const extra = await this.#adapter.getExtra(beforeData.key);
+    const afterData = await this.#call("afterGetExtra", { ...beforeData, extra });
 
     await this.#adapter.disconnect();
 
