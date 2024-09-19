@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/logger-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -36,6 +36,6 @@
   "devDependencies": {
     "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.3",
     "@stash-it/memory-adapter": "npm:@jsr/stash-it__memory-adapter@0.1.0",
-    "@stash-it/stash-it": "npm:@jsr/stash-it__stash-it@0.1.1"
+    "@stash-it/stash-it": "npm:@jsr/stash-it__stash-it@0.2.0"
   }
 }
