@@ -36,8 +36,8 @@ describe("stash-it class", () => {
     });
   });
 
-  describe("buildKey method", () => {
-    describe("when a hook handler is registered for buildKey hook", () => {
+  describe("buildKey hook", () => {
+    describe("when a handler is registered for buildKey hook", () => {
       it("should be used to build the key", async () => {
         const buildKeyHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
         const plugin: StashItPlugin = {
