@@ -85,6 +85,30 @@ describe("stash-it class", () => {
       expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setItem);
     });
 
+    describe("error handling", () => {
+      describe("when one of the hook handlers throws", () => {
+        it("adapter disconnects, and error is rethrown", () => {
+          const plugin: StashItPlugin = {
+            hookHandlers: {
+              afterSetItem: () => {
+                throw new Error("Something went wrong...");
+              },
+            },
+          };
+
+          const adapter = createDummyAdapter();
+          const stashIt = new StashIt(adapter);
+          stashIt.registerPlugins([plugin]);
+
+          stashIt.setItem("any_key", "any_value").catch((error) => {
+            expect(error.message).toEqual("Something went wrong...");
+            expect(adapter.disconnect).toHaveBeenCalled();
+            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setItem);
+          });
+        });
+      });
+    });
+
     it("flow of data through hooks", async () => {
       const buildKeyHookHandler = vi.fn().mockResolvedValueOnce({ key: "buildKey-key" });
       const beforeSetItemHookHandler = vi.fn().mockResolvedValueOnce({
@@ -184,6 +208,30 @@ describe("stash-it class", () => {
       expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getItem);
     });
 
+    describe("error handling", () => {
+      describe("when one of the hook handlers throws", () => {
+        it("adapter disconnects, and error is rethrown", () => {
+          const plugin: StashItPlugin = {
+            hookHandlers: {
+              afterGetItem: () => {
+                throw new Error("Something went wrong...");
+              },
+            },
+          };
+
+          const adapter = createDummyAdapter();
+          const stashIt = new StashIt(adapter);
+          stashIt.registerPlugins([plugin]);
+
+          stashIt.getItem("any_key").catch((error) => {
+            expect(error.message).toEqual("Something went wrong...");
+            expect(adapter.disconnect).toHaveBeenCalled();
+            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getItem);
+          });
+        });
+      });
+    });
+
     it("flow of data through hooks", async () => {
       const buildKeyHookHandler = vi.fn().mockResolvedValueOnce({ key: "buildKey-key" });
       const beforeGetItemHookHandler = vi.fn().mockResolvedValueOnce({ key: "beforeGetItem-key" });
@@ -270,6 +318,30 @@ describe("stash-it class", () => {
         const result = await stashIt.hasItem(key);
 
         expect(result).toBe(false);
+      });
+    });
+
+    describe("error handling", () => {
+      describe("when one of the hook handlers throws", () => {
+        it("adapter disconnects, and error is rethrown", () => {
+          const plugin: StashItPlugin = {
+            hookHandlers: {
+              afterHasItem: () => {
+                throw new Error("Something went wrong...");
+              },
+            },
+          };
+
+          const adapter = createDummyAdapter();
+          const stashIt = new StashIt(adapter);
+          stashIt.registerPlugins([plugin]);
+
+          stashIt.hasItem("any_key").catch((error) => {
+            expect(error.message).toEqual("Something went wrong...");
+            expect(adapter.disconnect).toHaveBeenCalled();
+            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.hasItem);
+          });
+        });
       });
     });
 
@@ -376,6 +448,30 @@ describe("stash-it class", () => {
       expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.removeItem);
     });
 
+    describe("error handling", () => {
+      describe("when one of the hook handlers throws", () => {
+        it("adapter disconnects, and error is rethrown", () => {
+          const plugin: StashItPlugin = {
+            hookHandlers: {
+              afterRemoveItem: () => {
+                throw new Error("Something went wrong...");
+              },
+            },
+          };
+
+          const adapter = createDummyAdapter();
+          const stashIt = new StashIt(adapter);
+          stashIt.registerPlugins([plugin]);
+
+          stashIt.removeItem("any_key").catch((error) => {
+            expect(error.message).toEqual("Something went wrong...");
+            expect(adapter.disconnect).toHaveBeenCalled();
+            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.removeItem);
+          });
+        });
+      });
+    });
+
     it("flow of data through hooks", async () => {
       const buildKeyHookHandler = vi.fn().mockResolvedValueOnce({ key: "buildKey-key" });
       const beforeRemoveItemHookHandler = vi.fn().mockResolvedValueOnce({ key: "beforeRemoveItem-key" });
@@ -455,6 +551,30 @@ describe("stash-it class", () => {
       expect(adapter.connect).toHaveBeenCalledBefore(adapter.setExtra);
       expect(adapter.setExtra).toHaveBeenCalledBefore(adapter.disconnect);
       expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setExtra);
+    });
+
+    describe("error handling", () => {
+      describe("when one of the hook handlers throws", () => {
+        it("adapter disconnects, and error is rethrown", () => {
+          const plugin: StashItPlugin = {
+            hookHandlers: {
+              afterSetExtra: () => {
+                throw new Error("Something went wrong...");
+              },
+            },
+          };
+
+          const adapter = createDummyAdapter();
+          const stashIt = new StashIt(adapter);
+          stashIt.registerPlugins([plugin]);
+
+          stashIt.setExtra("any_key", { some: "extra" }).catch((error) => {
+            expect(error.message).toEqual("Something went wrong...");
+            expect(adapter.disconnect).toHaveBeenCalled();
+            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setExtra);
+          });
+        });
+      });
     });
 
     it("flow of data through hooks", async () => {
@@ -538,6 +658,30 @@ describe("stash-it class", () => {
       expect(adapter.connect).toHaveBeenCalledBefore(adapter.getExtra);
       expect(adapter.getExtra).toHaveBeenCalledBefore(adapter.disconnect);
       expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getExtra);
+    });
+
+    describe("error handling", () => {
+      describe("when one of the hook handlers throws", () => {
+        it("adapter disconnects, and error is rethrown", () => {
+          const plugin: StashItPlugin = {
+            hookHandlers: {
+              afterGetExtra: () => {
+                throw new Error("Something went wrong...");
+              },
+            },
+          };
+
+          const adapter = createDummyAdapter();
+          const stashIt = new StashIt(adapter);
+          stashIt.registerPlugins([plugin]);
+
+          stashIt.getExtra("any_key").catch((error) => {
+            expect(error.message).toEqual("Something went wrong...");
+            expect(adapter.disconnect).toHaveBeenCalled();
+            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getExtra);
+          });
+        });
+      });
     });
 
     it("flow of data through hooks", async () => {
