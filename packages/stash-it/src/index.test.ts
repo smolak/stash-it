@@ -36,7 +36,7 @@ describe("stash-it class", () => {
     });
   });
 
-  describe("buildKey hook", () => {
+  describe("buildKey method", () => {
     describe("when a hook handler is registered for buildKey hook", () => {
       it("should be used to build the key", async () => {
         const buildKeyHookHandler = vi.fn().mockImplementationOnce((args) => Promise.resolve(args));
@@ -72,6 +72,17 @@ describe("stash-it class", () => {
 
       expect(adapter.setItem).toHaveBeenCalledWith(key, value, extra);
       expect(itemSet).toEqual(item);
+    });
+
+    it("should connect to the storage, perform the action on the adapter, and disconnect afterwards", async () => {
+      const adapter = createDummyAdapter();
+      const stashIt = new StashIt(adapter);
+
+      await stashIt.setItem(key, value, extra);
+
+      expect(adapter.connect).toHaveBeenCalledBefore(adapter.setItem);
+      expect(adapter.setItem).toHaveBeenCalledBefore(adapter.disconnect);
+      expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setItem);
     });
 
     it("flow of data through hooks", async () => {
@@ -160,6 +171,17 @@ describe("stash-it class", () => {
 
         expect(item).toBeUndefined();
       });
+    });
+
+    it("should connect to the storage, perform the action on the adapter, and disconnect afterwards", async () => {
+      const adapter = createDummyAdapter();
+      const stashIt = new StashIt(adapter);
+
+      await stashIt.getItem(key);
+
+      expect(adapter.connect).toHaveBeenCalledBefore(adapter.getItem);
+      expect(adapter.getItem).toHaveBeenCalledBefore(adapter.disconnect);
+      expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getItem);
     });
 
     it("flow of data through hooks", async () => {
@@ -251,6 +273,17 @@ describe("stash-it class", () => {
       });
     });
 
+    it("should connect to the storage, perform the action on the adapter, and disconnect afterwards", async () => {
+      const adapter = createDummyAdapter();
+      const stashIt = new StashIt(adapter);
+
+      await stashIt.hasItem(key);
+
+      expect(adapter.connect).toHaveBeenCalledBefore(adapter.hasItem);
+      expect(adapter.hasItem).toHaveBeenCalledBefore(adapter.disconnect);
+      expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.hasItem);
+    });
+
     it("flow of data through hooks", async () => {
       const buildKeyHookHandler = vi.fn().mockResolvedValueOnce({ key: "buildKey-key" });
       const beforeHasItemHookHandler = vi.fn().mockResolvedValueOnce({ key: "beforeHasItem-key" });
@@ -332,6 +365,17 @@ describe("stash-it class", () => {
       });
     });
 
+    it("should connect to the storage, perform the action on the adapter, and disconnect afterwards", async () => {
+      const adapter = createDummyAdapter();
+      const stashIt = new StashIt(adapter);
+
+      await stashIt.removeItem(key);
+
+      expect(adapter.connect).toHaveBeenCalledBefore(adapter.removeItem);
+      expect(adapter.removeItem).toHaveBeenCalledBefore(adapter.disconnect);
+      expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.removeItem);
+    });
+
     it("flow of data through hooks", async () => {
       const buildKeyHookHandler = vi.fn().mockResolvedValueOnce({ key: "buildKey-key" });
       const beforeRemoveItemHookHandler = vi.fn().mockResolvedValueOnce({ key: "beforeRemoveItem-key" });
@@ -400,6 +444,17 @@ describe("stash-it class", () => {
 
         expect(extraSet).toBe(false);
       });
+    });
+
+    it("should connect to the storage, perform the action on the adapter, and disconnect afterwards", async () => {
+      const adapter = createDummyAdapter();
+      const stashIt = new StashIt(adapter);
+
+      await stashIt.setExtra(key, extra);
+
+      expect(adapter.connect).toHaveBeenCalledBefore(adapter.setExtra);
+      expect(adapter.setExtra).toHaveBeenCalledBefore(adapter.disconnect);
+      expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setExtra);
     });
 
     it("flow of data through hooks", async () => {
@@ -472,6 +527,17 @@ describe("stash-it class", () => {
 
         expect(extraRetrieved).toBeUndefined();
       });
+    });
+
+    it("should connect to the storage, perform the action on the adapter, and disconnect afterwards", async () => {
+      const adapter = createDummyAdapter();
+      const stashIt = new StashIt(adapter);
+
+      await stashIt.getExtra(key);
+
+      expect(adapter.connect).toHaveBeenCalledBefore(adapter.getExtra);
+      expect(adapter.getExtra).toHaveBeenCalledBefore(adapter.disconnect);
+      expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getExtra);
     });
 
     it("flow of data through hooks", async () => {
