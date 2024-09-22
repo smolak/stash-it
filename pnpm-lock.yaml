@@ -178,6 +178,9 @@ importers:
       '@stash-it/core':
         specifier: npm:@jsr/stash-it__core@0.1.2
         version: '@jsr/stash-it__core@0.1.2'
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       vitest-mock-extended:
         specifier: ^2.0.0
