@@ -113,6 +113,25 @@ importers:
         specifier: npm:@jsr/stash-it__stash-it@0.2.0
         version: '@jsr/stash-it__stash-it@0.2.0'
 
+  packages/read-only-plugin:
+    dependencies:
+      '@stash-it/core':
+        specifier: npm:@jsr/stash-it__core@0.1.2
+        version: '@jsr/stash-it__core@0.1.2'
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@stash-it/dev-tools':
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.3
+        version: '@jsr/stash-it__dev-tools@0.0.3(@types/node@22.5.5)'
+      '@stash-it/memory-adapter':
+        specifier: npm:@jsr/stash-it__memory-adapter@0.1.0
+        version: '@jsr/stash-it__memory-adapter@0.1.0'
+      '@stash-it/stash-it':
+        specifier: npm:@jsr/stash-it__stash-it@0.2.0
+        version: '@jsr/stash-it__stash-it@0.2.0'
+
   packages/redis-adapter:
     dependencies:
       '@stash-it/core':
