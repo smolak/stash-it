@@ -32,6 +32,26 @@ export const runAdapterTests = (adapter: StashItAdapter): void => {
     });
 
     describe("setting and getting an item", () => {
+      describe("key validation", () => {
+        it("should throw when key is ivalid and not set an item", async () => {
+          const keyConsistingInvalidCharacters = "-=[!@#$%^&*()]=-";
+
+          // Addig as if the test will fail, and item is set, such item should be removed
+          keysToRemoveItemsBy.push(keyConsistingInvalidCharacters);
+
+          const value = "value";
+          const extra = {};
+
+          expect(() => adapter.setItem(keyConsistingInvalidCharacters, value, extra)).rejects.toThrow(
+            "Invalid key. Only _-azAZ09 allowed. '-=[!@#$%^&*()]=-' used.",
+          );
+
+          const itemCheck = await adapter.hasItem(keyConsistingInvalidCharacters);
+
+          expect(itemCheck).toBe(false);
+        });
+      });
+
       it("should be able to get an existing item", async () => {
         const key = nanoid();
         keysToRemoveItemsBy.push(key);

@@ -26,7 +26,7 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.1.2",
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.2.0",
     "nanoid": "^5.0.7",
     "vitest": "^2.0.5"
   }
