@@ -34,6 +34,8 @@ export class RedisAdapter extends StashItAdapter {
   }
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
+    this.validateKey(key);
+
     await this.#database.HSET(key, {
       value: JSON.stringify(value),
       extra: JSON.stringify(extra),
