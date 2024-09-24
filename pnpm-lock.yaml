@@ -151,8 +151,8 @@ importers:
   packages/sqlite-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.1.2
-        version: '@jsr/stash-it__core@0.1.2'
+        specifier: npm:@jsr/stash-it__core@0.2.0
+        version: '@jsr/stash-it__core@0.2.0'
       better-sqlite3:
         specifier: ^11.1.2
         version: 11.3.0
@@ -161,8 +161,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.3
-        version: '@jsr/stash-it__dev-tools@0.0.3(@types/node@22.5.5)'
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
+        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.5.5)'
       '@types/better-sqlite3':
         specifier: ^7.6.11
         version: 7.6.11

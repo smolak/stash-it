@@ -56,6 +56,8 @@ export class SqliteAdapter extends StashItAdapter {
   }
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
+    this.validateKey(key);
+
     const itemExists = await this.hasItem(key);
 
     if (itemExists) {
