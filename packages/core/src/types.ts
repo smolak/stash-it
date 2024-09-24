@@ -171,6 +171,12 @@ export abstract class StashItAdapter implements CommonInterface {
     // It's useful for adapters that need to close connections or clean up resources.
   }
 
+  protected validateKey(key: Key): void {
+    if (!/^[A-Za-z0-9_-]+$/.test(key)) {
+      throw new Error(`Invalid key. Only _-azAZ09 allowed. '${key}' used.`);
+    }
+  }
+
   // eslint-disable-next-line no-unused-vars
   abstract setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
   // eslint-disable-next-line no-unused-vars
