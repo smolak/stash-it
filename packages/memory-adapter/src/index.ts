@@ -6,6 +6,8 @@ export class MemoryAdapter extends StashItAdapter {
   #data = new Map<Key, Item>();
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
+    this.validateKey(key);
+
     const item = { key, value, extra };
 
     this.#data.set(key, item);

@@ -29,9 +29,9 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.1.2"
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.2.0"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.3"
+    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.4"
   }
 }
