@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { getHandler } from "@stash-it/dev-tools";
 import { StashIt } from "@stash-it/stash-it";
 import { MemoryAdapter } from "@stash-it/memory-adapter";

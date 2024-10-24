@@ -28,6 +28,6 @@
   "dependencies": {
     "@stash-it/core": "npm:@jsr/stash-it__core@0.2.0",
     "nanoid": "^5.0.7",
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.3"
   }
 }
