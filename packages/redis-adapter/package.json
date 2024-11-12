@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "lint": "eslint .",
-    "test": "vitest run",
+    "test": "docker-compose up -d && vitest run; docker-compose kill; docker compose rm -f",
     "test:watch": "vitest --watch",
     "publish": "pnpx jsr publish",
     "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
