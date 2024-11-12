@@ -116,21 +116,21 @@ importers:
   packages/read-only-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.1.2
-        version: '@jsr/stash-it__core@0.1.2'
+        specifier: npm:@jsr/stash-it__core@0.2.0
+        version: '@jsr/stash-it__core@0.2.0'
       zod:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.3
-        version: '@jsr/stash-it__dev-tools@0.0.3(@types/node@22.7.9)'
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
+        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.7.9)'
       '@stash-it/memory-adapter':
-        specifier: npm:@jsr/stash-it__memory-adapter@0.1.0
-        version: '@jsr/stash-it__memory-adapter@0.1.0'
+        specifier: npm:@jsr/stash-it__memory-adapter@0.2.0
+        version: '@jsr/stash-it__memory-adapter@0.2.0'
       '@stash-it/stash-it':
-        specifier: npm:@jsr/stash-it__stash-it@0.2.0
-        version: '@jsr/stash-it__stash-it@0.2.0'
+        specifier: npm:@jsr/stash-it__stash-it@0.2.1
+        version: '@jsr/stash-it__stash-it@0.2.1'
 
   packages/redis-adapter:
     dependencies:
@@ -503,9 +503,6 @@ packages:
 
   '@jsr/stash-it__stash-it@0.1.0':
     resolution: {integrity: sha512-PjQpcq3WnWFC4uzKN0aWib13/Wt03gyuJVh+8oQJlxTni5xBH34MHZ9xUA+O/zR4AhaKVv06nhd26QZwGW2mcw==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.1.0.tgz}
-
-  '@jsr/stash-it__stash-it@0.2.0':
-    resolution: {integrity: sha512-3PBATNZtogRG07kkchVckSXCQpFHXAxhrJtzVUYGvoPPJIAEeVwdgU33+xeX6UZWTmC/kjeNBCSLPOqFklmGzg==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.2.0.tgz}
 
   '@jsr/stash-it__stash-it@0.2.1':
     resolution: {integrity: sha512-eMYC0pM/4VU6us65X77UKbcUa/MxhfCPGhhDmoKUPFxg8UbleLB/LEGtM2oVrvVc0S1x1F39ubt6scPUcY/PPQ==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.2.1.tgz}
@@ -2891,10 +2888,6 @@ snapshots:
       '@jsr/stash-it__core': 0.2.0
 
   '@jsr/stash-it__stash-it@0.1.0':
-    dependencies:
-      '@jsr/stash-it__core': 0.1.2
-
-  '@jsr/stash-it__stash-it@0.2.0':
     dependencies:
       '@jsr/stash-it__core': 0.1.2
 
