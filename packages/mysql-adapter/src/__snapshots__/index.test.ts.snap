@@ -1,0 +1,272 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mysql-adapter > configuration > connection > database > throws an error when database is empty 1`] = `
+[ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "connection",
+      "database"
+    ]
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > connection > database > throws an error when database is not provided 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "connection",
+      "database"
+    ],
+    "message": "Required"
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > connection > host > throws an error when host is empty 1`] = `
+[ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "connection",
+      "host"
+    ]
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > connection > host > throws an error when host is not provided 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "connection",
+      "host"
+    ],
+    "message": "Required"
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > connection > password > throws an error when password is empty 1`] = `
+[ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "connection",
+      "password"
+    ]
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > connection > password > throws an error when password is not provided 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "connection",
+      "password"
+    ],
+    "message": "Required"
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > connection > port number > throws an error when port is not a number 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "number",
+    "received": "string",
+    "path": [
+      "connection",
+      "port"
+    ],
+    "message": "Expected number, received string"
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > connection > user > throws an error when user is empty 1`] = `
+[ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "connection",
+      "user"
+    ]
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > connection > user > throws an error when user is not provided 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "connection",
+      "user"
+    ],
+    "message": "Required"
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > table > extraColumnName > should throw if empty 1`] = `
+[ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "table",
+      "extraColumnName"
+    ]
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > table > extraColumnName > should throw if not a string 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "table",
+      "extraColumnName"
+    ],
+    "message": "Expected string, received number"
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > table > keyColumnName > should throw if empty 1`] = `
+[ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "table",
+      "keyColumnName"
+    ]
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > table > keyColumnName > should throw if not a string 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "table",
+      "keyColumnName"
+    ],
+    "message": "Expected string, received number"
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > table > tableName > should throw if empty 1`] = `
+[ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "table",
+      "tableName"
+    ]
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > table > tableName > should throw if not a string 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "table",
+      "tableName"
+    ],
+    "message": "Expected string, received number"
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > table > valueColumnName > should throw if empty 1`] = `
+[ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "table",
+      "valueColumnName"
+    ]
+  }
+]]
+`;
+
+exports[`mysql-adapter > configuration > table > valueColumnName > should throw if not a string 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "table",
+      "valueColumnName"
+    ],
+    "message": "Expected string, received number"
+  }
+]]
+`;
