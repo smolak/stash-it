@@ -3,6 +3,9 @@ import { StashItAdapter } from "@stash-it/core";
 import { createConnection, type ResultSetHeader, type Connection, type RowDataPacket } from "mysql2/promise";
 import { z } from "zod";
 
+/**
+ * MySQL adapter configuration schema.
+ */
 export const mySqlAdapterConfigurationSchema = z.object({
   connection: z.object({
     host: z.string().trim().min(1),
@@ -26,6 +29,9 @@ export const mySqlAdapterConfigurationSchema = z.object({
     }),
 });
 
+/**
+ * MySQL adapter configuration.
+ */
 export type MySqlAdapterConfiguration = z.input<typeof mySqlAdapterConfigurationSchema>;
 type MySqlAdapterConfigurationOutput = z.output<typeof mySqlAdapterConfigurationSchema>;
 
