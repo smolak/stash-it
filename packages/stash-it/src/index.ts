@@ -33,7 +33,9 @@ export class StashIt implements StashItInterface {
   };
 
   constructor(adapter: StashItAdapter) {
-    this.#adapter = Object.freeze(adapter);
+    this.#adapter = adapter;
+
+    Object.freeze(this.#adapter);
   }
 
   async #buildKey(key: Key): Promise<Key> {
@@ -43,10 +45,6 @@ export class StashIt implements StashItInterface {
   }
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
-    // TODO: add a solid data validation on key, value and extra
-    // E.g. sqlite, when searching over JSON in extra, uses `$.fieldname` notation
-    // Therefore, field should not consist of dots or a dollar signs. Best if only _azAZ09
-
     await this.#adapter.connect();
 
     try {
