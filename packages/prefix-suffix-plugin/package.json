@@ -35,8 +35,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "workspace:*",
-    "@stash-it/memory-adapter": "workspace:*",
+    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.5",
+    "@stash-it/memory-adapter": "npm:@jsr/stash-it__memory-adapter@0.2.1",
     "@stash-it/stash-it": "npm:@jsr/stash-it__stash-it@0.3.1"
   }
 }
