@@ -180,8 +180,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: workspace:*
-        version: link:../dev-tools
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.5
+        version: '@jsr/stash-it__dev-tools@0.0.5(@types/node@22.10.1)'
       '@types/better-sqlite3':
         specifier: ^7.6.11
         version: 7.6.12
