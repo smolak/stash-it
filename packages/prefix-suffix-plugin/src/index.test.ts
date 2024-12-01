@@ -20,7 +20,7 @@ describe("prefix-suffix-plugin", () => {
       expect(result.key).toEqual(`prefix-${key}`);
     });
 
-    describe('after setting an item', () => {
+    describe("after setting an item", () => {
       it("prefix is dropped from key, as prefix is used only internally", async () => {
         const plugin = createPrefixSuffixPlugin({ prefix: "prefix-" });
         const key = "prefix-key";
@@ -28,15 +28,15 @@ describe("prefix-suffix-plugin", () => {
         const extra = {};
         const item = { key, value, extra };
         const handler = getHandler("afterSetItem", plugin);
-  
+
         const result = await handler({ adapter, key, value, extra, item });
-  
-        expect(result.key).toEqual('key');
-        expect(result.item.key).toEqual('key');
+
+        expect(result.key).toEqual("key");
+        expect(result.item.key).toEqual("key");
       });
     });
 
-    describe('after getting an item', () => {
+    describe("after getting an item", () => {
       it("prefix is dropped from key, as prefix is used only internally", async () => {
         const plugin = createPrefixSuffixPlugin({ prefix: "prefix-" });
         const key = "prefix-key";
@@ -44,11 +44,11 @@ describe("prefix-suffix-plugin", () => {
         const extra = {};
         const item = { key, value, extra };
         const handler = getHandler("afterGetItem", plugin);
-  
+
         const result = await handler({ adapter, key, item });
-  
-        expect(result.key).toEqual('key');
-        expect(result.item?.key).toEqual('key');
+
+        expect(result.key).toEqual("key");
+        expect(result.item?.key).toEqual("key");
       });
     });
   });
@@ -64,7 +64,7 @@ describe("prefix-suffix-plugin", () => {
       expect(result.key).toEqual(`${key}-suffix`);
     });
 
-    describe('after setting an item', () => {
+    describe("after setting an item", () => {
       it("prefix is dropped from key, as prefix is used only internally", async () => {
         const plugin = createPrefixSuffixPlugin({ suffix: "-suffix" });
         const key = "key-suffix";
@@ -72,15 +72,15 @@ describe("prefix-suffix-plugin", () => {
         const extra = {};
         const item = { key, value, extra };
         const handler = getHandler("afterSetItem", plugin);
-  
+
         const result = await handler({ adapter, key, value, extra, item });
-  
-        expect(result.key).toEqual('key');
-        expect(result.item.key).toEqual('key');
+
+        expect(result.key).toEqual("key");
+        expect(result.item.key).toEqual("key");
       });
     });
 
-    describe('after getting an item', () => {
+    describe("after getting an item", () => {
       it("prefix is dropped from key, as prefix is used only internally", async () => {
         const plugin = createPrefixSuffixPlugin({ suffix: "-suffix" });
         const key = "key-suffix";
@@ -88,11 +88,11 @@ describe("prefix-suffix-plugin", () => {
         const extra = {};
         const item = { key, value, extra };
         const handler = getHandler("afterGetItem", plugin);
-  
+
         const result = await handler({ adapter, key, item });
-  
-        expect(result.key).toEqual('key');
-        expect(result.item?.key).toEqual('key');
+
+        expect(result.key).toEqual("key");
+        expect(result.item?.key).toEqual("key");
       });
     });
   });
@@ -108,35 +108,35 @@ describe("prefix-suffix-plugin", () => {
       expect(result.key).toEqual(`prefix-${key}-suffix`);
     });
 
-    describe('after setting an item', () => {
+    describe("after setting an item", () => {
       it("prefix and suffix are dropped from key, as they are used only internally", async () => {
-        const plugin = createPrefixSuffixPlugin({ prefix: 'prefix-', suffix: "-suffix" });
+        const plugin = createPrefixSuffixPlugin({ prefix: "prefix-", suffix: "-suffix" });
         const key = "prefix-key-suffix";
         const value = "value";
         const extra = {};
         const item = { key, value, extra };
         const handler = getHandler("afterSetItem", plugin);
-  
+
         const result = await handler({ adapter, key, value, extra, item });
-  
-        expect(result.key).toEqual('key');
-        expect(result.item.key).toEqual('key');
+
+        expect(result.key).toEqual("key");
+        expect(result.item.key).toEqual("key");
       });
     });
 
-    describe('after getting an item', () => {
+    describe("after getting an item", () => {
       it("prefix and suffix are dropped from key, as they are used only internally", async () => {
-        const plugin = createPrefixSuffixPlugin({ prefix: 'prefix-', suffix: "-suffix" });
+        const plugin = createPrefixSuffixPlugin({ prefix: "prefix-", suffix: "-suffix" });
         const key = "prefix-key-suffix";
         const value = "value";
         const extra = {};
         const item = { key, value, extra };
         const handler = getHandler("afterGetItem", plugin);
-  
+
         const result = await handler({ adapter, key, item });
-  
-        expect(result.key).toEqual('key');
-        expect(result.item?.key).toEqual('key');
+
+        expect(result.key).toEqual("key");
+        expect(result.item?.key).toEqual("key");
       });
     });
   });

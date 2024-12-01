@@ -1,12 +1,13 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`sqlite-adapter > validation > optional parameters > extraColumnName > should throw if passed value is not a string 1`] = `
+exports[`sqlite-adapter > configuration > validation > optional configuration > extraColumnName > should throw if passed value is not a string 1`] = `
 [ZodError: [
   {
     "code": "invalid_type",
     "expected": "string",
     "received": "number",
     "path": [
+      "table",
       "extraColumnName"
     ],
     "message": "Expected string, received number"
@@ -14,13 +15,14 @@ exports[`sqlite-adapter > validation > optional parameters > extraColumnName > s
 ]]
 `;
 
-exports[`sqlite-adapter > validation > optional parameters > keyColumnName > should throw if passed value is not a string 1`] = `
+exports[`sqlite-adapter > configuration > validation > optional configuration > keyColumnName > should throw if passed value is not a string 1`] = `
 [ZodError: [
   {
     "code": "invalid_type",
     "expected": "string",
     "received": "number",
     "path": [
+      "table",
       "keyColumnName"
     ],
     "message": "Expected string, received number"
@@ -28,13 +30,14 @@ exports[`sqlite-adapter > validation > optional parameters > keyColumnName > sho
 ]]
 `;
 
-exports[`sqlite-adapter > validation > optional parameters > tableName > should throw if passed value is not a string 1`] = `
+exports[`sqlite-adapter > configuration > validation > optional configuration > tableName > should throw if passed value is not a string 1`] = `
 [ZodError: [
   {
     "code": "invalid_type",
     "expected": "string",
     "received": "number",
     "path": [
+      "table",
       "tableName"
     ],
     "message": "Expected string, received number"
@@ -42,13 +45,14 @@ exports[`sqlite-adapter > validation > optional parameters > tableName > should 
 ]]
 `;
 
-exports[`sqlite-adapter > validation > optional parameters > valueColumnName > should throw if passed value is not a string 1`] = `
+exports[`sqlite-adapter > configuration > validation > optional configuration > valueColumnName > should throw if passed value is not a string 1`] = `
 [ZodError: [
   {
     "code": "invalid_type",
     "expected": "string",
     "received": "number",
     "path": [
+      "table",
       "valueColumnName"
     ],
     "message": "Expected string, received number"

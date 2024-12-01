@@ -7,26 +7,31 @@
 ## Installation
 
 npm
+
 ```bash
 npm install @stash-it/memory-adapter
 ```
 
 deno
+
 ```bash
 deno add @stash-it/memory-adapter
 ```
 
 yarn
+
 ```bash
 yarn dlx jsr add @stash-it/memory-adapter
 ```
 
 pnpm
+
 ```bash
 pnpm dlx jsr add @stash-it/memory-adapter
 ```
 
 bun
+
 ```bash
 bunx jsr add @stash-it/memory-adapter
 ```
@@ -35,8 +40,8 @@ bunx jsr add @stash-it/memory-adapter
 
 ```ts
 // Import stash-it main class.
-import { StashIt } from '@stash-it/stash-it';
-import { MemoryAdapter } from '@stash-it/memory-adapter';
+import { StashIt } from "@stash-it/stash-it";
+import { MemoryAdapter } from "@stash-it/memory-adapter";
 
 // Create an instance of the adapter.
 const adapter = new MemoryAdapter();

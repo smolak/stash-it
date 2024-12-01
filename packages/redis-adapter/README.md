@@ -8,26 +8,31 @@ It uses `redis` package under the hood.
 ## Installation
 
 npm
+
 ```bash
 npm install @stash-it/redis-adapter
 ```
 
 deno
+
 ```bash
 deno add @stash-it/redis-adapter
 ```
 
 yarn
+
 ```bash
 yarn dlx jsr add @stash-it/redis-adapter
 ```
 
 pnpm
+
 ```bash
 pnpm dlx jsr add @stash-it/redis-adapter
 ```
 
 bun
+
 ```bash
 bunx jsr add @stash-it/redis-adapter
 ```
@@ -36,11 +41,11 @@ bunx jsr add @stash-it/redis-adapter
 
 ```ts
 // Import stash-it main class.
-import { StashIt } from '@stash-it/stash-it';
-import { RedisAdapter } from '@stash-it/redis-adapter';
+import { StashIt } from "@stash-it/stash-it";
+import { RedisAdapter } from "@stash-it/redis-adapter";
 
 // Create an instance of the adapter. Use whatever URL your redis instance runs on.
-const adapter = new RedisAdapter({ url: 'redis://localhost:6379' });
+const adapter = new RedisAdapter({ url: "redis://localhost:6379" });
 
 // And use it with stash-it.
 const stash = new StashIt(adapter);

@@ -20,6 +20,7 @@ export const runAdapterTests = (adapter: StashItAdapter): void => {
 
   describe("adapter's functionality", () => {
     beforeAll(async () => {
+      await adapter.checkStorage();
       await adapter.connect();
     });
 
@@ -42,7 +43,7 @@ export const runAdapterTests = (adapter: StashItAdapter): void => {
           const value = "value";
           const extra = {};
 
-          expect(() => adapter.setItem(keyConsistingInvalidCharacters, value, extra)).rejects.toThrow(
+          await expect(adapter.setItem(keyConsistingInvalidCharacters, value, extra)).rejects.toThrow(
             "Invalid key. Only _-azAZ09 allowed. '-=[!@#$%^&*()]=-' used.",
           );
 

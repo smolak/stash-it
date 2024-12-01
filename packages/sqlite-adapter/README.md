@@ -7,26 +7,31 @@
 ## Installation
 
 npm
+
 ```bash
 npm install @stash-it/sqlite-adapter
 ```
 
 deno
+
 ```bash
 deno add @stash-it/sqlite-adapter
 ```
 
 yarn
+
 ```bash
 yarn dlx jsr add @stash-it/sqlite-adapter
 ```
 
 pnpm
+
 ```bash
 pnpm dlx jsr add @stash-it/sqlite-adapter
 ```
 
 bun
+
 ```bash
 bunx jsr add @stash-it/sqlite-adapter
 ```
@@ -35,27 +40,39 @@ bunx jsr add @stash-it/sqlite-adapter
 
 ```ts
 // Import stash-it main class.
-import { StashIt } from '@stash-it/stash-it';
-import { SqliteAdapter } from '@stash-it/sqlite-adapter';
+import { StashIt } from "@stash-it/stash-it";
+import { SqliteAdapter, type SqliteAdapterConfiguration } from "@stash-it/sqlite-adapter";
 
 // Create an instance of the adapter.
-const adapter = new SqliteAdapter({ dbPath: 'path/to/your/db.sqlite' });
+const adapter = new SqliteAdapter({
+  connection: {
+    dbPath: "path/to/your/db.sqlite",
+  },
+  // The whole "table" configuration is optional
+  // So are the properties of this object.
+  // If not provided, those values are used and expected.
+  table: {
+    tableName: "items",
+    keyColumnName: "key",
+    valueColumnName: "value",
+    extraColumnName: "extra",
+  },
+});
 
 // And use it with stash-it.
 const stash = new StashIt(adapter);
 ```
 
-### Configuration
+## Table schema
 
-```ts
-const adapterOptions: SqliteAdapterOptions = {
-    dbPath: 'path/to/your/db.sqlite', // <-- this is the only required configuration
-    // rest of them are optional; the default values, if not passed, are the values below:
-    tableName: 'items',
-    keyColumnName: 'key',
-    valueColumnName: 'value',
-    extraColumnName: 'extra'
-};
+If you don't have a table ready, you can use this query to create one. This is the expected schema.
+
+```sql
+CREATE TABLE "items" (
+  "key" TEXT PRIMARY KEY,
+  "value" TEXT,
+  "extra" TEXT
+)
 ```
 
 ## License

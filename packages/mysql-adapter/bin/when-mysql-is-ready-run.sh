@@ -19,8 +19,11 @@ for ((i=1; i<=RETRIES; i++)); do
     if docker exec -it "$MYSQL_CONTAINER_NAME" mysql -u "$MYSQL_USER" -p"$MYSQL_ROOT_PASSWORD" -e "SELECT 1" > /dev/null; then
         echo "MySQL is ready!"
 
-        echo "Running tests..."
-        vitest run
+        if [ $# -gt 0 ]; then
+            echo "Running: $@"
+
+            "$@" 
+        fi
 
         echo "Cleaning up Docker containers..."
         docker-compose kill

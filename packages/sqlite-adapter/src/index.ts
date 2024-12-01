@@ -3,56 +3,60 @@ import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, V
 import { StashItAdapter } from "@stash-it/core";
 import { z } from "zod";
 
-/**
- * Ideas:
- * - provide a default table creation script: this.db.prepare('CREATE TABLE stash (key TEXT PRIMARY KEY, value TEXT, extra TEXT)').run();
- *    this will make sure that the table is created if it does not exist and is ready to be used and efficient
- */
-
-const sqliteAdapterOptionsSchema = z.object({
-  dbPath: z.string().trim(),
-  tableName: z.string().trim().default("items"),
-  keyColumnName: z.string().trim().default("key"),
-  valueColumnName: z.string().trim().default("value"),
-  extraColumnName: z.string().trim().default("extra"),
+const sqliteAdapterConfigurationSchema = z.object({
+  connection: z.object({
+    dbPath: z.string().trim(),
+  }),
+  table: z
+    .object({
+      tableName: z.string().trim().min(1).default("items"),
+      keyColumnName: z.string().trim().min(1).default("key"),
+      valueColumnName: z.string().trim().min(1).default("value"),
+      extraColumnName: z.string().trim().min(1).default("extra"),
+    })
+    .default({
+      tableName: "items",
+      keyColumnName: "key",
+      valueColumnName: "value",
+      extraColumnName: "extra",
+    }),
 });
 
 /**
  * Sqlite adapter options.
  */
-export type SqliteAdapterOptions = z.input<typeof sqliteAdapterOptionsSchema>;
+export type SqliteAdapterConfiguration = z.input<typeof sqliteAdapterConfigurationSchema>;
+type SqliteAdapterConfigurationOutput = z.output<typeof sqliteAdapterConfigurationSchema>;
 
 /**
  * Sqlite adapter class.
  */
 export class SqliteAdapter extends StashItAdapter {
   readonly #database: Database;
-  readonly #tableName: string;
-  readonly #keyColumnName: string;
-  readonly #valueColumnName: string;
-  readonly #extraColumnName: string;
+  readonly #tableName: SqliteAdapterConfigurationOutput["table"]["tableName"];
+  readonly #keyColumnName: SqliteAdapterConfigurationOutput["table"]["keyColumnName"];
+  readonly #valueColumnName: SqliteAdapterConfigurationOutput["table"]["valueColumnName"];
+  readonly #extraColumnName: SqliteAdapterConfigurationOutput["table"]["extraColumnName"];
 
-  constructor(options: SqliteAdapterOptions) {
+  constructor(options: SqliteAdapterConfiguration) {
     super();
 
-    const { dbPath, tableName, keyColumnName, valueColumnName, extraColumnName } =
-      sqliteAdapterOptionsSchema.parse(options);
+    const {
+      connection: { dbPath },
+      table: { tableName, keyColumnName, valueColumnName, extraColumnName },
+    } = sqliteAdapterConfigurationSchema.parse(options);
 
     this.#database = new SqliteDatabase(dbPath, { fileMustExist: true });
     this.#tableName = tableName;
     this.#keyColumnName = keyColumnName;
     this.#valueColumnName = valueColumnName;
     this.#extraColumnName = extraColumnName;
-
-    this.#checkTable();
   }
 
-  #checkTable() {
-    this.#database
-      .prepare(
-        `SELECT ${this.#keyColumnName}, ${this.#valueColumnName}, ${this.#extraColumnName} FROM ${this.#tableName} LIMIT 1`,
-      )
-      .get();
+  override async checkStorage(): Promise<true> {
+    await this.getItem("test");
+
+    return true;
   }
 
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
@@ -63,10 +67,10 @@ export class SqliteAdapter extends StashItAdapter {
     if (itemExists) {
       this.#database
         .prepare(
-          `UPDATE ${this.#tableName}
-                  SET ${this.#valueColumnName} = @value, ${this.#extraColumnName} = json_insert(@extra)
-                  WHERE ${this.#keyColumnName} = @key
-                  LIMIT 1`,
+          `UPDATE "${this.#tableName}"
+           SET "${this.#valueColumnName}" = @value, "${this.#extraColumnName}" = json_insert(@extra)
+           WHERE "${this.#keyColumnName}" = @key
+           LIMIT 1`,
         )
         .run({
           key,
@@ -76,8 +80,8 @@ export class SqliteAdapter extends StashItAdapter {
     } else {
       this.#database
         .prepare(
-          `INSERT INTO ${this.#tableName} (${this.#keyColumnName}, ${this.#valueColumnName}, ${this.#extraColumnName})
-                VALUES (@key, json_insert(@value), json_insert(@extra))`,
+          `INSERT INTO "${this.#tableName}" ("${this.#keyColumnName}", "${this.#valueColumnName}", "${this.#extraColumnName}")
+           VALUES (@key, json_insert(@value), json_insert(@extra))`,
         )
         .run({
           key,
@@ -92,9 +96,9 @@ export class SqliteAdapter extends StashItAdapter {
   async getItem(key: Key): Promise<GetItemResult> {
     const item = this.#database
       .prepare<{ key: Key }, { key: string; value: string; extra: string }>(
-        `SELECT ${this.#keyColumnName} AS key, ${this.#valueColumnName} AS value, ${this.#extraColumnName} AS extra
-                FROM ${this.#tableName}
-                WHERE ${this.#keyColumnName} = @key`,
+        `SELECT "${this.#keyColumnName}" AS key, "${this.#valueColumnName}" AS value, "${this.#extraColumnName}" AS extra
+         FROM "${this.#tableName}"
+         WHERE "${this.#keyColumnName}" = @key`,
       )
       .get({ key });
 
@@ -112,7 +116,7 @@ export class SqliteAdapter extends StashItAdapter {
       .prepare<
         { key: Key },
         1 | 0
-      >(`SELECT EXISTS(SELECT 1 FROM ${this.#tableName} WHERE ${this.#keyColumnName} = @key LIMIT 1)`)
+      >(`SELECT EXISTS(SELECT 1 FROM "${this.#tableName}" WHERE "${this.#keyColumnName}" = @key LIMIT 1)`)
       .pluck()
       .get({ key });
 
@@ -121,7 +125,7 @@ export class SqliteAdapter extends StashItAdapter {
 
   async removeItem(key: Key): Promise<boolean> {
     const result = this.#database
-      .prepare(`DELETE FROM ${this.#tableName} WHERE ${this.#keyColumnName} = ? LIMIT 1`)
+      .prepare(`DELETE FROM "${this.#tableName}" WHERE "${this.#keyColumnName}" = ? LIMIT 1`)
       .run(key);
 
     return result.changes === 1;
@@ -133,9 +137,7 @@ export class SqliteAdapter extends StashItAdapter {
     if (itemExists) {
       this.#database
         .prepare(
-          `UPDATE ${this.#tableName}
-                  SET ${this.#extraColumnName} = json_insert(@extra)
-                  WHERE ${this.#keyColumnName} = @key`,
+          `UPDATE "${this.#tableName}" SET "${this.#extraColumnName}" = json_insert(@extra) WHERE "${this.#keyColumnName}" = @key`,
         )
         .run({ key, extra: JSON.stringify(extra) });
 
@@ -150,7 +152,7 @@ export class SqliteAdapter extends StashItAdapter {
       .prepare<
         { key: Key },
         string
-      >(`SELECT ${this.#extraColumnName} AS extra FROM ${this.#tableName} WHERE ${this.#keyColumnName} = @key`)
+      >(`SELECT "${this.#extraColumnName}" AS extra FROM "${this.#tableName}" WHERE "${this.#keyColumnName}" = @key`)
       .pluck()
       .get({ key });
 

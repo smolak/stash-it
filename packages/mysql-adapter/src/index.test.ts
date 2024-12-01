@@ -52,15 +52,13 @@ describe("mysql-adapter", async () => {
     await db.query(`DROP TABLE IF EXISTS \`${tableName}\``);
   });
 
-  it("waits ");
-
   describe("configuration", () => {
     describe("connection", () => {
       describe("host", () => {
         it("throws an error when host is not provided", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, host: undefined } }),
+            () =>
+              new MySqlAdapter({ connection: { ...connectionConfiguration, host: undefined as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
 
@@ -74,8 +72,8 @@ describe("mysql-adapter", async () => {
       describe("user", () => {
         it("throws an error when user is not provided", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, user: undefined } }),
+            () =>
+              new MySqlAdapter({ connection: { ...connectionConfiguration, user: undefined as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
 
@@ -89,8 +87,10 @@ describe("mysql-adapter", async () => {
       describe("password", () => {
         it("throws an error when password is not provided", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, password: undefined } }),
+            () =>
+              new MySqlAdapter({
+                connection: { ...connectionConfiguration, password: undefined as unknown as string },
+              }),
           ).toThrowErrorMatchingSnapshot();
         });
 
@@ -104,8 +104,10 @@ describe("mysql-adapter", async () => {
       describe("database", () => {
         it("throws an error when database is not provided", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, database: undefined } }),
+            () =>
+              new MySqlAdapter({
+                connection: { ...connectionConfiguration, database: undefined as unknown as string },
+              }),
           ).toThrowErrorMatchingSnapshot();
         });
 
@@ -127,8 +129,10 @@ describe("mysql-adapter", async () => {
 
         it("throws an error when port is not a number", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, port: "not_a_port_number" } }),
+            () =>
+              new MySqlAdapter({
+                connection: { ...connectionConfiguration, port: "not_a_port_number" as unknown as number },
+              }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -169,8 +173,7 @@ describe("mysql-adapter", async () => {
 
         it("should throw if not a string", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { tableName: 1 } }),
+            () => new MySqlAdapter({ ...adapterConfiguration, table: { tableName: 1 as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -195,8 +198,7 @@ describe("mysql-adapter", async () => {
 
         it("should throw if not a string", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { keyColumnName: 1 } }),
+            () => new MySqlAdapter({ ...adapterConfiguration, table: { keyColumnName: 1 as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -221,8 +223,7 @@ describe("mysql-adapter", async () => {
 
         it("should throw if not a string", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { valueColumnName: 1 } }),
+            () => new MySqlAdapter({ ...adapterConfiguration, table: { valueColumnName: 1 as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -247,8 +248,7 @@ describe("mysql-adapter", async () => {
 
         it("should throw if not a string", () => {
           expect(
-            // @ts-ignore
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { extraColumnName: 1 } }),
+            () => new MySqlAdapter({ ...adapterConfiguration, table: { extraColumnName: 1 as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -266,7 +266,7 @@ describe("mysql-adapter", async () => {
 
         const adapter = new MySqlAdapter(configuration);
 
-        expect(adapter.connect()).rejects.toThrow("Table 'dbname.non_existent_table' doesn't exist");
+        expect(adapter.checkStorage()).rejects.toThrow("Table 'dbname.non_existent_table' doesn't exist");
       });
 
       it("should throw when key column doesn't exist", () => {
@@ -280,7 +280,7 @@ describe("mysql-adapter", async () => {
 
         const adapter = new MySqlAdapter(configuration);
 
-        expect(adapter.connect()).rejects.toThrow("Unknown column 'non_existent_key_column' in 'field list'");
+        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_key_column' in");
       });
 
       it("should throw when value column doesn't exist", () => {
@@ -294,7 +294,7 @@ describe("mysql-adapter", async () => {
 
         const adapter = new MySqlAdapter(configuration);
 
-        expect(adapter.connect()).rejects.toThrow("Unknown column 'non_existent_value_column' in 'field list'");
+        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_value_column' in");
       });
 
       it("should throw when extra column doesn't exist", () => {
@@ -308,7 +308,7 @@ describe("mysql-adapter", async () => {
 
         const adapter = new MySqlAdapter(configuration);
 
-        expect(adapter.connect()).rejects.toThrow("Unknown column 'non_existent_extra_column' in 'field list'");
+        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_extra_column' in");
       });
     });
   });

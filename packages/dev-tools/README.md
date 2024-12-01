@@ -9,26 +9,31 @@ If you want to create an adapter or a plugin for stash-it, you can use this pack
 ## Installation
 
 npm
+
 ```bash
 npm install @stash-it/dev-tools
 ```
 
 deno
+
 ```bash
 deno add @stash-it/dev-tools
 ```
 
 yarn
+
 ```bash
 yarn dlx jsr add @stash-it/dev-tools
 ```
 
 pnpm
+
 ```bash
 pnpm dlx jsr add @stash-it/dev-tools
 ```
 
 bun
+
 ```bash
 bunx jsr add @stash-it/dev-tools
 ```
@@ -47,16 +52,16 @@ Perhaps in the future, I'll add support for other testing libraries or be more a
 // Vitest stuff
 import { describe } from "vitest";
 
-import { runAdapterTests } from '@stash-it/dev-tools';
+import { runAdapterTests } from "@stash-it/dev-tools";
 
 // Your adapter.
-import { YourAdapter } from './your-adapter';
+import { YourAdapter } from "./your-adapter";
 
-describe('YourAdapter', () => {
+describe("YourAdapter", () => {
   const adapter = new YourAdapter();
-  
+
   // Add whatever validation or other stuff you need.
-  
+
   // Run the tests.
   runAdapterTests(adapter);
 });
@@ -75,20 +80,20 @@ Here's how you can use it:
 // Vitest stuff
 import { describe, it, expect } from "vitest";
 
-import { getHandler } from '@stash-it/dev-tools';
+import { getHandler } from "@stash-it/dev-tools";
 
 // Your plugin.
-import { createPlugin } from './your-plugin';
+import { createPlugin } from "./your-plugin";
 
-describe('YourPlugin', () => {
-  it('does something on buildKey', async () => {
+describe("YourPlugin", () => {
+  it("does something on buildKey", async () => {
     const plugin = createPlugin();
     const key = "key";
-    const handler = getHandler('buildKey', plugin);
-    
+    const handler = getHandler("buildKey", plugin);
+
     // Here is where you can test the handler that you created.
     const result = await handler(key);
-    
+
     // expect ... etc.
   });
 });

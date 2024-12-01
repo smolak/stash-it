@@ -48,7 +48,7 @@ const dropSuffix = (key: Key, suffix: string): Key => {
 export const createPrefixSuffixPlugin = (options: PluginOptions): StashItPlugin => {
   const values = PluginOptionsSchema.parse(options);
 
-  // TODO: move this to schema at some point.
+  // TODO: move this to schema at some point. Do this now
   const prefix = values.prefix ?? "";
   const suffix = values.suffix ?? "";
 
