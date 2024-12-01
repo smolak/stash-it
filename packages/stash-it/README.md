@@ -17,11 +17,11 @@ Let's look at some examples:
 
 ```typescript
 // Import main class.
-import { StashIt } from '@stash-it/stash-it';
+import { StashIt } from "@stash-it/stash-it";
 
 // For it to work you will also need an adapter.
 // You can use any of the @stash-it adapters or create your own.
-import { MemoryAdapter } from '@stash-it/memory-adapter';
+import { MemoryAdapter } from "@stash-it/memory-adapter";
 
 // Create an instance of the adapter.
 const adapter = new MemoryAdapter();
@@ -30,8 +30,8 @@ const adapter = new MemoryAdapter();
 const stash = new StashIt(adapter);
 
 // Use it.
-await stash.set('key', 'value');
-const item = await stash.get('key');
+await stash.set("key", "value");
+const item = await stash.get("key");
 
 console.log(item.value); // 'value'
 ```
@@ -44,10 +44,10 @@ Let's say, you want to log every time an item is set. Logging is not a built-in 
 Here's how you can do it:
 
 ```typescript
-import { StashIt, type StashItAdapterInterface, type StashItPlugin } from '@stash-it/stash-it';
-// Heads up! Types/interfaces come from core package: 
+import { StashIt, type StashItAdapterInterface, type StashItPlugin } from "@stash-it/stash-it";
+// Heads up! Types/interfaces come from core package:
 import type { StashItAdapterInterface, StashItPlugin, Item } from "@stash-it/core";
-import { MemoryAdapter } from '@stash-it/memory-adapter';
+import { MemoryAdapter } from "@stash-it/memory-adapter";
 
 const stash = new StashIt(new MemoryAdapter());
 
@@ -56,19 +56,19 @@ const loggerPlugin: StashItPlugin = {
     beforeSetItem: async (args) => {
       // Log whatever you want, using the logger of your choice.
       console.log(`Item with key "${args.key}" was set.`);
-      
+
       // Return the arguments, to continue with the flow of data.
       return args;
-    }
-  }
+    },
+  },
 };
 
 stash.registerPlugins([loggerPlugin]);
 
-await stash.setItem('the key', 'some value', { optional: 'extra data' });
+await stash.setItem("the key", "some value", { optional: "extra data" });
 // console.log: Item with key "the key" was set.
 
-await stash.getItem('the key');
+await stash.getItem("the key");
 // no logging, as no logger was set for getItem lifecycle method
 ```
 
@@ -100,36 +100,55 @@ The implementation is more or less this:
 ```typescript
 const createPrefixSuffixPlugin = ({ prefix, suffix }): StashItPlugin => ({
   hookHandlers: {
-    buildKey: async (key: Key) => ({ key: `${prefix}${key}${suffix}` })
-  }
+    buildKey: async (key: Key) => ({ key: `${prefix}${key}${suffix}` }),
+  },
 });
 ```
 
 More examples and documentation coming soon.
 
+## Checking if used storage is "ready"
+
+Ready means, can be intreacted with.
+
+```ts
+await stashIt.checkStorage();
+```
+
+This method calls adapter's `checkStorage`. Each adapter knows how (or if) to check if storage
+can be interacted with. This is a utility method, not something that you need to call/check.
+
+What is checked? E.g. a simple `SELECT` is executed to check if table schema is fine.
+But it can also do a full set of CRUD operations. It depends on how it's implemented on the adapter.
+
 ## Installation
 
 npm
+
 ```bash
 npx jsr add @stash-it/stash-it
 ```
 
 deno
+
 ```bash
 deno add @stash-it/stash-it
 ```
 
 yarn
+
 ```bash
 yarn dlx jsr add @stash-it/stash-it
 ```
 
 pnpm
+
 ```bash
 pnpm dlx jsr add @stash-it/stash-it
 ```
 
 bun
+
 ```bash
 bunx jsr add @stash-it/stash-it
 ```
