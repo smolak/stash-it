@@ -16,7 +16,8 @@
     },
     "test": {
       "dependsOn": ["lint"],
-      "cache": false
+      "cache": false,
+      "env": ["REDIS_HOST", "REDIS_PORT"]
     },
     "publish": {
       "dependsOn": ["lint", "test"],

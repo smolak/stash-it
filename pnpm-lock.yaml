@@ -35,8 +35,8 @@ importers:
   packages/dev-tools:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.2.0
-        version: '@jsr/stash-it__core@0.2.0'
+        specifier: npm:@jsr/stash-it__core@0.3.0
+        version: '@jsr/stash-it__core@0.3.0'
       nanoid:
         specifier: ^5.0.8
         version: 5.0.9
@@ -87,18 +87,18 @@ importers:
   packages/memory-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.2.0
-        version: '@jsr/stash-it__core@0.2.0'
+        specifier: npm:@jsr/stash-it__core@0.3.0
+        version: '@jsr/stash-it__core@0.3.0'
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
-        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.10.1)'
+        specifier: workspace:*
+        version: link:../dev-tools
 
   packages/mysql-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.2.0
-        version: '@jsr/stash-it__core@0.2.0'
+        specifier: npm:@jsr/stash-it__core@0.3.0
+        version: '@jsr/stash-it__core@0.3.0'
       mysql2:
         specifier: ^3.11.4
         version: 3.11.5
@@ -107,52 +107,52 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
-        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.10.1)'
+        specifier: workspace:*
+        version: link:../dev-tools
 
   packages/prefix-suffix-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.2.0
-        version: '@jsr/stash-it__core@0.2.0'
+        specifier: npm:@jsr/stash-it__core@0.3.0
+        version: '@jsr/stash-it__core@0.3.0'
       zod:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
-        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.10.1)'
+        specifier: workspace:*
+        version: link:../dev-tools
       '@stash-it/memory-adapter':
-        specifier: npm:@jsr/stash-it__memory-adapter@0.2.0
-        version: '@jsr/stash-it__memory-adapter@0.2.0'
+        specifier: workspace:*
+        version: link:../memory-adapter
       '@stash-it/stash-it':
-        specifier: npm:@jsr/stash-it__stash-it@0.2.1
-        version: '@jsr/stash-it__stash-it@0.2.1'
+        specifier: npm:@jsr/stash-it__stash-it@0.3.1
+        version: '@jsr/stash-it__stash-it@0.3.1'
 
   packages/read-only-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.2.0
-        version: '@jsr/stash-it__core@0.2.0'
+        specifier: npm:@jsr/stash-it__core@0.3.0
+        version: '@jsr/stash-it__core@0.3.0'
       zod:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
-        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.10.1)'
+        specifier: workspace:*
+        version: link:../dev-tools
       '@stash-it/memory-adapter':
-        specifier: npm:@jsr/stash-it__memory-adapter@0.2.0
-        version: '@jsr/stash-it__memory-adapter@0.2.0'
+        specifier: workspace:*
+        version: link:../memory-adapter
       '@stash-it/stash-it':
-        specifier: npm:@jsr/stash-it__stash-it@0.2.1
-        version: '@jsr/stash-it__stash-it@0.2.1'
+        specifier: npm:@jsr/stash-it__stash-it@0.3.1
+        version: '@jsr/stash-it__stash-it@0.3.1'
 
   packages/redis-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.2.0
-        version: '@jsr/stash-it__core@0.2.0'
+        specifier: npm:@jsr/stash-it__core@0.3.0
+        version: '@jsr/stash-it__core@0.3.0'
       redis:
         specifier: ^4.7.0
         version: 4.7.0
@@ -161,14 +161,17 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
-        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.10.1)'
+        specifier: workspace:*
+        version: link:../dev-tools
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
 
   packages/sqlite-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.2.0
-        version: '@jsr/stash-it__core@0.2.0'
+        specifier: npm:@jsr/stash-it__core@0.3.0
+        version: '@jsr/stash-it__core@0.3.0'
       better-sqlite3:
         specifier: ^11.1.2
         version: 11.6.0
@@ -177,8 +180,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
-        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.10.1)'
+        specifier: workspace:*
+        version: link:../dev-tools
       '@types/better-sqlite3':
         specifier: ^7.6.11
         version: 7.6.12
@@ -202,21 +205,21 @@ importers:
   packages/ttl-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.2.0
-        version: '@jsr/stash-it__core@0.2.0'
+        specifier: npm:@jsr/stash-it__core@0.3.0
+        version: '@jsr/stash-it__core@0.3.0'
       zod:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.4
-        version: '@jsr/stash-it__dev-tools@0.0.4(@types/node@22.10.1)'
+        specifier: workspace:*
+        version: link:../dev-tools
       '@stash-it/memory-adapter':
-        specifier: npm:@jsr/stash-it__memory-adapter@0.2.0
-        version: '@jsr/stash-it__memory-adapter@0.2.0'
+        specifier: workspace:*
+        version: link:../memory-adapter
       '@stash-it/stash-it':
-        specifier: npm:@jsr/stash-it__stash-it@0.2.1
-        version: '@jsr/stash-it__stash-it@0.2.1'
+        specifier: npm:@jsr/stash-it__stash-it@0.3.1
+        version: '@jsr/stash-it__stash-it@0.3.1'
 
   packages/typescript-config:
     devDependencies:
@@ -511,6 +514,9 @@ packages:
 
   '@jsr/stash-it__stash-it@0.2.1':
     resolution: {integrity: sha512-eMYC0pM/4VU6us65X77UKbcUa/MxhfCPGhhDmoKUPFxg8UbleLB/LEGtM2oVrvVc0S1x1F39ubt6scPUcY/PPQ==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.2.1.tgz}
+
+  '@jsr/stash-it__stash-it@0.3.1':
+    resolution: {integrity: sha512-Z3J7/OCljacNYJSx1TP5AhYQ2blFmk8GxE+e5iOuqQOBkbf2E4AYTIPMVDu8rT9/wQjB2OkHiwOZd4QqOVZB0w==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.3.1.tgz}
 
   '@microsoft/tsdoc-config@0.16.2':
     resolution: {integrity: sha512-OGiIzzoBLgWWR0UdRJX98oYO+XKGf7tiK4Zk6tQ/E4IJqGCe7dvkTvgDZV5cFJUzLGDOjeAXrnZoA6QkVySuxw==}
@@ -1175,6 +1181,10 @@ packages:
 
   dotenv@16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
+
+  dotenv@16.4.5:
+    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
     engines: {node: '>=12'}
 
   electron-to-chromium@1.5.67:
@@ -2929,6 +2939,10 @@ snapshots:
     dependencies:
       '@jsr/stash-it__core': 0.2.0
 
+  '@jsr/stash-it__stash-it@0.3.1':
+    dependencies:
+      '@jsr/stash-it__core': 0.3.0
+
   '@microsoft/tsdoc-config@0.16.2':
     dependencies:
       '@microsoft/tsdoc': 0.14.2
@@ -3637,6 +3651,8 @@ snapshots:
       esutils: 2.0.3
 
   dotenv@16.0.3: {}
+
+  dotenv@16.4.5: {}
 
   electron-to-chromium@1.5.67: {}
 

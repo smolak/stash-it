@@ -14,26 +14,31 @@ See [usage](#usage) for examples.
 ## Installation
 
 npm
+
 ```bash
 npx jsr add @stash-it/core
 ```
 
 deno
+
 ```bash
 deno add @stash-it/core
 ```
 
 yarn
+
 ```bash
 yarn dlx jsr add @stash-it/core
 ```
 
 pnpm
+
 ```bash
 pnpm dlx jsr add @stash-it/core
 ```
 
 bun
+
 ```bash
 bunx jsr add @stash-it/core
 ```
@@ -43,7 +48,7 @@ bunx jsr add @stash-it/core
 ### `StashItAdapter`
 
 ```typescript
-import { StashItAdapter } from '@stash-it/core';
+import { StashItAdapter } from "@stash-it/core";
 
 // Your adapter class should extend from the base abstract class.
 class MyAdapter extends StashItAdapter {
@@ -56,7 +61,7 @@ The base class contains two methods, that you should implement if your adapter r
 For instance:
 
 ```typescript
-import { StashItAdapter } from '@stash-it/core';
+import { StashItAdapter } from "@stash-it/core";
 
 // Your adapter class should extend from the base abstract class.
 class MyAdapter extends StashItAdapter {
@@ -75,7 +80,7 @@ class MyAdapter extends StashItAdapter {
 ### `StashItPlugin`
 
 ```typescript
-import { type StashItPlugin } from '@stash-it/core';
+import { type StashItPlugin } from "@stash-it/core";
 
 // Your plugin can be a function that returns StashItPlugin:
 const myPlugin = (someArgsIfNeedBe): StashItPlugin => {

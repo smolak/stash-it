@@ -3,11 +3,11 @@ import { StashItAdapter } from "@stash-it/core";
 import { createClient, type RedisClientType } from "redis";
 import { z } from "zod";
 
-const redisAdapterOptionsSchema = z.object({
+const redisAdapterConfigurationSchema = z.object({
   url: z.string().url(),
 });
 
-type RedisAdapterOptions = z.infer<typeof redisAdapterOptionsSchema>;
+type RedisAdapterConfiguration = z.infer<typeof redisAdapterConfigurationSchema>;
 
 /**
  * Redis adapter class.
@@ -15,10 +15,10 @@ type RedisAdapterOptions = z.infer<typeof redisAdapterOptionsSchema>;
 export class RedisAdapter extends StashItAdapter {
   readonly #database: RedisClientType;
 
-  constructor(options: RedisAdapterOptions) {
+  constructor(configuration: RedisAdapterConfiguration) {
     super();
 
-    const { url } = redisAdapterOptionsSchema.parse(options);
+    const { url } = redisAdapterConfigurationSchema.parse(configuration);
 
     this.#database = createClient({
       url,
