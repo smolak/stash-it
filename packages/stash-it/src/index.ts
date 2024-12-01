@@ -38,6 +38,10 @@ export class StashIt implements StashItInterface {
     Object.freeze(this.#adapter);
   }
 
+  async checkStorage(): Promise<true> {
+    return this.#adapter.checkStorage();
+  }
+
   async #buildKey(key: Key): Promise<Key> {
     const result = await this.#call("buildKey", { key });
 

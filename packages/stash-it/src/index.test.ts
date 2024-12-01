@@ -36,6 +36,17 @@ describe("stash-it class", () => {
     });
   });
 
+  describe("checkStorage", () => {
+    it("calls checkStorage on the adapter, to check if storage the adapter uses is fine", async () => {
+      const adapter = createDummyAdapter();
+      const stashIt = new StashIt(adapter);
+
+      await stashIt.checkStorage();
+
+      expect(adapter.checkStorage).toHaveBeenCalledOnce();
+    });
+  });
+
   describe("buildKey hook", () => {
     describe("when a handler is registered for buildKey hook", () => {
       it("should be used to build the key", async () => {
@@ -766,6 +777,7 @@ const createDummyAdapter = () => {
 
   dummyAdapter.connect.mockResolvedValue(undefined);
   dummyAdapter.disconnect.mockResolvedValue(undefined);
+  dummyAdapter.checkStorage.mockResolvedValue(true);
   dummyAdapter.setItem.mockResolvedValue(item);
   dummyAdapter.getItem.mockResolvedValue(item);
   dummyAdapter.hasItem.mockResolvedValue(true);
