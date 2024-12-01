@@ -212,11 +212,11 @@ importers:
         version: 3.23.8
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: workspace:*
-        version: link:../dev-tools
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.5
+        version: '@jsr/stash-it__dev-tools@0.0.5(@types/node@22.10.1)'
       '@stash-it/memory-adapter':
-        specifier: workspace:*
-        version: link:../memory-adapter
+        specifier: npm:@jsr/stash-it__memory-adapter@0.2.1
+        version: '@jsr/stash-it__memory-adapter@0.2.1'
       '@stash-it/stash-it':
         specifier: npm:@jsr/stash-it__stash-it@0.3.1
         version: '@jsr/stash-it__stash-it@0.3.1'
