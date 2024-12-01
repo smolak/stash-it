@@ -35,7 +35,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "workspace:*",
+    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.5",
     "dotenv": "^16.4.5"
   }
 }
