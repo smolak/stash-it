@@ -81,6 +81,7 @@ interface CommonInterface {
   setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
   // eslint-disable-next-line no-unused-vars
   getExtra(key: Key): Promise<GetExtraResult>;
+  checkStorage(): Promise<true>;
 }
 
 /** All types of hook handler args. */
@@ -169,6 +170,17 @@ export abstract class StashItAdapter implements CommonInterface {
   async disconnect(): Promise<void> {
     // Do nothing by default. Implement in subclass if needed.
     // It's useful for adapters that need to close connections or clean up resources.
+  }
+
+  async checkStorage(): Promise<true> {
+    // Do nothing by default. Implement in subclass if needed.
+    // For some adapters you will want to check if storage is capable of operating with.
+    // Implement any checks necessary, e.g. a simple read operation, which will check
+    // if storage (like a DB table) has all the necessary columns, etc.
+    // You can do a full CRUD operations. Just remember to remove any added data.
+    // Return true if all fine, throw an error if not.
+
+    return true;
   }
 
   protected validateKey(key: Key): void {
