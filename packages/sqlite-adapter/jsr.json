@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/sqlite-adapter",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "exports": "./mod.ts",
   "publish": {
     "include": ["package.json", "README.md", "mod.ts", "src/**/*.ts"],

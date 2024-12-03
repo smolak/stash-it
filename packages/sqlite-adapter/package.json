@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/sqlite-adapter",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -31,7 +31,7 @@
     "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.3.0",
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.4.0",
     "better-sqlite3": "^11.1.2",
     "zod": "^3.23.8"
   },
