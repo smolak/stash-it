@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/stash-it",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -34,7 +34,7 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.3.0"
+    "@stash-it/core": "npm:@jsr/stash-it__core@0.4.0"
   },
   "devDependencies": {
     "vitest-mock-extended": "^2.0.2"
