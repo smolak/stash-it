@@ -172,13 +172,32 @@ export abstract class StashItAdapter implements CommonInterface {
     // It's useful for adapters that need to close connections or clean up resources.
   }
 
+  /**
+   * Runs checks, essetially all public adapter's methods,
+   * on the storage, to verify if all of those methods can be performed.
+   * More precisely, if the adapter can operate (read, write, update, delete)
+   * on the storage without problems.
+   *
+   * Resolves with `true` if all fine.
+   * Should throw an error if something goes wrong.
+   */
   async checkStorage(): Promise<true> {
-    // Do nothing by default. Implement in subclass if needed.
-    // For some adapters you will want to check if storage is capable of operating with.
-    // Implement any checks necessary, e.g. a simple read operation, which will check
-    // if storage (like a DB table) has all the necessary columns, etc.
-    // You can do a full CRUD operations. Just remember to remove any added data.
-    // Return true if all fine, throw an error if not.
+    const randomValue = Math.random().toString(36).substring(2);
+    const key: Key = `check_storage_key_${randomValue}`;
+    const value: Value = "check_storage_value";
+    const extra: Extra = { check_storage_extra: "check_storage_extra_value" };
+
+    await this.connect();
+
+    await this.setItem(key, value, extra);
+    await this.hasItem(key);
+    await this.getItem(key);
+    await this.getExtra(key);
+    await this.setItem(key, "a new value", { and: "a new extra" });
+    await this.setExtra(key, { again: "new extra value" });
+    await this.removeItem(key);
+
+    await this.disconnect();
 
     return true;
   }

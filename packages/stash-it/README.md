@@ -115,11 +115,23 @@ Ready means, can be intreacted with.
 await stashIt.checkStorage();
 ```
 
-This method calls adapter's `checkStorage`. Each adapter knows how (or if) to check if storage
-can be interacted with. This is a utility method, not something that you need to call/check.
+This method calls adapter's (base) abstract class' `checkStorage` method.
+It connects to the storage, if need be (not all adapters do), does a full CRUD operation, meaning:
 
-What is checked? E.g. a simple `SELECT` is executed to check if table schema is fine.
-But it can also do a full set of CRUD operations. It depends on how it's implemented on the adapter.
+- creates an item (random data)
+- checks if the item exists
+- gets the item
+- gets extra
+- sets new item data (overwrite values for existing entry)
+- sets extra on existing item (overwiriting existin extra)
+- deletes the item
+
+(generally speaking, all public methods)
+
+Finally, disconnects.
+
+If at any point something will go wrong, and error will be thrown. If everything goes right,
+the method resolves with `true`.
 
 ## Installation
 

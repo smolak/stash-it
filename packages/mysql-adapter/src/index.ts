@@ -78,17 +78,6 @@ export class MySqlAdapter extends StashItAdapter {
     this.#extraColumnName = extraColumnName;
   }
 
-  override async checkStorage(): Promise<true> {
-    await this.connect();
-
-    const randomString = Math.random().toString(36).substring(2);
-    await this.getItem(randomString);
-
-    await this.disconnect();
-
-    return true;
-  }
-
   override async connect() {
     this.#connection = await createConnection(this.#connectionConfiguration);
   }

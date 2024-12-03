@@ -53,12 +53,6 @@ export class SqliteAdapter extends StashItAdapter {
     this.#extraColumnName = extraColumnName;
   }
 
-  override async checkStorage(): Promise<true> {
-    await this.getItem("test");
-
-    return true;
-  }
-
   async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
     this.validateKey(key);
 
