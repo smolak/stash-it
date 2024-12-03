@@ -87,8 +87,8 @@ importers:
   packages/memory-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.3.0
-        version: '@jsr/stash-it__core@0.3.0'
+        specifier: npm:@jsr/stash-it__core@0.4.0
+        version: '@jsr/stash-it__core@0.4.0'
     devDependencies:
       '@stash-it/dev-tools':
         specifier: npm:@jsr/stash-it__dev-tools@0.0.5
@@ -502,6 +502,9 @@ packages:
 
   '@jsr/stash-it__core@0.3.0':
     resolution: {integrity: sha512-XI3aue2Ke7pxAaIPQ8zDntUfWh1zlx7/hYHY1AK9r1Oze+ZFAZ15FClKrp2M0RU3TODRgTEGiANJdgvud6UD+w==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.3.0.tgz}
+
+  '@jsr/stash-it__core@0.4.0':
+    resolution: {integrity: sha512-kB0QKCGGdc90F8uw7ceCtScY5sE2Gt0sCot+Gj+C+BBq84jTDIFX8kpJFTgAjRmds9vPiDNBtBz5DkP0xOz3/Q==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.4.0.tgz}
 
   '@jsr/stash-it__dev-tools@0.0.5':
     resolution: {integrity: sha512-6QZ6g51Dz/Zbk/U+AvdPD8THklmx0lgY4+tjToQ8h7M8KL7rfYqNQ/YMvH+UvWm0CRxilfIlM+6ThO/TtzFmvA==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.5.tgz}
@@ -2897,6 +2900,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@jsr/stash-it__core@0.3.0': {}
+
+  '@jsr/stash-it__core@0.4.0': {}
 
   '@jsr/stash-it__dev-tools@0.0.5(@types/node@22.10.1)':
     dependencies:
