@@ -97,8 +97,8 @@ importers:
   packages/mysql-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.3.0
-        version: '@jsr/stash-it__core@0.3.0'
+        specifier: npm:@jsr/stash-it__core@0.4.0
+        version: '@jsr/stash-it__core@0.4.0'
       mysql2:
         specifier: ^3.11.4
         version: 3.11.5
