@@ -151,8 +151,8 @@ importers:
   packages/redis-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.3.0
-        version: '@jsr/stash-it__core@0.3.0'
+        specifier: npm:@jsr/stash-it__core@0.4.0
+        version: '@jsr/stash-it__core@0.4.0'
       redis:
         specifier: ^4.7.0
         version: 4.7.0
