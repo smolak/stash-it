@@ -1,0 +1,43 @@
+{
+  "name": "@stash-it/postgresql-adapter",
+  "version": "0.0.1",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": "./mod.ts",
+  "files": [
+    "mod.ts",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "adapter",
+    "postgresql",
+    "PostgreSQL"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "test": "./bin/when-postgresql-is-ready-run.sh vitest run",
+    "test:watch": "./bin/when-postgresql-is-ready-run.sh vitest --watch",
+    "publish": "pnpx jsr publish",
+    "publish:with-slow-types": "pnpx jsr publish --allow-slow-types"
+  },
+  "dependencies": {
+    "@stash-it/core": "workspace:*",
+    "mysql2": "^3.11.4",
+    "pg": "^8.13.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@stash-it/dev-tools": "workspace:*",
+    "@types/pg": "^8.11.10"
+  }
+}

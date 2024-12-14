@@ -1,15 +1,15 @@
-import { describe, it, expect, afterAll } from "vitest";
+import { describe, expect, it, afterAll } from "vitest";
 import { runAdapterTests } from "@stash-it/dev-tools";
-import { createConnection } from "mysql2/promise";
+import { Client } from "pg";
 
-import { MySqlAdapter, mySqlAdapterConfigurationSchema, type MySqlAdapterConfiguration } from "./index";
+import { PostgreSqlAdapter, postgreSqlAdapterConfigurationSchema, type PostgreSqlAdapterConfiguration } from "./index";
 
-const connectionConfiguration: MySqlAdapterConfiguration["connection"] = {
+const connectionConfiguration: PostgreSqlAdapterConfiguration["connection"] = {
   host: "localhost",
-  user: "root",
-  password: "rootpassword",
+  user: "user",
+  password: "password",
   database: "dbname",
-  port: 3306,
+  port: 5432,
 };
 
 const tableName = "items";
@@ -17,37 +17,43 @@ const keyColumnName = "key";
 const valueColumnName = "value";
 const extraColumnName = "extra";
 
-const tableConfiguration: MySqlAdapterConfiguration["table"] = {
+const tableConfiguration: PostgreSqlAdapterConfiguration["table"] = {
   tableName,
   keyColumnName,
   valueColumnName,
   extraColumnName,
 };
 
-const adapterConfiguration: MySqlAdapterConfiguration = {
+const adapterConfiguration: PostgreSqlAdapterConfiguration = {
   connection: connectionConfiguration,
   table: tableConfiguration,
 };
 
-const prepareDatabase = async (connectionConfiguration: MySqlAdapterConfiguration["connection"]) => {
-  const db = await createConnection(connectionConfiguration);
+const prepareDatabase = async (configuration: PostgreSqlAdapterConfiguration) => {
+  const client = new Client(configuration.connection);
 
-  await db.query(`DROP TABLE IF EXISTS \`${tableName}\``);
+  await client.connect();
 
-  await db.query(
-    `CREATE TABLE \`${tableName}\` (
-      \`${keyColumnName}\` VARCHAR(255) PRIMARY KEY,
-      \`${valueColumnName}\` JSON NOT NULL, 
-      \`${extraColumnName}\` JSON NOT NULL
+  await client.query(`DROP TABLE IF EXISTS "${tableName}"`);
+
+  await client.query(
+    `CREATE TABLE "${tableName}" (
+      "${keyColumnName}" TEXT PRIMARY KEY,
+      "${valueColumnName}" JSONB NOT NULL, 
+      "${extraColumnName}" JSONB NOT NULL
      )`,
   );
+
+  await client.end();
 };
 
-describe("mysql-adapter", async () => {
+describe("PostgreSqlAdapter", async () => {
   afterAll(async () => {
-    const db = await createConnection(connectionConfiguration);
+    const client = new Client(adapterConfiguration.connection);
 
-    await db.query(`DROP TABLE IF EXISTS \`${tableName}\``);
+    await client.connect();
+    await client.query(`DROP TABLE IF EXISTS "${tableName}"`);
+    await client.end();
   });
 
   describe("configuration", () => {
@@ -56,13 +62,15 @@ describe("mysql-adapter", async () => {
         it("throws an error when host is not provided", () => {
           expect(
             () =>
-              new MySqlAdapter({ connection: { ...connectionConfiguration, host: undefined as unknown as string } }),
+              new PostgreSqlAdapter({
+                connection: { ...connectionConfiguration, host: undefined as unknown as string },
+              }),
           ).toThrowErrorMatchingSnapshot();
         });
 
         it("throws an error when host is empty", () => {
           expect(
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, host: "" } }),
+            () => new PostgreSqlAdapter({ connection: { ...connectionConfiguration, host: "" } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -71,13 +79,15 @@ describe("mysql-adapter", async () => {
         it("throws an error when user is not provided", () => {
           expect(
             () =>
-              new MySqlAdapter({ connection: { ...connectionConfiguration, user: undefined as unknown as string } }),
+              new PostgreSqlAdapter({
+                connection: { ...connectionConfiguration, user: undefined as unknown as string },
+              }),
           ).toThrowErrorMatchingSnapshot();
         });
 
         it("throws an error when user is empty", () => {
           expect(
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, user: "" } }),
+            () => new PostgreSqlAdapter({ connection: { ...connectionConfiguration, user: "" } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -86,7 +96,7 @@ describe("mysql-adapter", async () => {
         it("throws an error when password is not provided", () => {
           expect(
             () =>
-              new MySqlAdapter({
+              new PostgreSqlAdapter({
                 connection: { ...connectionConfiguration, password: undefined as unknown as string },
               }),
           ).toThrowErrorMatchingSnapshot();
@@ -94,7 +104,7 @@ describe("mysql-adapter", async () => {
 
         it("throws an error when password is empty", () => {
           expect(
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, password: "" } }),
+            () => new PostgreSqlAdapter({ connection: { ...connectionConfiguration, password: "" } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -103,7 +113,7 @@ describe("mysql-adapter", async () => {
         it("throws an error when database is not provided", () => {
           expect(
             () =>
-              new MySqlAdapter({
+              new PostgreSqlAdapter({
                 connection: { ...connectionConfiguration, database: undefined as unknown as string },
               }),
           ).toThrowErrorMatchingSnapshot();
@@ -111,24 +121,26 @@ describe("mysql-adapter", async () => {
 
         it("throws an error when database is empty", () => {
           expect(
-            () => new MySqlAdapter({ connection: { ...connectionConfiguration, database: "" } }),
+            () => new PostgreSqlAdapter({ connection: { ...connectionConfiguration, database: "" } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
 
       describe("port number", () => {
-        it("should default to 3306 when port is not provided", () => {
+        it("should default to 5432 when port is not provided", () => {
           const {
             connection: { port },
-          } = mySqlAdapterConfigurationSchema.parse({ connection: { ...connectionConfiguration, port: undefined } });
+          } = postgreSqlAdapterConfigurationSchema.parse({
+            connection: { ...connectionConfiguration, port: undefined },
+          });
 
-          expect(port).toBe(3306);
+          expect(port).toBe(5432);
         });
 
         it("throws an error when port is not a number", () => {
           expect(
             () =>
-              new MySqlAdapter({
+              new PostgreSqlAdapter({
                 connection: { ...connectionConfiguration, port: "not_a_port_number" as unknown as number },
               }),
           ).toThrowErrorMatchingSnapshot();
@@ -138,7 +150,7 @@ describe("mysql-adapter", async () => {
 
     describe("table", () => {
       it("should use default table configuration when it is not provided", () => {
-        const { table } = mySqlAdapterConfigurationSchema.parse({
+        const { table } = postgreSqlAdapterConfigurationSchema.parse({
           ...adapterConfiguration,
           table: undefined,
         });
@@ -155,7 +167,7 @@ describe("mysql-adapter", async () => {
         it('should default to "items" if not provided', () => {
           const {
             table: { tableName },
-          } = mySqlAdapterConfigurationSchema.parse({
+          } = postgreSqlAdapterConfigurationSchema.parse({
             connection: connectionConfiguration,
             table: { tableName: undefined },
           });
@@ -165,13 +177,13 @@ describe("mysql-adapter", async () => {
 
         it("should throw if empty", () => {
           expect(
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { tableName: "" } }),
+            () => new PostgreSqlAdapter({ ...adapterConfiguration, table: { tableName: "" } }),
           ).toThrowErrorMatchingSnapshot();
         });
 
         it("should throw if not a string", () => {
           expect(
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { tableName: 1 as unknown as string } }),
+            () => new PostgreSqlAdapter({ ...adapterConfiguration, table: { tableName: 1 as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -180,7 +192,7 @@ describe("mysql-adapter", async () => {
         it('should default to "key" if not provided', () => {
           const {
             table: { keyColumnName },
-          } = mySqlAdapterConfigurationSchema.parse({
+          } = postgreSqlAdapterConfigurationSchema.parse({
             connection: connectionConfiguration,
             table: { keyColumnName: undefined },
           });
@@ -190,13 +202,13 @@ describe("mysql-adapter", async () => {
 
         it("should throw if empty", () => {
           expect(
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { keyColumnName: "" } }),
+            () => new PostgreSqlAdapter({ ...adapterConfiguration, table: { keyColumnName: "" } }),
           ).toThrowErrorMatchingSnapshot();
         });
 
         it("should throw if not a string", () => {
           expect(
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { keyColumnName: 1 as unknown as string } }),
+            () => new PostgreSqlAdapter({ ...adapterConfiguration, table: { keyColumnName: 1 as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -205,7 +217,7 @@ describe("mysql-adapter", async () => {
         it('should default to "value" if not provided', () => {
           const {
             table: { valueColumnName },
-          } = mySqlAdapterConfigurationSchema.parse({
+          } = postgreSqlAdapterConfigurationSchema.parse({
             connection: connectionConfiguration,
             table: { valueColumnName: undefined },
           });
@@ -215,13 +227,14 @@ describe("mysql-adapter", async () => {
 
         it("should throw if empty", () => {
           expect(
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { valueColumnName: "" } }),
+            () => new PostgreSqlAdapter({ ...adapterConfiguration, table: { valueColumnName: "" } }),
           ).toThrowErrorMatchingSnapshot();
         });
 
         it("should throw if not a string", () => {
           expect(
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { valueColumnName: 1 as unknown as string } }),
+            () =>
+              new PostgreSqlAdapter({ ...adapterConfiguration, table: { valueColumnName: 1 as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
@@ -230,7 +243,7 @@ describe("mysql-adapter", async () => {
         it('should default to "extra" if not provided', () => {
           const {
             table: { extraColumnName },
-          } = mySqlAdapterConfigurationSchema.parse({
+          } = postgreSqlAdapterConfigurationSchema.parse({
             connection: connectionConfiguration,
             table: { extraColumnName: undefined },
           });
@@ -240,21 +253,22 @@ describe("mysql-adapter", async () => {
 
         it("should throw if empty", () => {
           expect(
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { extraColumnName: "" } }),
+            () => new PostgreSqlAdapter({ ...adapterConfiguration, table: { extraColumnName: "" } }),
           ).toThrowErrorMatchingSnapshot();
         });
 
         it("should throw if not a string", () => {
           expect(
-            () => new MySqlAdapter({ ...adapterConfiguration, table: { extraColumnName: 1 as unknown as string } }),
+            () =>
+              new PostgreSqlAdapter({ ...adapterConfiguration, table: { extraColumnName: 1 as unknown as string } }),
           ).toThrowErrorMatchingSnapshot();
         });
       });
     });
 
     describe("table check", () => {
-      it("should throw when table does not exist", () => {
-        const configuration: MySqlAdapterConfiguration = {
+      it("should throw when table does not exist", async () => {
+        const configuration: PostgreSqlAdapterConfiguration = {
           ...adapterConfiguration,
           table: {
             ...adapterConfiguration.table,
@@ -262,13 +276,13 @@ describe("mysql-adapter", async () => {
           },
         };
 
-        const adapter = new MySqlAdapter(configuration);
+        const adapter = new PostgreSqlAdapter(configuration);
 
-        expect(adapter.checkStorage()).rejects.toThrow("Table 'dbname.non_existent_table' doesn't exist");
+        await expect(adapter.checkStorage()).rejects.toThrow('relation "non_existent_table" does not exist');
       });
 
-      it("should throw when key column doesn't exist", () => {
-        const configuration: MySqlAdapterConfiguration = {
+      it("should throw when key column doesn't exist", async () => {
+        const configuration: PostgreSqlAdapterConfiguration = {
           ...adapterConfiguration,
           table: {
             ...adapterConfiguration.table,
@@ -276,13 +290,13 @@ describe("mysql-adapter", async () => {
           },
         };
 
-        const adapter = new MySqlAdapter(configuration);
+        const adapter = new PostgreSqlAdapter(configuration);
 
-        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_key_column' in");
+        await expect(adapter.checkStorage()).rejects.toThrow('column "non_existent_key_column" does not exist');
       });
 
-      it("should throw when value column doesn't exist", () => {
-        const configuration: MySqlAdapterConfiguration = {
+      it("should throw when value column doesn't exist", async () => {
+        const configuration: PostgreSqlAdapterConfiguration = {
           ...adapterConfiguration,
           table: {
             ...adapterConfiguration.table,
@@ -290,13 +304,15 @@ describe("mysql-adapter", async () => {
           },
         };
 
-        const adapter = new MySqlAdapter(configuration);
+        const adapter = new PostgreSqlAdapter(configuration);
 
-        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_value_column' in");
+        await expect(adapter.checkStorage()).rejects.toThrow(
+          'column "non_existent_value_column" of relation "items" does not exist',
+        );
       });
 
-      it("should throw when extra column doesn't exist", () => {
-        const configuration: MySqlAdapterConfiguration = {
+      it("should throw when extra column doesn't exist", async () => {
+        const configuration: PostgreSqlAdapterConfiguration = {
           ...adapterConfiguration,
           table: {
             ...adapterConfiguration.table,
@@ -304,17 +320,19 @@ describe("mysql-adapter", async () => {
           },
         };
 
-        const adapter = new MySqlAdapter(configuration);
+        const adapter = new PostgreSqlAdapter(configuration);
 
-        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_extra_column' in");
+        await expect(adapter.checkStorage()).rejects.toThrow(
+          'non_existent_extra_column" of relation "items" does not exist',
+        );
       });
     });
   });
 
   describe("adapter tests", async () => {
-    await prepareDatabase(adapterConfiguration.connection);
+    await prepareDatabase(adapterConfiguration);
 
-    const adapter = new MySqlAdapter(adapterConfiguration);
+    const adapter = new PostgreSqlAdapter(adapterConfiguration);
 
     runAdapterTests(adapter);
   });
