@@ -154,8 +154,14 @@ export interface StashItInterface extends CommonInterface {
   registerPlugins(plugins: StashItPlugin[]): void;
 }
 
+export interface StashItAdapterInterface extends CommonInterface {
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+  checkStorage(): Promise<true>;
+}
+
 /** StashIt adapter abstract class. */
-export abstract class StashItAdapter implements CommonInterface {
+export abstract class StashItAdapter implements StashItAdapterInterface {
   /**
    * Connect to the storage (DB, file system, resource of any kind where the items are stored).
    */

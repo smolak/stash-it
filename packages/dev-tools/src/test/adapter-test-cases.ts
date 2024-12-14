@@ -1,6 +1,6 @@
 import { it, expect, afterAll, describe, beforeAll } from "vitest";
 import { nanoid } from "nanoid";
-import type { StashItAdapter } from "@stash-it/core";
+import type { StashItAdapterInterface } from "@stash-it/core";
 
 /**
  * Run tests for a given adapter.
@@ -15,7 +15,7 @@ import type { StashItAdapter } from "@stash-it/core";
  * runAdapterTests(yourAdapter);
  * ```
  */
-export const runAdapterTests = (adapter: StashItAdapter): void => {
+export const runAdapterTests = (adapter: StashItAdapterInterface): void => {
   const keysToRemoveItemsBy: string[] = [];
 
   describe("adapter's functionality", () => {
@@ -208,32 +208,6 @@ export const runAdapterTests = (adapter: StashItAdapter): void => {
       });
     });
 
-    describe("removing an item", () => {
-      it("should be able to remove an existing item", async () => {
-        const key = nanoid();
-        keysToRemoveItemsBy.push(key);
-
-        const value = "value";
-
-        await adapter.setItem(key, value, {});
-
-        const check = await adapter.hasItem(key);
-        expect(check).toBe(true);
-
-        await adapter.removeItem(key);
-
-        const checkAgain = await adapter.hasItem(key);
-
-        expect(checkAgain).toBe(false);
-      });
-
-      it("should return false when trying to remove non-existing item", async () => {
-        const result = await adapter.removeItem("non-existing-key");
-
-        expect(result).toBe(false);
-      });
-    });
-
     describe("checking if item exists", () => {
       it("should return true for existing item", async () => {
         const key = nanoid();
@@ -256,7 +230,7 @@ export const runAdapterTests = (adapter: StashItAdapter): void => {
     });
 
     describe("removing an item", () => {
-      it("should return true when removing an existing item", async () => {
+      it("should be able to remove an existing item", async () => {
         const key = nanoid();
         keysToRemoveItemsBy.push(key);
 
@@ -264,12 +238,17 @@ export const runAdapterTests = (adapter: StashItAdapter): void => {
 
         await adapter.setItem(key, value, {});
 
-        const result = await adapter.removeItem(key);
+        const check = await adapter.hasItem(key);
+        expect(check).toBe(true);
 
-        expect(result).toBe(true);
+        await adapter.removeItem(key);
+
+        const checkAgain = await adapter.hasItem(key);
+
+        expect(checkAgain).toBe(false);
       });
 
-      it("should return false when removing non-existing item", async () => {
+      it("should return false when trying to remove non-existing item", async () => {
         const result = await adapter.removeItem("non-existing-key");
 
         expect(result).toBe(false);

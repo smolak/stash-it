@@ -1,0 +1,9 @@
+{
+  "name": "@stash-it/postgresql-adapter",
+  "version": "0.0.1",
+  "exports": "./mod.ts",
+  "publish": {
+    "include": ["package.json", "README.md", "mod.ts", "src/**/*.ts"],
+    "exclude": ["src/**/*.test.ts", "src/__snapshots__"]
+  }
+}
