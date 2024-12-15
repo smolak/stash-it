@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/core",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -26,7 +26,9 @@
     "adapter",
     "memory",
     "redis",
-    "sqlite"
+    "sqlite",
+    "mysql",
+    "postgresql"
   ],
   "scripts": {
     "lint": "eslint .",
