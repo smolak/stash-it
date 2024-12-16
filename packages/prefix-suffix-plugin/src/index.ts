@@ -7,19 +7,9 @@ const PluginOptionsSchema = z
     prefix: PrefixSuffixSchema,
     suffix: PrefixSuffixSchema,
   })
-  .superRefine((values, ctx) => {
-    if (!values.prefix && !values.suffix) {
-      ctx.addIssue({
-        message: "Either prefix or suffix should be set.",
-        code: z.ZodIssueCode.custom,
-        path: ["prefix"],
-      });
-      ctx.addIssue({
-        message: "Either prefix or suffix should be set.",
-        code: z.ZodIssueCode.custom,
-        path: ["suffix"],
-      });
-    }
+  .refine((values) => values.prefix || values.suffix, {
+    message: "Either prefix or suffix should be set.",
+    path: [],
   });
 
 type PluginOptions = z.infer<typeof PluginOptionsSchema>;
@@ -48,7 +38,6 @@ const dropSuffix = (key: Key, suffix: string): Key => {
 export const createPrefixSuffixPlugin = (options: PluginOptions): StashItPlugin => {
   const values = PluginOptionsSchema.parse(options);
 
-  // TODO: move this to schema at some point. Do this now
   const prefix = values.prefix ?? "";
   const suffix = values.suffix ?? "";
 

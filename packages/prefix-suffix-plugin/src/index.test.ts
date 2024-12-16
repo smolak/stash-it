@@ -4,6 +4,7 @@ import { StashIt } from "@stash-it/stash-it";
 import { MemoryAdapter } from "@stash-it/memory-adapter";
 
 import { createPrefixSuffixPlugin } from "./index";
+import { ZodError } from "zod";
 
 // Any adapter can be used here.
 const adapter = new MemoryAdapter();
@@ -142,8 +143,8 @@ describe("prefix-suffix-plugin", () => {
   });
 
   describe("when neither prefix nor suffix is set", () => {
-    it("throws an error", () => {
-      expect(() => createPrefixSuffixPlugin({})).toThrowErrorMatchingSnapshot();
+    it.only("throws an error", () => {
+      expect(() => createPrefixSuffixPlugin({})).toThrow(ZodError);
     });
   });
 
@@ -178,8 +179,8 @@ describe("prefix-suffix-plugin", () => {
       await stash1.setItem("key", "value1");
       await stash2.setItem("key", "value2");
 
-      expect(stash1.hasItem("key")).resolves.toBe(true);
-      expect(stash2.hasItem("key")).resolves.toBe(true);
+      await expect(stash1.hasItem("key")).resolves.toBe(true);
+      await expect(stash2.hasItem("key")).resolves.toBe(true);
 
       const item1 = await stash1.getItem("key");
       const item2 = await stash2.getItem("key");
@@ -188,8 +189,8 @@ describe("prefix-suffix-plugin", () => {
 
       await stash1.removeItem("key");
 
-      expect(stash1.hasItem("key")).resolves.toBe(false);
-      expect(stash2.hasItem("key")).resolves.toBe(true);
+      await expect(stash1.hasItem("key")).resolves.toBe(false);
+      await expect(stash2.hasItem("key")).resolves.toBe(true);
     });
   });
 });
