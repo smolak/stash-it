@@ -97,18 +97,18 @@ importers:
   packages/mysql-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.4.0
-        version: '@jsr/stash-it__core@0.4.0'
+        specifier: npm:@jsr/stash-it__core@0.5.0
+        version: '@jsr/stash-it__core@0.5.0'
       mysql2:
         specifier: ^3.11.4
         version: 3.11.5
       zod:
-        specifier: ^3.23.8
-        version: 3.23.8
+        specifier: ^3.24.1
+        version: 3.24.1
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.5
-        version: '@jsr/stash-it__dev-tools@0.0.5(@types/node@22.10.1)'
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.6
+        version: '@jsr/stash-it__dev-tools@0.0.6(@types/node@22.10.1)'
 
   packages/postgresql-adapter:
     dependencies:
@@ -3015,6 +3015,9 @@ packages:
 
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+
+  zod@3.24.1:
+    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
 
 snapshots:
 
@@ -5995,3 +5998,5 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zod@3.23.8: {}
+
+  zod@3.24.1: {}
