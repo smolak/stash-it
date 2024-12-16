@@ -113,21 +113,18 @@ importers:
   packages/postgresql-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
-      mysql2:
-        specifier: ^3.11.4
-        version: 3.11.5
+        specifier: npm:@jsr/stash-it__core@0.5.0
+        version: '@jsr/stash-it__core@0.5.0'
       pg:
         specifier: ^8.13.1
         version: 8.13.1
       zod:
-        specifier: ^3.23.8
-        version: 3.23.8
+        specifier: ^3.24.1
+        version: 3.24.1
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: workspace:*
-        version: link:../dev-tools
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.6
+        version: '@jsr/stash-it__dev-tools@0.0.6(@types/node@22.10.1)'
       '@types/pg':
         specifier: ^8.11.10
         version: 8.11.10
