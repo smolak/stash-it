@@ -36,11 +36,11 @@ describe("ttl-plugin", () => {
     });
 
     describe(`when extra already contains '${TTL_EXTRA_PROPERTY_NAME}' property`, () => {
-      it(`throws an error, as '${TTL_EXTRA_PROPERTY_NAME}' is a reserved property name`, () => {
+      it(`throws an error, as '${TTL_EXTRA_PROPERTY_NAME}' is a reserved property name`, async () => {
         const plugin = createTtlPlugin({ ttl: 10 });
         const handler = getHandler("beforeSetItem", plugin);
 
-        expect(() =>
+        await expect(
           handler({
             adapter,
             key: "key",
@@ -54,11 +54,11 @@ describe("ttl-plugin", () => {
 
   describe("setting extra", () => {
     describe(`when extra already contains '${TTL_EXTRA_PROPERTY_NAME}' property`, () => {
-      it(`throws an error, as '${TTL_EXTRA_PROPERTY_NAME}' is a reserved property name`, () => {
+      it(`throws an error, as '${TTL_EXTRA_PROPERTY_NAME}' is a reserved property name`, async () => {
         const plugin = createTtlPlugin({ ttl: 10 });
         const handler = getHandler("beforeSetExtra", plugin);
 
-        expect(() =>
+        await expect(
           handler({
             adapter,
             key: "key",

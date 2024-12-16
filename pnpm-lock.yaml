@@ -224,21 +224,21 @@ importers:
   packages/ttl-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.3.0
-        version: '@jsr/stash-it__core@0.3.0'
+        specifier: npm:@jsr/stash-it__core@0.5.0
+        version: '@jsr/stash-it__core@0.5.0'
       zod:
-        specifier: ^3.23.8
+        specifier: ^3.24.1
         version: 3.24.1
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.5
-        version: '@jsr/stash-it__dev-tools@0.0.5(@types/node@22.10.2)'
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.6
+        version: '@jsr/stash-it__dev-tools@0.0.6(@types/node@22.10.2)'
       '@stash-it/memory-adapter':
-        specifier: npm:@jsr/stash-it__memory-adapter@0.2.1
-        version: '@jsr/stash-it__memory-adapter@0.2.1'
+        specifier: npm:@jsr/stash-it__memory-adapter@0.4.0
+        version: '@jsr/stash-it__memory-adapter@0.4.0'
       '@stash-it/stash-it':
-        specifier: npm:@jsr/stash-it__stash-it@0.3.1
-        version: '@jsr/stash-it__stash-it@0.3.1'
+        specifier: npm:@jsr/stash-it__stash-it@0.5.0
+        version: '@jsr/stash-it__stash-it@0.5.0'
 
   packages/typescript-config:
     devDependencies:
@@ -513,26 +513,14 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@jsr/stash-it__core@0.3.0':
-    resolution: {integrity: sha512-XI3aue2Ke7pxAaIPQ8zDntUfWh1zlx7/hYHY1AK9r1Oze+ZFAZ15FClKrp2M0RU3TODRgTEGiANJdgvud6UD+w==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.3.0.tgz}
-
   '@jsr/stash-it__core@0.5.0':
     resolution: {integrity: sha512-6xVjFDb5GQ6NPvs+po4XloP63JSd9wqBr77RRzh7y368maGUeY0+UeZjTI7jmyst00vrEwqnRXEPYdVZ6g+zpA==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.5.0.tgz}
-
-  '@jsr/stash-it__dev-tools@0.0.5':
-    resolution: {integrity: sha512-6QZ6g51Dz/Zbk/U+AvdPD8THklmx0lgY4+tjToQ8h7M8KL7rfYqNQ/YMvH+UvWm0CRxilfIlM+6ThO/TtzFmvA==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.5.tgz}
 
   '@jsr/stash-it__dev-tools@0.0.6':
     resolution: {integrity: sha512-BbhoWsL/JkGdhdHOEwz4ckOOn2gM1U1LBunpyzUhkZrSHSnKfUzEOc/9AftnIRL3zF644LRC8GsNXn+zHfMq6Q==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__dev-tools/0.0.6.tgz}
 
-  '@jsr/stash-it__memory-adapter@0.2.1':
-    resolution: {integrity: sha512-f3vHKVLSE+A/VcXtzADfzrIPhqt8L/+t4qOdX6IC/yQc1of92fqSEoL/0F/ap+mlIq+QvUIRSdbZYIDamH5UCg==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__memory-adapter/0.2.1.tgz}
-
   '@jsr/stash-it__memory-adapter@0.4.0':
     resolution: {integrity: sha512-meBzXyurCTNEV5s6c+irdPjFeePRYm3vEJ4jTP4Yv8suGH1bMrEdmBIS0NCzJxkyiv6k/7grbFNkVHgYhLc9Ig==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__memory-adapter/0.4.0.tgz}
-
-  '@jsr/stash-it__stash-it@0.3.1':
-    resolution: {integrity: sha512-Z3J7/OCljacNYJSx1TP5AhYQ2blFmk8GxE+e5iOuqQOBkbf2E4AYTIPMVDu8rT9/wQjB2OkHiwOZd4QqOVZB0w==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.3.1.tgz}
 
   '@jsr/stash-it__stash-it@0.5.0':
     resolution: {integrity: sha512-4vjFQAxe72qkz7kiOCQOhZ3Ex65jRId0Jc12Lp96/Jdq4YI8EPE3YjMty3d6Au1ASXwU9ghrSTIs5VpJ6KhWGQ==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__stash-it/0.5.0.tgz}
@@ -3026,31 +3014,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@jsr/stash-it__core@0.3.0': {}
-
   '@jsr/stash-it__core@0.5.0': {}
-
-  '@jsr/stash-it__dev-tools@0.0.5(@types/node@22.10.2)':
-    dependencies:
-      '@jsr/stash-it__core': 0.3.0
-      nanoid: 5.0.9
-      vitest: 2.1.8(@types/node@22.10.2)
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@types/node'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - happy-dom
-      - jsdom
-      - less
-      - lightningcss
-      - msw
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
 
   '@jsr/stash-it__dev-tools@0.0.6(@types/node@22.10.2)':
     dependencies:
@@ -3074,17 +3038,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@jsr/stash-it__memory-adapter@0.2.1':
-    dependencies:
-      '@jsr/stash-it__core': 0.3.0
-
   '@jsr/stash-it__memory-adapter@0.4.0':
     dependencies:
       '@jsr/stash-it__core': 0.5.0
-
-  '@jsr/stash-it__stash-it@0.3.1':
-    dependencies:
-      '@jsr/stash-it__core': 0.3.0
 
   '@jsr/stash-it__stash-it@0.5.0':
     dependencies:
