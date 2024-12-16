@@ -61,34 +61,39 @@ describe("sqlite-adapter", () => {
           it("should throw if passed value is not a string", () => {
             expect(
               () => new SqliteAdapter({ ...adapterConfiguration, table: { tableName: 1 as unknown as string } }),
-            ).toThrowErrorMatchingSnapshot();
+            ).toThrow(
+              expect.objectContaining({ message: expect.stringContaining("Expected string, received number") }),
+            );
           });
         });
 
         describe("keyColumnName", () => {
           it("should throw if passed value is not a string", () => {
-            // @ts-ignore
             expect(
               () => new SqliteAdapter({ ...adapterConfiguration, table: { keyColumnName: 1 as unknown as string } }),
-            ).toThrowErrorMatchingSnapshot();
+            ).toThrow(
+              expect.objectContaining({ message: expect.stringContaining("Expected string, received number") }),
+            );
           });
         });
 
         describe("valueColumnName", () => {
           it("should throw if passed value is not a string", () => {
-            // @ts-ignore
             expect(
               () => new SqliteAdapter({ ...adapterConfiguration, table: { valueColumnName: 1 as unknown as string } }),
-            ).toThrowErrorMatchingSnapshot();
+            ).toThrow(
+              expect.objectContaining({ message: expect.stringContaining("Expected string, received number") }),
+            );
           });
         });
 
         describe("extraColumnName", () => {
           it("should throw if passed value is not a string", () => {
-            // @ts-ignore
             expect(
               () => new SqliteAdapter({ ...adapterConfiguration, table: { extraColumnName: 1 as unknown as string } }),
-            ).toThrowErrorMatchingSnapshot();
+            ).toThrow(
+              expect.objectContaining({ message: expect.stringContaining("Expected string, received number") }),
+            );
           });
         });
       });
@@ -125,7 +130,9 @@ describe("sqlite-adapter", () => {
 
         const adapter = new SqliteAdapter(configuration);
 
-        await expect(adapter.checkStorage()).rejects.toThrow('no such column: "non_existent_value_column"');
+        await expect(adapter.checkStorage()).rejects.toThrow(
+          "table items has no column named non_existent_value_column",
+        );
       });
 
       it("should throw when extra column doesn't exist", async () => {
@@ -136,7 +143,9 @@ describe("sqlite-adapter", () => {
 
         const adapter = new SqliteAdapter(configuration);
 
-        await expect(adapter.checkStorage()).rejects.toThrow('no such column: "non_existent_extra_column"');
+        await expect(adapter.checkStorage()).rejects.toThrow(
+          "table items has no column named non_existent_extra_column",
+        );
       });
     });
   });
