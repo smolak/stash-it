@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { toHaveBeenCalledBefore, toHaveBeenCalledAfter } from "jest-extended";
-import { StashItAdapter, type StashItPlugin } from "@stash-it/core";
+import { type StashItAdapterInterface, type StashItPlugin } from "@stash-it/core";
 import { mock } from "vitest-mock-extended";
 import { StashIt } from "./index";
 
@@ -13,26 +13,26 @@ const item = { key, value, extra };
 
 describe("stash-it class", () => {
   describe("because adapter is passed to hook handlers", () => {
-    it("should not be possible to alter it (plugins could try to do it)", () => {
-      expect(async () => {
-        const plugin: StashItPlugin = {
-          hookHandlers: {
-            beforeSetItem: async (args) => {
-              // @ts-ignore
-              args.adapter.getItem = null;
+    it("should not be possible to alter it (plugins could try to do it)", async () => {
+      const plugin: StashItPlugin = {
+        hookHandlers: {
+          beforeSetItem: async (args) => {
+            // @ts-ignore
+            args.adapter.getItem = null;
 
-              return args;
-            },
+            return args;
           },
-        };
+        },
+      };
 
-        const adapter = createDummyAdapter();
-        const stashIt = new StashIt(adapter);
+      const adapter = createDummyAdapter();
+      const stashIt = new StashIt(adapter);
 
-        stashIt.registerPlugins([plugin]);
+      stashIt.registerPlugins([plugin]);
 
-        await stashIt.setItem(key, value, extra);
-      }).rejects.toThrowErrorMatchingSnapshot();
+      await expect(stashIt.setItem(key, value, extra)).rejects.toThrow(
+        expect.objectContaining({ message: expect.stringContaining("Cannot assign to read only property 'getItem'") }),
+      );
     });
   });
 
@@ -773,7 +773,7 @@ describe("stash-it class", () => {
 });
 
 const createDummyAdapter = () => {
-  const dummyAdapter = mock<StashItAdapter>();
+  const dummyAdapter = mock<StashItAdapterInterface>();
 
   dummyAdapter.connect.mockResolvedValue(undefined);
   dummyAdapter.disconnect.mockResolvedValue(undefined);

@@ -8,14 +8,14 @@ import type {
   StashItPlugin,
   RegisteredHookHandlers,
   SetExtraResult,
-  StashItAdapter,
+  StashItAdapterInterface,
   StashItInterface,
   Value,
 } from "@stash-it/core";
 
 /** StashIt class. The main class to use. */
 export class StashIt implements StashItInterface {
-  readonly #adapter: StashItAdapter;
+  readonly #adapter: StashItAdapterInterface;
   #registeredHookHandlers: RegisteredHookHandlers = {
     buildKey: [],
     beforeSetItem: [],
@@ -32,7 +32,7 @@ export class StashIt implements StashItInterface {
     afterGetExtra: [],
   };
 
-  constructor(adapter: StashItAdapter) {
+  constructor(adapter: StashItAdapterInterface) {
     this.#adapter = adapter;
 
     Object.freeze(this.#adapter);
