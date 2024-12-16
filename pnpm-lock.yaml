@@ -170,21 +170,21 @@ importers:
   packages/redis-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: npm:@jsr/stash-it__core@0.4.0
-        version: '@jsr/stash-it__core@0.4.0'
+        specifier: npm:@jsr/stash-it__core@0.5.0
+        version: '@jsr/stash-it__core@0.5.0'
       redis:
         specifier: ^4.7.0
         version: 4.7.0
       zod:
-        specifier: ^3.23.8
-        version: 3.23.8
+        specifier: ^3.24.1
+        version: 3.24.1
     devDependencies:
       '@stash-it/dev-tools':
-        specifier: npm:@jsr/stash-it__dev-tools@0.0.5
-        version: '@jsr/stash-it__dev-tools@0.0.5(@types/node@22.10.1)'
+        specifier: npm:@jsr/stash-it__dev-tools@0.0.6
+        version: '@jsr/stash-it__dev-tools@0.0.6(@types/node@22.10.1)'
       dotenv:
-        specifier: ^16.4.5
-        version: 16.4.5
+        specifier: ^16.4.7
+        version: 16.4.7
 
   packages/sqlite-adapter:
     dependencies:
@@ -1381,8 +1381,8 @@ packages:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
 
-  dotenv@16.4.5:
-    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+  dotenv@16.4.7:
+    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
 
   electron-to-chromium@1.5.67:
@@ -4147,7 +4147,7 @@ snapshots:
 
   dotenv@16.0.3: {}
 
-  dotenv@16.4.5: {}
+  dotenv@16.4.7: {}
 
   electron-to-chromium@1.5.67: {}
 
