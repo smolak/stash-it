@@ -6,7 +6,7 @@ import { MemoryAdapter } from "@stash-it/memory-adapter";
 import { createReadOnlyPlugin } from "./index";
 
 describe("read-only-plugin", () => {
-  it("throws when any change is about to be made", () => {
+  it("throws when any change is about to be made", async () => {
     const key = "key";
     const value = "value";
     const extra = { some: "extra value" };
@@ -18,12 +18,14 @@ describe("read-only-plugin", () => {
     const beforeRemoveItemHandler = getHandler("beforeRemoveItem", readOnlyPlugin);
     const beforeSetExtraHandler = getHandler("beforeSetExtra", readOnlyPlugin);
 
-    expect(() => beforeSetItemHandler({ key, value, extra, adapter })).rejects.toThrow(
-      "Overwriting items is not allowed!",
+    await expect(beforeSetItemHandler({ key, value, extra, adapter })).rejects.toThrow(
+      expect.objectContaining({ message: expect.stringContaining("Overwriting items is not allowed!") }),
     );
-    expect(() => beforeRemoveItemHandler({ key, adapter })).rejects.toThrow("Removing items is not allowed!");
-    expect(() => beforeSetExtraHandler({ key, extra, adapter })).rejects.toThrow(
-      "Overwriting data in items is not allowed!",
+    await expect(beforeRemoveItemHandler({ key, adapter })).rejects.toThrow(
+      expect.objectContaining({ message: expect.stringContaining("Removing items is not allowed!") }),
+    );
+    await expect(beforeSetExtraHandler({ key, extra, adapter })).rejects.toThrow(
+      expect.objectContaining({ message: expect.stringContaining("Overwriting data in items is not allowed!") }),
     );
   });
 
@@ -38,7 +40,7 @@ describe("read-only-plugin", () => {
     expect(() => stash.getExtra("key")).not.toThrow();
   });
 
-  it("allows customizing error messages", () => {
+  it("allows customizing error messages", async () => {
     const key = "key";
     const value = "value";
     const extra = { some: "extra value" };
@@ -54,10 +56,14 @@ describe("read-only-plugin", () => {
     const beforeRemoveItemHandler = getHandler("beforeRemoveItem", readOnlyPlugin);
     const beforeSetExtraHandler = getHandler("beforeSetExtra", readOnlyPlugin);
 
-    expect(() => beforeSetItemHandler({ key, value, extra, adapter })).rejects.toThrow(
-      "Custom set item error message.",
+    await expect(beforeSetItemHandler({ key, value, extra, adapter })).rejects.toThrow(
+      expect.objectContaining({ message: expect.stringContaining("Custom set item error message.") }),
     );
-    expect(() => beforeRemoveItemHandler({ key, adapter })).rejects.toThrow("Custom remove item error message.");
-    expect(() => beforeSetExtraHandler({ key, extra, adapter })).rejects.toThrow("Custom set extra error message.");
+    await expect(beforeRemoveItemHandler({ key, adapter })).rejects.toThrow(
+      expect.objectContaining({ message: expect.stringContaining("Custom remove item error message.") }),
+    );
+    await expect(beforeSetExtraHandler({ key, extra, adapter })).rejects.toThrow(
+      expect.objectContaining({ message: expect.stringContaining("Custom set extra error message.") }),
+    );
   });
 });
