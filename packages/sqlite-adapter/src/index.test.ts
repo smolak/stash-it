@@ -150,9 +150,7 @@ describe("sqlite-adapter", () => {
     });
   });
 
-  describe("adapter tests", () => {
-    const adapter = new SqliteAdapter(adapterConfiguration);
+  const adapter = new SqliteAdapter(adapterConfiguration);
 
-    runAdapterTests(adapter);
-  });
+  runAdapterTests(adapter);
 });

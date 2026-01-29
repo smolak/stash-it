@@ -330,11 +330,9 @@ describe("PostgreSqlAdapter", async () => {
     });
   });
 
-  describe("adapter tests", async () => {
-    await prepareDatabase(adapterConfiguration);
+  await prepareDatabase(adapterConfiguration);
 
-    const adapter = new PostgreSqlAdapter(adapterConfiguration);
+  const adapter = new PostgreSqlAdapter(adapterConfiguration);
 
-    runAdapterTests(adapter);
-  });
+  runAdapterTests(adapter);
 });

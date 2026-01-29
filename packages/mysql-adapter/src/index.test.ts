@@ -314,11 +314,9 @@ describe("mysql-adapter", async () => {
     });
   });
 
-  describe("adapter tests", async () => {
-    await prepareDatabase(adapterConfiguration.connection);
+  await prepareDatabase(adapterConfiguration.connection);
 
-    const adapter = new MySqlAdapter(adapterConfiguration);
+  const adapter = new MySqlAdapter(adapterConfiguration);
 
-    runAdapterTests(adapter);
-  });
+  runAdapterTests(adapter);
 });

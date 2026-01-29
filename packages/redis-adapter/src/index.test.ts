@@ -19,9 +19,7 @@ describe("redis-adapter", () => {
     });
   });
 
-  describe("adapter tests", () => {
-    const adapter = new RedisAdapter({ url: `redis://${REDIS_HOST}:${REDIS_PORT}` });
+  const adapter = new RedisAdapter({ url: `redis://${REDIS_HOST}:${REDIS_PORT}` });
 
-    runAdapterTests(adapter);
-  });
+  runAdapterTests(adapter);
 });
