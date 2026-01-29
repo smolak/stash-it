@@ -4,14 +4,13 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": ["_dist/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"],
       "cache": false
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"],
+      "dependsOn": ["^build"],
       "cache": false
     },
     "dev": {
@@ -21,7 +20,23 @@
     "test": {
       "dependsOn": ["lint"],
       "cache": false,
-      "env": ["REDIS_HOST", "REDIS_PORT"]
+      "env": [
+        "REDIS_CONTAINER_NAME",
+        "REDIS_HOST",
+        "REDIS_PORT",
+        "MYSQL_CONTAINER_NAME",
+        "MYSQL_HOST",
+        "MYSQL_DATABASE",
+        "MYSQL_USER",
+        "MYSQL_ROOT_PASSWORD",
+        "MYSQL_PORT",
+        "POSTGRES_CONTAINER_NAME",
+        "POSTGRES_HOST",
+        "POSTGRES_DATABASE",
+        "POSTGRES_USER",
+        "POSTGRES_PASSWORD",
+        "POSTGRES_PORT"
+      ]
     },
     "publish": {
       "dependsOn": ["lint", "test"],
