@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/typescript-config/dom-library.json",
+  "extends": "@repo/typescript-config/non-dom-library.json",
   "compilerOptions": {
     "strictPropertyInitialization": false
   }
