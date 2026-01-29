@@ -17,7 +17,6 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@repo/typescript-config": "workspace:*",
-    "jest-extended": "^4.0.2",
     "turbo": "~2.8.0",
     "typescript": "^5.9.3"
   },

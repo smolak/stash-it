@@ -32,9 +32,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:packages/typescript-config
-      jest-extended:
-        specifier: ^4.0.2
-        version: 4.0.2
       turbo:
         specifier: ~2.8.0
         version: 2.8.0
@@ -270,6 +267,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 1.9.4
+      jest-extended:
+        specifier: ^4.0.2
+        version: 4.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@25.1.0)
