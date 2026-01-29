@@ -1,4 +1,4 @@
-import { type Key, StashItAdapter, type StashItPlugin } from "@stash-it/core";
+import type { Key, StashItAdapter, StashItPlugin } from "@stash-it/core";
 import z from "zod";
 
 const pluginOptionsSchema = z.object({

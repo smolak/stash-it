@@ -1,4 +1,4 @@
-import { type StashItPlugin } from "@stash-it/core";
+import type { StashItPlugin } from "@stash-it/core";
 import z from "zod";
 
 const errorMessageSchema = z.string().trim().min(1);

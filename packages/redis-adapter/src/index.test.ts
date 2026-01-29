@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
 import { runAdapterTests } from "@stash-it/dev-tools";
+import { describe, expect, it } from "vitest";
 
-import { RedisAdapter } from "./index";
 import { REDIS_HOST, REDIS_PORT } from "./envVariables";
+import { RedisAdapter } from "./index";
 
 describe("redis-adapter", () => {
   describe("validation", () => {

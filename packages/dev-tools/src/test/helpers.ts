@@ -1,4 +1,4 @@
-import type { HookHandler, HookHandlerArgs, Hook, StashItPlugin } from "@stash-it/core";
+import type { Hook, HookHandler, HookHandlerArgs, StashItPlugin } from "@stash-it/core";
 
 // TODO: given this is a first helper/util (and aimed for tests specifically), this can be moved to a separate package.
 // There will be most likely other helpers/utils that will be used in tests or for creation of plugins/adapters.

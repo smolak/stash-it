@@ -6,35 +6,24 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": [
-    "mod.ts",
-    "src/**/*.ts",
-    "!src/**/*.test.ts",
-    "_dist",
-    "README.md",
-    "package.json"
-  ],
+  "files": ["mod.ts", "src/**/*.ts", "!src/**/*.test.ts", "_dist", "README.md", "package.json"],
   "license": "MIT",
-  "keywords": [
-    "@stash-it",
-    "stash it",
-    "stash-it",
-    "adapter",
-    "mysql",
-    "MySQL"
-  ],
+  "keywords": ["@stash-it", "stash it", "stash-it", "adapter", "mysql", "MySQL"],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "biome check .",
     "test": "./bin/when-mysql-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-mysql-is-ready-run.sh vitest --watch",
     "publish": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.5.0",
+    "@stash-it/core": "catalog:",
     "mysql2": "^3.11.4",
-    "zod": "^3.24.1"
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.6"
+    "@biomejs/biome": "catalog:",
+    "@stash-it/dev-tools": "catalog:",
+    "dotenv": "catalog:",
+    "vitest": "catalog:"
   }
 }

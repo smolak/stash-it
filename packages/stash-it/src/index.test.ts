@@ -1,6 +1,6 @@
+import type { StashItAdapterInterface, StashItPlugin } from "@stash-it/core";
+import { toHaveBeenCalledAfter, toHaveBeenCalledBefore } from "jest-extended";
 import { describe, expect, it, vi } from "vitest";
-import { toHaveBeenCalledBefore, toHaveBeenCalledAfter } from "jest-extended";
-import { type StashItAdapterInterface, type StashItPlugin } from "@stash-it/core";
 import { mock } from "vitest-mock-extended";
 import { StashIt } from "./index";
 

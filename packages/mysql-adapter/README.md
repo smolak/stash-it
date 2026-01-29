@@ -2,7 +2,7 @@
 
 ![logo-stash-it-color-dark 2x](https://user-images.githubusercontent.com/1819138/30385483-99fd209c-98a7-11e7-85e2-595791d8d894.png)
 
-`@stash-it/mysql-adapter` is a simple redis adapter that can be used with `@stash-it/stash-it`.
+`@stash-it/mysql-adapter` is a simple MySQL adapter that can be used with `@stash-it/stash-it`.
 It uses `mysql2` package under the hood.
 
 ## Installation
@@ -84,17 +84,15 @@ CREATE TABLE `items` (
 
 ### Running tests locally
 
-Make sure to have `.env` file with those variables (and your values):
+Copy the example environment file and adjust if needed:
 
-```sh
-MYSQL_CONTAINER_NAME=mysql_container
-MYSQL_DATABASE=database_name
-MYSQL_USER=root
-MYSQL_ROOT_PASSWORD=rootpassword
-MYSQL_PORT=3306
+```bash
+cp .env.example .env
 ```
 
-And then execute `pnpm test`.
+The `.env.example` file contains the default values. Use different if need be.
+
+Then execute `pnpm test`.
 
 The tests you will run do all sorts of checks to verify if the adapter is capable of conducting CRUD operations.
 

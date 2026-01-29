@@ -51,6 +51,26 @@ const adapter = new RedisAdapter({ url: "redis://localhost:6379" });
 const stash = new StashIt(adapter);
 ```
 
+## Development/testing
+
+### Running tests locally
+
+Copy the example environment file and adjust if needed:
+
+```bash
+cp .env.example .env
+```
+
+The `.env.example` file contains the default values. Use different if need be.
+
+Then execute `pnpm test`.
+
+The tests you will run do all sorts of checks to verify if the adapter is capable of conducting CRUD operations.
+
+If you want, you can target different Redis instances in different environments and run the tests against them.
+The test suite will clean up after self (or at least attempt), as it is designed to add numerous data,
+check if it is readable, and eventually it's removed.
+
 ## License
 
 MIT

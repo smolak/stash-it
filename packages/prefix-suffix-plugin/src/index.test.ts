@@ -1,10 +1,10 @@
-import { describe, it, expect } from "vitest";
 import { getHandler } from "@stash-it/dev-tools";
-import { StashIt } from "@stash-it/stash-it";
 import { MemoryAdapter } from "@stash-it/memory-adapter";
+import { StashIt } from "@stash-it/stash-it";
+import { describe, expect, it } from "vitest";
 
-import { createPrefixSuffixPlugin } from "./index";
 import { ZodError } from "zod";
+import { createPrefixSuffixPlugin } from "./index";
 
 // Any adapter can be used here.
 const adapter = new MemoryAdapter();
@@ -143,7 +143,7 @@ describe("prefix-suffix-plugin", () => {
   });
 
   describe("when neither prefix nor suffix is set", () => {
-    it.only("throws an error", () => {
+    it("throws an error", () => {
       expect(() => createPrefixSuffixPlugin({})).toThrow(ZodError);
     });
   });

@@ -75,6 +75,14 @@ CREATE TABLE "items" (
 )
 ```
 
+## Development/testing
+
+### Running tests locally
+
+Simply execute `pnpm test`.
+
+The tests create a temporary SQLite database file that is automatically cleaned up after the test run.
+
 ## License
 
 MIT

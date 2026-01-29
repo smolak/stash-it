@@ -6,13 +6,7 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": [
-    "mod.ts",
-    "src",
-    "_dist",
-    "README.md",
-    "package.json"
-  ],
+  "files": ["mod.ts", "src", "_dist", "README.md", "package.json"],
   "license": "MIT",
   "description": "Core package for @stash-it ecosystem, containing interfaces and types for main class, adapters and plugins (and some other things).",
   "keywords": [
@@ -31,7 +25,10 @@
     "postgresql"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "biome check .",
     "publish": "pnpx jsr publish"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:"
   }
 }

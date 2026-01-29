@@ -6,36 +6,24 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": [
-    "mod.ts",
-    "src/**/*.ts",
-    "!src/**/*.test.ts",
-    "_dist",
-    "README.md",
-    "package.json"
-  ],
+  "files": ["mod.ts", "src/**/*.ts", "!src/**/*.test.ts", "_dist", "README.md", "package.json"],
   "license": "MIT",
-  "keywords": [
-    "@stash-it",
-    "stash it",
-    "stash-it",
-    "plugin",
-    "prefix",
-    "suffix"
-  ],
+  "keywords": ["@stash-it", "stash it", "stash-it", "plugin", "prefix", "suffix"],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "biome check .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "publish": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.5.0",
-    "zod": "^3.24.1"
+    "@stash-it/core": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.6",
-    "@stash-it/memory-adapter": "npm:@jsr/stash-it__memory-adapter@0.4.0",
-    "@stash-it/stash-it": "npm:@jsr/stash-it__stash-it@0.5.0"
+    "@biomejs/biome": "catalog:",
+    "@stash-it/dev-tools": "catalog:",
+    "@stash-it/memory-adapter": "catalog:",
+    "@stash-it/stash-it": "catalog:",
+    "vitest": "catalog:"
   }
 }

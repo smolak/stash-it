@@ -1,6 +1,6 @@
 import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, Value } from "@stash-it/core";
 import { StashItAdapter } from "@stash-it/core";
-import { createConnection, type ResultSetHeader, type Connection, type RowDataPacket } from "mysql2/promise";
+import { type Connection, type ResultSetHeader, type RowDataPacket, createConnection } from "mysql2/promise";
 import { z } from "zod";
 
 /**

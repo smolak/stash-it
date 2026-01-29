@@ -1,6 +1,6 @@
-import { it, expect, afterAll, describe, beforeAll } from "vitest";
-import { nanoid } from "nanoid";
 import type { StashItAdapterInterface } from "@stash-it/core";
+import { nanoid } from "nanoid";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 /**
  * Run tests for a given adapter.

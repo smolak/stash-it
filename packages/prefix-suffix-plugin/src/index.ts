@@ -1,4 +1,4 @@
-import { type Key, type StashItPlugin } from "@stash-it/core";
+import type { Key, StashItPlugin } from "@stash-it/core";
 import z from "zod";
 
 const PrefixSuffixSchema = z.string().trim().min(1).optional();

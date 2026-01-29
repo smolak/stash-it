@@ -1,9 +1,9 @@
-import { beforeEach, afterEach, describe, it, expect, vi } from "vitest";
 import { getHandler } from "@stash-it/dev-tools";
-import { StashIt } from "@stash-it/stash-it";
 import { MemoryAdapter } from "@stash-it/memory-adapter";
+import { StashIt } from "@stash-it/stash-it";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { createTtlPlugin, TTL_EXTRA_PROPERTY_NAME } from "./index";
+import { TTL_EXTRA_PROPERTY_NAME, createTtlPlugin } from "./index";
 
 // Any adapter can be used here.
 const adapter = new MemoryAdapter();

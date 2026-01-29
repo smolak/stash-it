@@ -6,38 +6,26 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": [
-    "mod.ts",
-    "src/**/*.ts",
-    "!src/**/*.test.ts",
-    "_dist",
-    "README.md",
-    "package.json"
-  ],
+  "files": ["mod.ts", "src/**/*.ts", "!src/**/*.test.ts", "_dist", "README.md", "package.json"],
   "license": "MIT",
-  "keywords": [
-    "@stash-it",
-    "stash it",
-    "stash-it",
-    "adapter",
-    "sqlite",
-    "sqlite3"
-  ],
+  "keywords": ["@stash-it", "stash it", "stash-it", "adapter", "sqlite", "sqlite3"],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "biome check .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "publish": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.5.0",
-    "better-sqlite3": "^11.7.0",
-    "zod": "^3.24.1"
+    "@stash-it/core": "catalog:",
+    "better-sqlite3": "^12.6.2",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.6",
-    "@types/better-sqlite3": "^7.6.11",
+    "@biomejs/biome": "catalog:",
+    "@stash-it/dev-tools": "catalog:",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/fs-extra": "^11.0.4",
-    "fs-extra": "^11.2.0"
+    "fs-extra": "^11.2.0",
+    "vitest": "catalog:"
   }
 }

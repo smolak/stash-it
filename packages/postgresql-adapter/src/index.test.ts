@@ -1,15 +1,16 @@
-import { describe, expect, it, afterAll } from "vitest";
 import { runAdapterTests } from "@stash-it/dev-tools";
 import { Client } from "pg";
+import { afterAll, describe, expect, it } from "vitest";
 
-import { PostgreSqlAdapter, postgreSqlAdapterConfigurationSchema, type PostgreSqlAdapterConfiguration } from "./index";
+import { POSTGRES_DATABASE, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER } from "./envVariables";
+import { PostgreSqlAdapter, type PostgreSqlAdapterConfiguration, postgreSqlAdapterConfigurationSchema } from "./index";
 
 const connectionConfiguration: PostgreSqlAdapterConfiguration["connection"] = {
-  host: "localhost",
-  user: "user",
-  password: "password",
-  database: "dbname",
-  port: 5432,
+  host: POSTGRES_HOST,
+  user: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DATABASE,
+  port: POSTGRES_PORT,
 };
 
 const tableName = "items";

@@ -1,6 +1,6 @@
-import SqliteDatabase, { type Database } from "better-sqlite3";
 import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, Value } from "@stash-it/core";
 import { StashItAdapter } from "@stash-it/core";
+import SqliteDatabase, { type Database } from "better-sqlite3";
 import { z } from "zod";
 
 const sqliteAdapterConfigurationSchema = z.object({
@@ -107,10 +107,9 @@ export class SqliteAdapter extends StashItAdapter {
 
   async hasItem(key: Key): Promise<boolean> {
     const result = this.#database
-      .prepare<
-        { key: Key },
-        1 | 0
-      >(`SELECT EXISTS(SELECT 1 FROM "${this.#tableName}" WHERE "${this.#keyColumnName}" = @key LIMIT 1)`)
+      .prepare<{ key: Key }, 1 | 0>(
+        `SELECT EXISTS(SELECT 1 FROM "${this.#tableName}" WHERE "${this.#keyColumnName}" = @key LIMIT 1)`,
+      )
       .pluck()
       .get({ key });
 
@@ -143,10 +142,9 @@ export class SqliteAdapter extends StashItAdapter {
 
   async getExtra(key: Key): Promise<GetExtraResult> {
     const result = this.#database
-      .prepare<
-        { key: Key },
-        string
-      >(`SELECT "${this.#extraColumnName}" AS extra FROM "${this.#tableName}" WHERE "${this.#keyColumnName}" = @key`)
+      .prepare<{ key: Key }, string>(
+        `SELECT "${this.#extraColumnName}" AS extra FROM "${this.#tableName}" WHERE "${this.#keyColumnName}" = @key`,
+      )
       .pluck()
       .get({ key });
 

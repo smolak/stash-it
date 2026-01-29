@@ -5,11 +5,11 @@ import type {
   HookHandlerArgs,
   Item,
   Key,
-  StashItPlugin,
   RegisteredHookHandlers,
   SetExtraResult,
   StashItAdapterInterface,
   StashItInterface,
+  StashItPlugin,
   Value,
 } from "@stash-it/core";
 
@@ -163,7 +163,7 @@ export class StashIt implements StashItInterface {
   }
 
   registerPlugins(plugins: StashItPlugin[]) {
-    plugins.forEach((plugin) => {
+    for (const plugin of plugins) {
       const { hookHandlers } = plugin;
       let hook: keyof RegisteredHookHandlers;
 
@@ -176,7 +176,7 @@ export class StashIt implements StashItInterface {
           this.#registeredHookHandlers[hook] = [...this.#registeredHookHandlers[hook], hookHandler];
         }
       }
-    });
+    }
   }
 
   async #call<Hook extends keyof RegisteredHookHandlers>(

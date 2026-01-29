@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
 import { getHandler } from "@stash-it/dev-tools";
-import { StashIt } from "@stash-it/stash-it";
 import { MemoryAdapter } from "@stash-it/memory-adapter";
+import { StashIt } from "@stash-it/stash-it";
+import { describe, expect, it } from "vitest";
 
 import { createReadOnlyPlugin } from "./index";
 

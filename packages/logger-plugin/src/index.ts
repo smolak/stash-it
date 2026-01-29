@@ -1,4 +1,4 @@
-import { type StashItPlugin, type Hook, type HookHandlerArgs } from "@stash-it/core";
+import type { Hook, HookHandlerArgs, StashItPlugin } from "@stash-it/core";
 
 type LogFunction = (
   hook: Hook,

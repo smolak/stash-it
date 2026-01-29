@@ -1,5 +1,5 @@
-import { describe } from "vitest";
 import { runAdapterTests } from "@stash-it/dev-tools";
+import { describe } from "vitest";
 
 import { MemoryAdapter } from "./index";
 

@@ -4,19 +4,23 @@ if [ -f .env ]; then
     echo "Loading environment variables from .env file..."
     source .env
 else
-    echo ".env file not found. Exiting."
+    echo "Error: .env file not found."
+    echo "Copy .env.example to .env and adjust if needed:"
+    echo "  cp .env.example .env"
     exit 1
 fi
 
 echo "Starting MySQL using docker-compose..."
-docker-compose up -d mysql
+docker-compose up -d --no-build mysql
 
 echo "Waiting for MySQL to be ready..."
 RETRIES=30                   # Maximum retries before giving up
 SLEEP_TIME=2                 # Time to wait between retries
 
 for ((i=1; i<=RETRIES; i++)); do
-    if docker exec -it "$MYSQL_CONTAINER_NAME" mysql -u "$MYSQL_USER" -p"$MYSQL_ROOT_PASSWORD" -e "SELECT 1" > /dev/null; then
+    # Note: Don't use -t flag as it requires a TTY which isn't available in scripts
+    # Redirect stderr to suppress MySQL's password warning on command line
+    if docker exec "$MYSQL_CONTAINER_NAME" mysql -u "$MYSQL_USER" -p"$MYSQL_ROOT_PASSWORD" -e "SELECT 1" > /dev/null 2>&1; then
         echo "MySQL is ready!"
 
         if [ $# -gt 0 ]; then

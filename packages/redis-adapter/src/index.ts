@@ -1,6 +1,6 @@
 import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, Value } from "@stash-it/core";
 import { StashItAdapter } from "@stash-it/core";
-import { createClient, type RedisClientType } from "redis";
+import { type RedisClientType, createClient } from "redis";
 import { z } from "zod";
 
 const redisAdapterConfigurationSchema = z.object({
@@ -47,7 +47,7 @@ export class RedisAdapter extends StashItAdapter {
   async getItem(key: Key): Promise<GetItemResult> {
     const item = await this.#database.HGETALL(key);
 
-    if (item && item.value && item.extra) {
+    if (item?.value && item.extra) {
       return {
         key,
         value: JSON.parse(item.value),
@@ -71,7 +71,7 @@ export class RedisAdapter extends StashItAdapter {
   async setExtra(key: Key, extra: Extra): Promise<SetExtraResult> {
     const item = await this.#database.HGETALL(key);
 
-    if (item && item.extra) {
+    if (item?.extra) {
       await this.#database.HSET(key, "extra", JSON.stringify(extra));
 
       return extra;
@@ -83,7 +83,7 @@ export class RedisAdapter extends StashItAdapter {
   async getExtra(key: Key): Promise<GetExtraResult> {
     const item = await this.#database.HGETALL(key);
 
-    if (item && item.extra) {
+    if (item?.extra) {
       return JSON.parse(item.extra);
     }
   }
