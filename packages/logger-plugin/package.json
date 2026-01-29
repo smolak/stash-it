@@ -20,9 +20,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "@stash-it/dev-tools": "catalog:",
-    "@stash-it/memory-adapter": "catalog:",
-    "@stash-it/stash-it": "catalog:",
+    "@stash-it/dev-tools": "workspace:*",
+    "@stash-it/memory-adapter": "workspace:*",
+    "@stash-it/stash-it": "workspace:*",
     "vitest": "catalog:"
   }
 }

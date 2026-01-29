@@ -4,9 +4,6 @@ packages:
 
 catalog:
   "@stash-it/core": "npm:@jsr/stash-it__core@0.5.0"
-  "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.6"
-  "@stash-it/memory-adapter": "npm:@jsr/stash-it__memory-adapter@0.4.0"
-  "@stash-it/stash-it": "npm:@jsr/stash-it__stash-it@0.5.0"
   "@biomejs/biome": ^1.9.4
   dotenv: ^16.4.7
   vitest: ^4.0.18

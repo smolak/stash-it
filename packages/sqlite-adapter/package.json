@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "@stash-it/dev-tools": "catalog:",
+    "@stash-it/dev-tools": "workspace:*",
     "@types/better-sqlite3": "^7.6.13",
     "@types/fs-extra": "^11.0.4",
     "fs-extra": "^11.2.0",

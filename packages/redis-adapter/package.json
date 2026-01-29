@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "@stash-it/dev-tools": "catalog:",
+    "@stash-it/dev-tools": "workspace:*",
     "dotenv": "catalog:",
     "vitest": "catalog:"
   }
