@@ -26,6 +26,7 @@
   ],
   "scripts": {
     "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
     "publish": "pnpx jsr publish"
   },
   "devDependencies": {

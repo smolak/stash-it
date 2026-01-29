@@ -11,6 +11,7 @@
   "keywords": ["@stash-it", "stash it", "stash-it", "dev-tools", "tools"],
   "scripts": {
     "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
     "publish": "pnpx jsr publish"
   },
   "dependencies": {

@@ -13,6 +13,7 @@
     "lint": "biome check .",
     "test": "./bin/when-mysql-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-mysql-is-ready-run.sh vitest --watch",
+    "typecheck": "tsc --noEmit",
     "publish": "pnpx jsr publish --allow-slow-types"
   },
   "dependencies": {
