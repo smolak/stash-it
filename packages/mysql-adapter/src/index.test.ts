@@ -1,9 +1,9 @@
 import { runAdapterTests } from "@stash-it/dev-tools";
 import { createConnection } from "mysql2/promise";
 import { afterAll, describe, expect, it } from "vitest";
-
+import { mySqlAdapterConfigurationSchema } from "./_schema";
 import { MYSQL_DATABASE, MYSQL_HOST, MYSQL_PORT, MYSQL_ROOT_PASSWORD, MYSQL_USER } from "./envVariables";
-import { MySqlAdapter, type MySqlAdapterConfiguration, mySqlAdapterConfigurationSchema } from "./index";
+import { MySqlAdapter, type MySqlAdapterConfiguration } from "./index";
 
 const connectionConfiguration: MySqlAdapterConfiguration["connection"] = {
   host: MYSQL_HOST,

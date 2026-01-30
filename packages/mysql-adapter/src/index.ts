@@ -1,39 +1,37 @@
 import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, Value } from "@stash-it/core";
 import { StashItAdapter } from "@stash-it/core";
 import { type Connection, createConnection, type ResultSetHeader, type RowDataPacket } from "mysql2/promise";
-import { z } from "zod";
+import { mySqlAdapterConfigurationSchema } from "./_schema";
 
-/**
- * MySQL adapter configuration schema.
- */
-export const mySqlAdapterConfigurationSchema = z.object({
-  connection: z.object({
-    host: z.string().trim().min(1),
-    user: z.string().trim().min(1),
-    password: z.string().min(1),
-    database: z.string().trim().min(1),
-    port: z.number().default(3306),
-  }),
-  table: z
-    .object({
-      tableName: z.string().trim().min(1).default("items"),
-      keyColumnName: z.string().trim().min(1).default("key"),
-      valueColumnName: z.string().trim().min(1).default("value"),
-      extraColumnName: z.string().trim().min(1).default("extra"),
-    })
-    .default({
-      tableName: "items",
-      keyColumnName: "key",
-      valueColumnName: "value",
-      extraColumnName: "extra",
-    }),
-});
+/** MySQL adapter table configuration. */
+export interface MySqlAdapterTableConfiguration {
+  tableName?: string;
+  keyColumnName?: string;
+  valueColumnName?: string;
+  extraColumnName?: string;
+}
+
+/** MySQL adapter connection configuration. */
+export interface MySqlAdapterConnectionConfiguration {
+  host: string;
+  user: string;
+  password: string;
+  database: string;
+  port?: number;
+}
 
 /**
  * MySQL adapter configuration.
  */
-export type MySqlAdapterConfiguration = z.input<typeof mySqlAdapterConfigurationSchema>;
-type MySqlAdapterConfigurationOutput = z.output<typeof mySqlAdapterConfigurationSchema>;
+export interface MySqlAdapterConfiguration {
+  connection: MySqlAdapterConnectionConfiguration;
+  table?: MySqlAdapterTableConfiguration;
+}
+
+interface MySqlAdapterConfigurationOutput {
+  connection: Required<MySqlAdapterConnectionConfiguration>;
+  table: Required<MySqlAdapterTableConfiguration>;
+}
 
 interface PartialItem extends RowDataPacket {
   value: Value;
@@ -49,17 +47,17 @@ interface ItemExists extends RowDataPacket {
 }
 
 /**
- * Redis adapter class.
+ * MySQL adapter class.
  *
  * The LIMIT 1 is used to make sure that only one row is selected, updated or deleted.
  * The reason for this is that the library can't know if the key is unique or not.
  */
 export class MySqlAdapter extends StashItAdapter {
   readonly #connectionConfiguration: MySqlAdapterConfigurationOutput["connection"];
-  readonly #tableName: MySqlAdapterConfigurationOutput["table"]["tableName"];
-  readonly #keyColumnName: MySqlAdapterConfigurationOutput["table"]["keyColumnName"];
-  readonly #valueColumnName: MySqlAdapterConfigurationOutput["table"]["valueColumnName"];
-  readonly #extraColumnName: MySqlAdapterConfigurationOutput["table"]["extraColumnName"];
+  readonly #tableName: string;
+  readonly #keyColumnName: string;
+  readonly #valueColumnName: string;
+  readonly #extraColumnName: string;
 
   #connection: Connection;
 
@@ -78,11 +76,11 @@ export class MySqlAdapter extends StashItAdapter {
     this.#extraColumnName = extraColumnName;
   }
 
-  override async connect() {
+  override async connect(): Promise<void> {
     this.#connection = await createConnection(this.#connectionConfiguration);
   }
 
-  override async disconnect() {
+  override async disconnect(): Promise<void> {
     await this.#connection.end();
   }
 

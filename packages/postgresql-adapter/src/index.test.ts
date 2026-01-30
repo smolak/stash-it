@@ -1,9 +1,9 @@
 import { runAdapterTests } from "@stash-it/dev-tools";
 import { Client } from "pg";
 import { afterAll, describe, expect, it } from "vitest";
-
+import { postgreSqlAdapterConfigurationSchema } from "./_schema";
 import { POSTGRES_DATABASE, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER } from "./envVariables";
-import { PostgreSqlAdapter, type PostgreSqlAdapterConfiguration, postgreSqlAdapterConfigurationSchema } from "./index";
+import { PostgreSqlAdapter, type PostgreSqlAdapterConfiguration } from "./index";
 
 const connectionConfiguration: PostgreSqlAdapterConfiguration["connection"] = {
   host: POSTGRES_HOST,

@@ -3,6 +3,32 @@ import { StashItAdapter } from "@stash-it/core";
 import SqliteDatabase, { type Database } from "better-sqlite3";
 import { z } from "zod";
 
+/** Sqlite adapter table configuration. */
+export interface SqliteAdapterTableConfiguration {
+  tableName?: string;
+  keyColumnName?: string;
+  valueColumnName?: string;
+  extraColumnName?: string;
+}
+
+/** Sqlite adapter connection configuration. */
+export interface SqliteAdapterConnectionConfiguration {
+  dbPath: string;
+}
+
+/**
+ * Sqlite adapter options.
+ */
+export interface SqliteAdapterConfiguration {
+  connection: SqliteAdapterConnectionConfiguration;
+  table?: SqliteAdapterTableConfiguration;
+}
+
+interface SqliteAdapterConfigurationOutput {
+  connection: SqliteAdapterConnectionConfiguration;
+  table: Required<SqliteAdapterTableConfiguration>;
+}
+
 const sqliteAdapterConfigurationSchema = z.object({
   connection: z.object({
     dbPath: z.string().trim(),
@@ -23,20 +49,14 @@ const sqliteAdapterConfigurationSchema = z.object({
 });
 
 /**
- * Sqlite adapter options.
- */
-export type SqliteAdapterConfiguration = z.input<typeof sqliteAdapterConfigurationSchema>;
-type SqliteAdapterConfigurationOutput = z.output<typeof sqliteAdapterConfigurationSchema>;
-
-/**
  * Sqlite adapter class.
  */
 export class SqliteAdapter extends StashItAdapter {
   readonly #database: Database;
-  readonly #tableName: SqliteAdapterConfigurationOutput["table"]["tableName"];
-  readonly #keyColumnName: SqliteAdapterConfigurationOutput["table"]["keyColumnName"];
-  readonly #valueColumnName: SqliteAdapterConfigurationOutput["table"]["valueColumnName"];
-  readonly #extraColumnName: SqliteAdapterConfigurationOutput["table"]["extraColumnName"];
+  readonly #tableName: string;
+  readonly #keyColumnName: string;
+  readonly #valueColumnName: string;
+  readonly #extraColumnName: string;
 
   constructor(options: SqliteAdapterConfiguration) {
     super();

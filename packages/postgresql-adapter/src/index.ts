@@ -1,39 +1,37 @@
 import type { Extra, GetExtraResult, GetItemResult, Item, Key, SetExtraResult, Value } from "@stash-it/core";
 import { StashItAdapter } from "@stash-it/core";
 import { Client, type QueryResultRow } from "pg";
-import { z } from "zod";
+import { postgreSqlAdapterConfigurationSchema } from "./_schema";
 
-/**
- * PostgreSQL adapter configuration schema.
- */
-export const postgreSqlAdapterConfigurationSchema = z.object({
-  connection: z.object({
-    host: z.string().trim().min(1),
-    user: z.string().trim().min(1),
-    password: z.string().min(1),
-    database: z.string().trim().min(1),
-    port: z.number().default(5432),
-  }),
-  table: z
-    .object({
-      tableName: z.string().trim().min(1).default("items"),
-      keyColumnName: z.string().trim().min(1).default("key"),
-      valueColumnName: z.string().trim().min(1).default("value"),
-      extraColumnName: z.string().trim().min(1).default("extra"),
-    })
-    .default({
-      tableName: "items",
-      keyColumnName: "key",
-      valueColumnName: "value",
-      extraColumnName: "extra",
-    }),
-});
+/** PostgreSQL adapter table configuration. */
+export interface PostgreSqlAdapterTableConfiguration {
+  tableName?: string;
+  keyColumnName?: string;
+  valueColumnName?: string;
+  extraColumnName?: string;
+}
+
+/** PostgreSQL adapter connection configuration. */
+export interface PostgreSqlAdapterConnectionConfiguration {
+  host: string;
+  user: string;
+  password: string;
+  database: string;
+  port?: number;
+}
 
 /**
  * PostgreSQL adapter configuration.
  */
-export type PostgreSqlAdapterConfiguration = z.input<typeof postgreSqlAdapterConfigurationSchema>;
-type PostgreSqlAdapterConfigurationOutput = z.output<typeof postgreSqlAdapterConfigurationSchema>;
+export interface PostgreSqlAdapterConfiguration {
+  connection: PostgreSqlAdapterConnectionConfiguration;
+  table?: PostgreSqlAdapterTableConfiguration;
+}
+
+interface PostgreSqlAdapterConfigurationOutput {
+  connection: Required<PostgreSqlAdapterConnectionConfiguration>;
+  table: Required<PostgreSqlAdapterTableConfiguration>;
+}
 
 interface PartialItem extends QueryResultRow {
   value: {
@@ -51,16 +49,16 @@ interface ItemExists extends QueryResultRow {
 }
 
 /**
- * Redis adapter class.
+ * PostgreSQL adapter class.
  *
  * The LIMIT 1 is used to make sure that only one row is selected, updated or deleted.
  * The reason for this is that the library can't know if the key is unique or not.
  */
 export class PostgreSqlAdapter extends StashItAdapter {
-  readonly #tableName: PostgreSqlAdapterConfigurationOutput["table"]["tableName"];
-  readonly #keyColumnName: PostgreSqlAdapterConfigurationOutput["table"]["keyColumnName"];
-  readonly #valueColumnName: PostgreSqlAdapterConfigurationOutput["table"]["valueColumnName"];
-  readonly #extraColumnName: PostgreSqlAdapterConfigurationOutput["table"]["extraColumnName"];
+  readonly #tableName: string;
+  readonly #keyColumnName: string;
+  readonly #valueColumnName: string;
+  readonly #extraColumnName: string;
 
   #client: Client;
   #connectionConfiguration: PostgreSqlAdapterConfigurationOutput["connection"];
@@ -73,7 +71,6 @@ export class PostgreSqlAdapter extends StashItAdapter {
       table: { tableName, keyColumnName, valueColumnName, extraColumnName },
     } = postgreSqlAdapterConfigurationSchema.parse(configuration);
 
-    // this.#client = new Client(connection);
     this.#connectionConfiguration = connection;
 
     this.#tableName = tableName;
@@ -82,13 +79,13 @@ export class PostgreSqlAdapter extends StashItAdapter {
     this.#extraColumnName = extraColumnName;
   }
 
-  override async connect() {
+  override async connect(): Promise<void> {
     this.#client = new Client(this.#connectionConfiguration);
 
     await this.#client.connect();
   }
 
-  override async disconnect() {
+  override async disconnect(): Promise<void> {
     await this.#client.end();
   }
 

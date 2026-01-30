@@ -1,4 +1,5 @@
 {
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
   "name": "@stash-it/mysql-adapter",
   "version": "0.3.0",
   "exports": "./mod.ts",

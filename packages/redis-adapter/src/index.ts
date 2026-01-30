@@ -3,11 +3,14 @@ import { StashItAdapter } from "@stash-it/core";
 import { createClient, type RedisClientType } from "redis";
 import { z } from "zod";
 
+/** Redis adapter configuration. */
+export interface RedisAdapterConfiguration {
+  url: string;
+}
+
 const redisAdapterConfigurationSchema = z.object({
   url: z.string().url(),
 });
-
-type RedisAdapterConfiguration = z.infer<typeof redisAdapterConfigurationSchema>;
 
 /**
  * Redis adapter class.
@@ -25,11 +28,11 @@ export class RedisAdapter extends StashItAdapter {
     });
   }
 
-  override async connect() {
+  override async connect(): Promise<void> {
     await this.#database.connect();
   }
 
-  override async disconnect() {
+  override async disconnect(): Promise<void> {
     await this.#database.disconnect();
   }
 

@@ -28,7 +28,7 @@
     "test": "./bin/when-postgresql-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-postgresql-is-ready-run.sh vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpx jsr publish --allow-slow-types"
+    "publish": "pnpx jsr publish"
   },
   "dependencies": {
     "@stash-it/core": "catalog:",
