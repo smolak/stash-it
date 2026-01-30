@@ -3,6 +3,7 @@
 /**
  * Script to check that versions in package.json and jsr.json match for each package.
  * Also checks that jsr.json imports for @stash-it/core use the correct version.
+ * Also checks that vitest version in dev-tools/jsr.json matches the catalog.
  * Run from the root of the monorepo: npx tsx scripts/check-versions.ts
  */
 
@@ -55,6 +56,23 @@ function parseCoreVersionFromImport(importSpecifier: string): string | null {
   // Parse version from "jsr:@stash-it/core@^0.6.0" or "npm:@stash-it/core@^0.6.0"
   const match = importSpecifier.match(/@stash-it\/core@\^?(.+)$/);
   return match?.[1] ?? null;
+}
+
+function parseVitestVersionFromImport(importSpecifier: string): string | null {
+  // Parse version from "npm:vitest@^4.0.18"
+  const match = importSpecifier.match(/vitest@(\^?.+)$/);
+  return match?.[1] ?? null;
+}
+
+async function getVitestVersionFromCatalog(): Promise<string | null> {
+  try {
+    const content = await readFile(join(process.cwd(), "pnpm-workspace.yaml"), "utf-8");
+    // Parse "vitest: ^4.0.18" from the yaml file
+    const match = content.match(/^\s*vitest:\s*(\^?[\d.]+)/m);
+    return match?.[1] ?? null;
+  } catch {
+    return null;
+  }
 }
 
 async function checkPackageVersions(): Promise<VersionInfo[]> {
@@ -178,8 +196,33 @@ async function main(): Promise<void> {
 
   console.log("─".repeat(70));
 
+  // Check vitest version in dev-tools
+  const catalogVitestVersion = await getVitestVersionFromCatalog();
+  const devToolsJsr = await getJsrJson(join(process.cwd(), "packages", "dev-tools", "jsr.json"));
+  const devToolsImports = devToolsJsr?.imports as Record<string, string> | undefined;
+  const devToolsVitestImport = devToolsImports?.vitest;
+  const devToolsVitestVersion = devToolsVitestImport ? parseVitestVersionFromImport(devToolsVitestImport) : null;
+
+  let vitestMismatch = false;
+
+  console.log("\nChecking vitest version in dev-tools/jsr.json:");
+  console.log("─".repeat(70));
+
+  if (!catalogVitestVersion) {
+    console.log("⚠️  Could not read vitest version from pnpm-workspace.yaml catalog");
+  } else if (!devToolsVitestVersion) {
+    console.log("⚠️  Could not read vitest version from dev-tools/jsr.json imports");
+  } else if (devToolsVitestVersion !== catalogVitestVersion) {
+    console.log(`❌ MISMATCH: dev-tools/jsr.json has ${devToolsVitestVersion}, catalog has ${catalogVitestVersion}`);
+    vitestMismatch = true;
+  } else {
+    console.log(`✅ vitest version matches: ${devToolsVitestVersion}`);
+  }
+
+  console.log("─".repeat(70));
+
   // Report all errors
-  const hasErrors = mismatches.length > 0 || importMismatches.length > 0;
+  const hasErrors = mismatches.length > 0 || importMismatches.length > 0 || vitestMismatch;
 
   if (mismatches.length > 0) {
     console.log(`\n❌ Found ${mismatches.length} package version mismatch(es):`);
@@ -197,6 +240,11 @@ async function main(): Promise<void> {
         `   - ${mismatch.packageName}: imports @stash-it/core@${mismatch.importedCoreVersion ?? "unknown"}, expected ${mismatch.expectedCoreVersion}`,
       );
     }
+  }
+
+  if (vitestMismatch) {
+    console.log(`\n❌ vitest version mismatch in dev-tools/jsr.json`);
+    console.log(`   Update the vitest import to match the catalog version: ${catalogVitestVersion}`);
   }
 
   if (hasErrors) {
