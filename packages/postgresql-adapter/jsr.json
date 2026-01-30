@@ -3,6 +3,9 @@
   "name": "@stash-it/postgresql-adapter",
   "version": "0.6.0",
   "exports": "./mod.ts",
+  "imports": {
+    "@stash-it/core": "jsr:@stash-it/core@^0.6.0"
+  },
   "publish": {
     "include": ["package.json", "README.md", "mod.ts", "src/**/*.ts"],
     "exclude": ["src/**/*.test.ts", "src/__snapshots__"]
