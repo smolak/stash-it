@@ -37,6 +37,12 @@ bun
 bunx jsr add @stash-it/postgresql-adapter
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { PostgreSqlAdapter } from "jsr:@stash-it/postgresql-adapter";
+```
+
 ## Usage
 
 ```ts

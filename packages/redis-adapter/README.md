@@ -37,6 +37,12 @@ bun
 bunx jsr add @stash-it/redis-adapter
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { RedisAdapter } from "jsr:@stash-it/redis-adapter";
+```
+
 ## Usage
 
 ```ts

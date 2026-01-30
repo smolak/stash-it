@@ -36,6 +36,12 @@ bun
 bunx jsr add @stash-it/sqlite-adapter
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { SqliteAdapter } from "jsr:@stash-it/sqlite-adapter";
+```
+
 ## Usage
 
 ```ts

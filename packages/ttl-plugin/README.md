@@ -42,6 +42,12 @@ bun
 bunx jsr add @stash-it/ttl-plugin
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { createTtlPlugin } from "jsr:@stash-it/ttl-plugin";
+```
+
 ## Usage
 
 ```ts

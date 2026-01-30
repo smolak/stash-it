@@ -37,6 +37,12 @@ bun
 bunx jsr add @stash-it/mysql-adapter
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { MySqlAdapter } from "jsr:@stash-it/mysql-adapter";
+```
+
 ## Usage
 
 ```ts

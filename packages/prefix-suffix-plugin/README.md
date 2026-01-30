@@ -40,6 +40,12 @@ bun
 bunx jsr add @stash-it/prefix-suffix-plugin
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { createPrefixSuffixPlugin } from "jsr:@stash-it/prefix-suffix-plugin";
+```
+
 ## Usage
 
 ```ts

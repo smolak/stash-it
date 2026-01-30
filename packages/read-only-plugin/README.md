@@ -41,6 +41,12 @@ bun
 bunx jsr add @stash-it/read-only-plugin
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { createReadOnlyPlugin } from "jsr:@stash-it/read-only-plugin";
+```
+
 ## Usage
 
 ```ts

@@ -38,6 +38,12 @@ bun
 bunx jsr add @stash-it/dev-tools
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { runAdapterTests, getHandler } from "jsr:@stash-it/dev-tools";
+```
+
 ## Usage
 
 ### `runAdapterTests`

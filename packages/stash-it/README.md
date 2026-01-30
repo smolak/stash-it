@@ -165,6 +165,12 @@ bun
 bunx jsr add @stash-it/stash-it
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { StashIt } from "jsr:@stash-it/stash-it";
+```
+
 ## License
 
 MIT

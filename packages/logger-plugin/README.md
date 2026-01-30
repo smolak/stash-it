@@ -40,6 +40,12 @@ bun
 bunx jsr add @stash-it/logger-plugin
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { createLoggerPlugin } from "jsr:@stash-it/logger-plugin";
+```
+
 ## Usage
 
 ```ts

@@ -43,6 +43,12 @@ bun
 bunx jsr add @stash-it/core
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { StashItAdapter, type StashItPlugin } from "jsr:@stash-it/core";
+```
+
 ## Usage
 
 ### `StashItAdapter`

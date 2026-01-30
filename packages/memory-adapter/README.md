@@ -36,6 +36,12 @@ bun
 bunx jsr add @stash-it/memory-adapter
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { MemoryAdapter } from "jsr:@stash-it/memory-adapter";
+```
+
 ## Usage
 
 ```ts
