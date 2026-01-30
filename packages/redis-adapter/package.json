@@ -30,7 +30,7 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "catalog:",
+    "@stash-it/core": "workspace:*",
     "redis": "^5.10.0",
     "zod": "catalog:"
   },

@@ -34,7 +34,7 @@ export const runAdapterTests = (adapter: StashItAdapterInterface): void => {
 
     describe("setting and getting an item", () => {
       describe("key validation", () => {
-        it("should throw when key is ivalid and not set an item", async () => {
+        it("should throw when key is invalid and not set an item", async () => {
           const keyConsistingInvalidCharacters = "-=[!@#$%^&*()]=-";
 
           // Addig as if the test will fail, and item is set, such item should be removed
@@ -44,7 +44,7 @@ export const runAdapterTests = (adapter: StashItAdapterInterface): void => {
           const extra = {};
 
           await expect(adapter.setItem(keyConsistingInvalidCharacters, value, extra)).rejects.toThrow(
-            "Invalid key. Only _-azAZ09 allowed. '-=[!@#$%^&*()]=-' used.",
+            "Invalid key: '-=[!@#$%^&*()]=-'. Only alphanumeric characters (a-z, A-Z, 0-9), underscores (_), and hyphens (-) are allowed.",
           );
 
           const itemCheck = await adapter.hasItem(keyConsistingInvalidCharacters);

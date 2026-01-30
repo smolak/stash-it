@@ -30,7 +30,7 @@ const removeItemIfTtlExpired = async (adapter: StashItAdapter, key: Key, { ttl, 
 /**
  * Name of the property in extra that will hold the ttl data.
  */
-export const TTL_EXTRA_PROPERTY_NAME: "__ttl" = "__ttl";
+export const TTL_EXTRA_PROPERTY_NAME = "__ttl" as const;
 
 /**
  * Create a plugin that adds TTL (time to live) to an item that gets stored.

@@ -2,7 +2,6 @@ packages:
   - "packages/*"
 
 catalog:
-  "@stash-it/core": "npm:@jsr/stash-it__core@0.5.0"
   "@biomejs/biome": ^2.3.13
   dotenv: ^17.2.3
   vitest: ^4.0.18

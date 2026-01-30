@@ -28,11 +28,6 @@ export interface MySqlAdapterConfiguration {
   table?: MySqlAdapterTableConfiguration;
 }
 
-interface MySqlAdapterConfigurationOutput {
-  connection: Required<MySqlAdapterConnectionConfiguration>;
-  table: Required<MySqlAdapterTableConfiguration>;
-}
-
 interface PartialItem extends RowDataPacket {
   value: Value;
   extra: Extra;
@@ -53,7 +48,7 @@ interface ItemExists extends RowDataPacket {
  * The reason for this is that the library can't know if the key is unique or not.
  */
 export class MySqlAdapter extends StashItAdapter {
-  readonly #connectionConfiguration: MySqlAdapterConfigurationOutput["connection"];
+  readonly #connectionConfiguration: Required<MySqlAdapterConnectionConfiguration>;
   readonly #tableName: string;
   readonly #keyColumnName: string;
   readonly #valueColumnName: string;

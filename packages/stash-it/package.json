@@ -37,7 +37,7 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "catalog:"
+    "@stash-it/core": "workspace:*"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

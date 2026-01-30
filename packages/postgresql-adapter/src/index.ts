@@ -28,11 +28,6 @@ export interface PostgreSqlAdapterConfiguration {
   table?: PostgreSqlAdapterTableConfiguration;
 }
 
-interface PostgreSqlAdapterConfigurationOutput {
-  connection: Required<PostgreSqlAdapterConnectionConfiguration>;
-  table: Required<PostgreSqlAdapterTableConfiguration>;
-}
-
 interface PartialItem extends QueryResultRow {
   value: {
     value: Value;
@@ -61,7 +56,7 @@ export class PostgreSqlAdapter extends StashItAdapter {
   readonly #extraColumnName: string;
 
   #client: Client;
-  #connectionConfiguration: PostgreSqlAdapterConfigurationOutput["connection"];
+  #connectionConfiguration: Required<PostgreSqlAdapterConnectionConfiguration>;
 
   constructor(configuration: PostgreSqlAdapterConfiguration) {
     super();

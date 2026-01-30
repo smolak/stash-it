@@ -16,7 +16,7 @@ async function logAndReturn<H extends Hook>(
 }
 
 /**
- * Create a plugin that prefixes and/or suffixes the key.
+ * Create a plugin that logs all hook calls.
  *
  * @param log Log function.
  */

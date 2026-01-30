@@ -9,9 +9,6 @@ catalogs:
     '@biomejs/biome':
       specifier: ^2.3.13
       version: 2.3.13
-    '@stash-it/core':
-      specifier: npm:@jsr/stash-it__core@0.5.0
-      version: 0.5.0
     dotenv:
       specifier: ^17.2.3
       version: 17.2.3
@@ -48,8 +45,8 @@ importers:
   packages/dev-tools:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
       nanoid:
         specifier: ^5.1.6
         version: 5.1.6
@@ -64,8 +61,8 @@ importers:
   packages/logger-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -86,8 +83,8 @@ importers:
   packages/memory-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -102,8 +99,8 @@ importers:
   packages/mysql-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
       mysql2:
         specifier: ^3.16.2
         version: 3.16.2
@@ -127,8 +124,8 @@ importers:
   packages/postgresql-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
       pg:
         specifier: ^8.17.2
         version: 8.17.2
@@ -155,8 +152,8 @@ importers:
   packages/prefix-suffix-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -180,8 +177,8 @@ importers:
   packages/read-only-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -205,8 +202,8 @@ importers:
   packages/redis-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
       redis:
         specifier: ^5.10.0
         version: 5.10.0
@@ -230,8 +227,8 @@ importers:
   packages/sqlite-adapter:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
       better-sqlite3:
         specifier: ^12.6.2
         version: 12.6.2
@@ -261,8 +258,8 @@ importers:
   packages/stash-it:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -280,8 +277,8 @@ importers:
   packages/ttl-plugin:
     dependencies:
       '@stash-it/core':
-        specifier: 'catalog:'
-        version: '@jsr/stash-it__core@0.5.0'
+        specifier: workspace:*
+        version: link:../core
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -537,9 +534,6 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
-
-  '@jsr/stash-it__core@0.5.0':
-    resolution: {integrity: sha512-6xVjFDb5GQ6NPvs+po4XloP63JSd9wqBr77RRzh7y368maGUeY0+UeZjTI7jmyst00vrEwqnRXEPYdVZ6g+zpA==, tarball: https://npm.jsr.io/~/11/@jsr/stash-it__core/0.5.0.tgz}
 
   '@redis/bloom@5.10.0':
     resolution: {integrity: sha512-doIF37ob+l47n0rkpRNgU8n4iacBlKM9xLiP1LtTZTvz8TloJB8qx/MgvhMhKdYG+CvCY2aPBnN2706izFn/4A==}
@@ -1435,8 +1429,6 @@ snapshots:
       '@sinclair/typebox': 0.34.48
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
-
-  '@jsr/stash-it__core@0.5.0': {}
 
   '@redis/bloom@5.10.0(@redis/client@5.10.0)':
     dependencies:
