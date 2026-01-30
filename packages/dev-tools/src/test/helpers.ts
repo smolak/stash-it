@@ -22,6 +22,7 @@ export const getHandler = <H extends Hook>(hook: H, plugin: StashItPlugin): Hook
     );
   }
 
-  // TODO: this "as" is a hack, but I don't know how to make it work right now.
+  // Type assertion required: TypeScript cannot correlate indexed access types
+  // when the generic parameter H could be any hook name.
   return plugin.hookHandlers[hook] as unknown as HookHandler<HookHandlerArgs[H]>;
 };
