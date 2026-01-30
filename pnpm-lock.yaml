@@ -59,14 +59,13 @@ importers:
         version: 2.3.13
 
   packages/logger-plugin:
-    dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools
@@ -81,14 +80,13 @@ importers:
         version: 4.0.18(@types/node@25.1.0)
 
   packages/memory-adapter:
-    dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools
@@ -98,9 +96,6 @@ importers:
 
   packages/mysql-adapter:
     dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
       mysql2:
         specifier: ^3.16.2
         version: 3.16.2
@@ -111,6 +106,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools
@@ -123,9 +121,6 @@ importers:
 
   packages/postgresql-adapter:
     dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
       pg:
         specifier: ^8.17.2
         version: 8.17.2
@@ -136,6 +131,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools
@@ -151,9 +149,6 @@ importers:
 
   packages/prefix-suffix-plugin:
     dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -161,6 +156,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools
@@ -176,9 +174,6 @@ importers:
 
   packages/read-only-plugin:
     dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -186,6 +181,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools
@@ -201,9 +199,6 @@ importers:
 
   packages/redis-adapter:
     dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
       redis:
         specifier: ^5.10.0
         version: 5.10.0
@@ -214,6 +209,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools
@@ -226,9 +224,6 @@ importers:
 
   packages/sqlite-adapter:
     dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
       better-sqlite3:
         specifier: ^12.6.2
         version: 12.6.2
@@ -239,6 +234,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools
@@ -276,9 +274,6 @@ importers:
 
   packages/ttl-plugin:
     dependencies:
-      '@stash-it/core':
-        specifier: workspace:*
-        version: link:../core
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -286,6 +281,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
       '@stash-it/dev-tools':
         specifier: workspace:*
         version: link:../dev-tools

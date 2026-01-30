@@ -78,7 +78,7 @@ class MyAdapter extends StashItAdapter {
   }
 
   override async disconnect(): Promise<void> {
-    this.#database.connect();
+    this.#database.disconnect();
   }
 }
 ```

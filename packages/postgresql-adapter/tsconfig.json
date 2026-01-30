@@ -2,5 +2,6 @@
   "extends": "@repo/typescript-config/non-dom-library.json",
   "compilerOptions": {
     "strictPropertyInitialization": false
-  }
+  },
+  "exclude": ["vitest.config.ts"]
 }

@@ -3,7 +3,16 @@ import { z } from "zod";
 
 dotenv.config();
 
-const envVariablesSchema = z.object({
+interface MySqlEnvVariables {
+  MYSQL_CONTAINER_NAME: string;
+  MYSQL_HOST: string;
+  MYSQL_DATABASE: string;
+  MYSQL_USER: string;
+  MYSQL_ROOT_PASSWORD: string;
+  MYSQL_PORT: number;
+}
+
+const envVariablesSchema: z.ZodType<MySqlEnvVariables> = z.object({
   MYSQL_CONTAINER_NAME: z.string(),
   MYSQL_HOST: z.string(),
   MYSQL_DATABASE: z.string(),
@@ -14,9 +23,15 @@ const envVariablesSchema = z.object({
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof envVariablesSchema> {}
+    interface ProcessEnv extends MySqlEnvVariables {}
   }
 }
 
-export const { MYSQL_CONTAINER_NAME, MYSQL_HOST, MYSQL_DATABASE, MYSQL_USER, MYSQL_ROOT_PASSWORD, MYSQL_PORT } =
-  envVariablesSchema.parse(process.env);
+const _parsed: MySqlEnvVariables = envVariablesSchema.parse(process.env);
+
+export const MYSQL_CONTAINER_NAME: string = _parsed.MYSQL_CONTAINER_NAME;
+export const MYSQL_HOST: string = _parsed.MYSQL_HOST;
+export const MYSQL_DATABASE: string = _parsed.MYSQL_DATABASE;
+export const MYSQL_USER: string = _parsed.MYSQL_USER;
+export const MYSQL_ROOT_PASSWORD: string = _parsed.MYSQL_ROOT_PASSWORD;
+export const MYSQL_PORT: number = _parsed.MYSQL_PORT;

@@ -31,11 +31,14 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "workspace:*",
     "mysql2": "^3.16.2",
     "zod": "catalog:"
   },
+  "peerDependencies": {
+    "@stash-it/core": ">=0.5.0"
+  },
   "devDependencies": {
+    "@stash-it/core": "workspace:*",
     "@biomejs/biome": "catalog:",
     "@stash-it/dev-tools": "workspace:*",
     "dotenv": "catalog:",

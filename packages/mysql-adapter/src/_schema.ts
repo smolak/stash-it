@@ -1,6 +1,26 @@
 import { z } from "zod";
 
-export const mySqlAdapterConfigurationSchema = z.object({
+interface MySqlConnectionConfig {
+  host: string;
+  user: string;
+  password: string;
+  database: string;
+  port: number;
+}
+
+interface MySqlTableConfig {
+  tableName: string;
+  keyColumnName: string;
+  valueColumnName: string;
+  extraColumnName: string;
+}
+
+interface MySqlAdapterConfig {
+  connection: MySqlConnectionConfig;
+  table: MySqlTableConfig;
+}
+
+export const mySqlAdapterConfigurationSchema: z.ZodType<MySqlAdapterConfig> = z.object({
   connection: z.object({
     host: z.string().trim().min(1),
     user: z.string().trim().min(1),

@@ -30,11 +30,14 @@
     "publish": "pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "workspace:*",
     "redis": "^5.10.0",
     "zod": "catalog:"
   },
+  "peerDependencies": {
+    "@stash-it/core": ">=0.5.0"
+  },
   "devDependencies": {
+    "@stash-it/core": "workspace:*",
     "@biomejs/biome": "catalog:",
     "@stash-it/dev-tools": "workspace:*",
     "dotenv": "catalog:",

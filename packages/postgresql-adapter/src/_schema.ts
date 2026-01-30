@@ -1,6 +1,26 @@
 import { z } from "zod";
 
-export const postgreSqlAdapterConfigurationSchema = z.object({
+interface PostgreSqlConnectionConfig {
+  host: string;
+  user: string;
+  password: string;
+  database: string;
+  port: number;
+}
+
+interface PostgreSqlTableConfig {
+  tableName: string;
+  keyColumnName: string;
+  valueColumnName: string;
+  extraColumnName: string;
+}
+
+interface PostgreSqlAdapterConfig {
+  connection: PostgreSqlConnectionConfig;
+  table: PostgreSqlTableConfig;
+}
+
+export const postgreSqlAdapterConfigurationSchema: z.ZodType<PostgreSqlAdapterConfig> = z.object({
   connection: z.object({
     host: z.string().trim().min(1),
     user: z.string().trim().min(1),

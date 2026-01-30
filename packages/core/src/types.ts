@@ -68,7 +68,7 @@ type ExtraNotFound = undefined;
 export type GetExtraResult = Extra | ExtraNotFound;
 
 interface CommonInterface {
-  setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
+  setItem(key: Key, value: Value, extra?: Extra): Promise<Item>;
   getItem(key: Key): Promise<GetItemResult>;
   hasItem(key: Key): Promise<boolean>;
   removeItem(key: Key): Promise<boolean>;
@@ -186,15 +186,23 @@ export abstract class StashItAdapter implements StashItAdapterInterface {
 
     await this.connect();
 
-    await this.setItem(key, value, extra);
-    await this.hasItem(key);
-    await this.getItem(key);
-    await this.getExtra(key);
-    await this.setItem(key, "a new value", { and: "a new extra" });
-    await this.setExtra(key, { again: "new extra value" });
-    await this.removeItem(key);
+    try {
+      await this.setItem(key, value, extra);
+      await this.hasItem(key);
+      await this.getItem(key);
+      await this.getExtra(key);
+      await this.setItem(key, "a new value", { and: "a new extra" });
+      await this.setExtra(key, { again: "new extra value" });
+    } finally {
+      // Always try to clean up the test item, even if operations failed
+      try {
+        await this.removeItem(key);
+      } catch {
+        // Ignore cleanup errors - the main error (if any) will be thrown
+      }
 
-    await this.disconnect();
+      await this.disconnect();
+    }
 
     return true;
   }
@@ -207,7 +215,7 @@ export abstract class StashItAdapter implements StashItAdapterInterface {
     }
   }
 
-  abstract setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
+  abstract setItem(key: Key, value: Value, extra?: Extra): Promise<Item>;
   abstract getItem(key: Key): Promise<GetItemResult>;
   abstract hasItem(key: Key): Promise<boolean>;
   abstract removeItem(key: Key): Promise<boolean>;
