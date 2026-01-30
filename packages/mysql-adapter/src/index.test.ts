@@ -1,15 +1,16 @@
-import { describe, it, expect, afterAll } from "vitest";
 import { runAdapterTests } from "@stash-it/dev-tools";
 import { createConnection } from "mysql2/promise";
-
-import { MySqlAdapter, mySqlAdapterConfigurationSchema, type MySqlAdapterConfiguration } from "./index";
+import { afterAll, describe, expect, it } from "vitest";
+import { mySqlAdapterConfigurationSchema } from "./_schema";
+import { MYSQL_DATABASE, MYSQL_HOST, MYSQL_PORT, MYSQL_ROOT_PASSWORD, MYSQL_USER } from "./envVariables";
+import { MySqlAdapter, type MySqlAdapterConfiguration } from "./index";
 
 const connectionConfiguration: MySqlAdapterConfiguration["connection"] = {
-  host: "localhost",
-  user: "root",
-  password: "rootpassword",
-  database: "dbname",
-  port: 3306,
+  host: MYSQL_HOST,
+  user: MYSQL_USER,
+  password: MYSQL_ROOT_PASSWORD,
+  database: MYSQL_DATABASE,
+  port: MYSQL_PORT,
 };
 
 const tableName = "items";
@@ -253,7 +254,7 @@ describe("mysql-adapter", async () => {
     });
 
     describe("table check", () => {
-      it("should throw when table does not exist", () => {
+      it("should throw when table does not exist", async () => {
         const configuration: MySqlAdapterConfiguration = {
           ...adapterConfiguration,
           table: {
@@ -264,10 +265,12 @@ describe("mysql-adapter", async () => {
 
         const adapter = new MySqlAdapter(configuration);
 
-        expect(adapter.checkStorage()).rejects.toThrow("Table 'dbname.non_existent_table' doesn't exist");
+        await expect(adapter.checkStorage()).rejects.toThrow(
+          `Table '${MYSQL_DATABASE}.non_existent_table' doesn't exist`,
+        );
       });
 
-      it("should throw when key column doesn't exist", () => {
+      it("should throw when key column doesn't exist", async () => {
         const configuration: MySqlAdapterConfiguration = {
           ...adapterConfiguration,
           table: {
@@ -278,10 +281,10 @@ describe("mysql-adapter", async () => {
 
         const adapter = new MySqlAdapter(configuration);
 
-        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_key_column' in");
+        await expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_key_column' in");
       });
 
-      it("should throw when value column doesn't exist", () => {
+      it("should throw when value column doesn't exist", async () => {
         const configuration: MySqlAdapterConfiguration = {
           ...adapterConfiguration,
           table: {
@@ -292,10 +295,10 @@ describe("mysql-adapter", async () => {
 
         const adapter = new MySqlAdapter(configuration);
 
-        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_value_column' in");
+        await expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_value_column' in");
       });
 
-      it("should throw when extra column doesn't exist", () => {
+      it("should throw when extra column doesn't exist", async () => {
         const configuration: MySqlAdapterConfiguration = {
           ...adapterConfiguration,
           table: {
@@ -306,16 +309,14 @@ describe("mysql-adapter", async () => {
 
         const adapter = new MySqlAdapter(configuration);
 
-        expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_extra_column' in");
+        await expect(adapter.checkStorage()).rejects.toThrow("Unknown column 'non_existent_extra_column' in");
       });
     });
   });
 
-  describe("adapter tests", async () => {
-    await prepareDatabase(adapterConfiguration.connection);
+  await prepareDatabase(adapterConfiguration.connection);
 
-    const adapter = new MySqlAdapter(adapterConfiguration);
+  const adapter = new MySqlAdapter(adapterConfiguration);
 
-    runAdapterTests(adapter);
-  });
+  runAdapterTests(adapter);
 });

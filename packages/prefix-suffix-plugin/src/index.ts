@@ -1,5 +1,13 @@
-import { type Key, type StashItPlugin } from "@stash-it/core";
-import z from "zod";
+import type { Key, StashItPlugin } from "@stash-it/core";
+import { z } from "zod";
+
+/** Prefix/suffix plugin options. */
+export interface PrefixSuffixPluginOptions {
+  /** Prefix to add to the key. */
+  prefix?: string;
+  /** Suffix to add to the key. */
+  suffix?: string;
+}
 
 const PrefixSuffixSchema = z.string().trim().min(1).optional();
 const PluginOptionsSchema = z
@@ -11,8 +19,6 @@ const PluginOptionsSchema = z
     message: "Either prefix or suffix should be set.",
     path: [],
   });
-
-type PluginOptions = z.infer<typeof PluginOptionsSchema>;
 
 const dropPrefix = (key: Key, prefix: string): Key => {
   if (prefix && key.startsWith(prefix)) {
@@ -35,7 +41,7 @@ const dropSuffix = (key: Key, suffix: string): Key => {
  *
  * @param options Plugin options
  */
-export const createPrefixSuffixPlugin = (options: PluginOptions): StashItPlugin => {
+export const createPrefixSuffixPlugin = (options: PrefixSuffixPluginOptions): StashItPlugin => {
   const values = PluginOptionsSchema.parse(options);
 
   const prefix = values.prefix ?? "";

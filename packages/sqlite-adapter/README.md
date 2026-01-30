@@ -36,6 +36,12 @@ bun
 bunx jsr add @stash-it/sqlite-adapter
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { SqliteAdapter } from "jsr:@stash-it/sqlite-adapter";
+```
+
 ## Usage
 
 ```ts
@@ -74,6 +80,14 @@ CREATE TABLE "items" (
   "extra" TEXT
 )
 ```
+
+## Development/testing
+
+### Running tests locally
+
+Simply execute `pnpm test`.
+
+The tests create a temporary SQLite database file that is automatically cleaned up after the test run.
 
 ## License
 

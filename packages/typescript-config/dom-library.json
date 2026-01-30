@@ -1,6 +1,9 @@
 {
   "extends": "@total-typescript/tsconfig/tsc/dom/library",
   "compilerOptions": {
-    "moduleResolution": "bundler"
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "isolatedDeclarations": true,
+    "allowJs": false
   }
 }

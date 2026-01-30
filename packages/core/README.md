@@ -43,6 +43,12 @@ bun
 bunx jsr add @stash-it/core
 ```
 
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { StashItAdapter, type StashItPlugin } from "jsr:@stash-it/core";
+```
+
 ## Usage
 
 ### `StashItAdapter`
@@ -72,7 +78,7 @@ class MyAdapter extends StashItAdapter {
   }
 
   override async disconnect(): Promise<void> {
-    this.#database.connect();
+    this.#database.disconnect();
   }
 }
 ```

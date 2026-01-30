@@ -1,6 +1,4 @@
 {
-  "extends": "@repo/typescript-config/dom-library.json",
-  "compilerOptions": {
-    "strictPropertyInitialization": false
-  }
+  "extends": "@repo/typescript-config/non-dom-library.json",
+  "exclude": ["vitest.config.ts"]
 }

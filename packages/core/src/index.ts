@@ -18,11 +18,10 @@ export type Item = {
 };
 
 /** Hook handler function. Accepts and returns the same args, apart from the adapter, which is injected each time. */
-// eslint-disable-next-line no-unused-vars
-export type HookHandler<Args> = (args: Args) => Promise<Omit<Args, "adapter">>;
+export type HookHandler<Args extends { adapter: unknown }> = (args: Args) => Promise<Omit<Args, "adapter">>;
 
-type RequiredProperties<Object, K extends keyof Object> = {
-  [P in K]: Object[P];
+type RequiredProperties<T, K extends keyof T> = {
+  [P in K]: T[P];
 };
 
 /** All possible hooks. */
@@ -69,17 +68,11 @@ type ExtraNotFound = undefined;
 export type GetExtraResult = Extra | ExtraNotFound;
 
 interface CommonInterface {
-  // eslint-disable-next-line no-unused-vars
-  setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
-  // eslint-disable-next-line no-unused-vars
+  setItem(key: Key, value: Value, extra?: Extra): Promise<Item>;
   getItem(key: Key): Promise<GetItemResult>;
-  // eslint-disable-next-line no-unused-vars
   hasItem(key: Key): Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   removeItem(key: Key): Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
-  // eslint-disable-next-line no-unused-vars
   getExtra(key: Key): Promise<GetExtraResult>;
   checkStorage(): Promise<true>;
 }
@@ -150,14 +143,13 @@ export type StashItPlugin = {
 
 /** StashIt interface. */
 export interface StashItInterface extends CommonInterface {
-  // eslint-disable-next-line no-unused-vars
   registerPlugins(plugins: StashItPlugin[]): void;
 }
 
+/** StashIt adapter interface. */
 export interface StashItAdapterInterface extends CommonInterface {
   connect(): Promise<void>;
   disconnect(): Promise<void>;
-  checkStorage(): Promise<true>;
 }
 
 /** StashIt adapter abstract class. */
@@ -179,7 +171,7 @@ export abstract class StashItAdapter implements StashItAdapterInterface {
   }
 
   /**
-   * Runs checks, essetially all public adapter's methods,
+   * Runs checks, essentially all public adapter's methods,
    * on the storage, to verify if all of those methods can be performed.
    * More precisely, if the adapter can operate (read, write, update, delete)
    * on the storage without problems.
@@ -195,35 +187,39 @@ export abstract class StashItAdapter implements StashItAdapterInterface {
 
     await this.connect();
 
-    await this.setItem(key, value, extra);
-    await this.hasItem(key);
-    await this.getItem(key);
-    await this.getExtra(key);
-    await this.setItem(key, "a new value", { and: "a new extra" });
-    await this.setExtra(key, { again: "new extra value" });
-    await this.removeItem(key);
+    try {
+      await this.setItem(key, value, extra);
+      await this.hasItem(key);
+      await this.getItem(key);
+      await this.getExtra(key);
+      await this.setItem(key, "a new value", { and: "a new extra" });
+      await this.setExtra(key, { again: "new extra value" });
+    } finally {
+      // Always try to clean up the test item, even if operations failed
+      try {
+        await this.removeItem(key);
+      } catch {
+        // Ignore cleanup errors - the main error (if any) will be thrown
+      }
 
-    await this.disconnect();
+      await this.disconnect();
+    }
 
     return true;
   }
 
   protected validateKey(key: Key): void {
     if (!/^[A-Za-z0-9_-]+$/.test(key)) {
-      throw new Error(`Invalid key. Only _-azAZ09 allowed. '${key}' used.`);
+      throw new Error(
+        `Invalid key: '${key}'. Only alphanumeric characters (a-z, A-Z, 0-9), underscores (_), and hyphens (-) are allowed.`,
+      );
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
-  abstract setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
-  // eslint-disable-next-line no-unused-vars
+  abstract setItem(key: Key, value: Value, extra?: Extra): Promise<Item>;
   abstract getItem(key: Key): Promise<GetItemResult>;
-  // eslint-disable-next-line no-unused-vars
   abstract hasItem(key: Key): Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   abstract removeItem(key: Key): Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   abstract setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
-  // eslint-disable-next-line no-unused-vars
   abstract getExtra(key: Key): Promise<GetExtraResult>;
 }

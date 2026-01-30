@@ -3,11 +3,14 @@ import { StashItAdapter } from "@stash-it/core";
 import { createClient, type RedisClientType } from "redis";
 import { z } from "zod";
 
+/** Redis adapter configuration. */
+export interface RedisAdapterConfiguration {
+  url: string;
+}
+
 const redisAdapterConfigurationSchema = z.object({
   url: z.string().url(),
 });
-
-type RedisAdapterConfiguration = z.infer<typeof redisAdapterConfigurationSchema>;
 
 /**
  * Redis adapter class.
@@ -25,11 +28,11 @@ export class RedisAdapter extends StashItAdapter {
     });
   }
 
-  override async connect() {
+  override async connect(): Promise<void> {
     await this.#database.connect();
   }
 
-  override async disconnect() {
+  override async disconnect(): Promise<void> {
     await this.#database.disconnect();
   }
 
@@ -47,7 +50,7 @@ export class RedisAdapter extends StashItAdapter {
   async getItem(key: Key): Promise<GetItemResult> {
     const item = await this.#database.HGETALL(key);
 
-    if (item && item.value && item.extra) {
+    if (item?.value && item.extra) {
       return {
         key,
         value: JSON.parse(item.value),
@@ -71,7 +74,7 @@ export class RedisAdapter extends StashItAdapter {
   async setExtra(key: Key, extra: Extra): Promise<SetExtraResult> {
     const item = await this.#database.HGETALL(key);
 
-    if (item && item.extra) {
+    if (item?.extra) {
       await this.#database.HSET(key, "extra", JSON.stringify(extra));
 
       return extra;
@@ -83,7 +86,7 @@ export class RedisAdapter extends StashItAdapter {
   async getExtra(key: Key): Promise<GetExtraResult> {
     const item = await this.#database.HGETALL(key);
 
-    if (item && item.extra) {
+    if (item?.extra) {
       return JSON.parse(item.extra);
     }
   }

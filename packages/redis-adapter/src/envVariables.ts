@@ -1,9 +1,15 @@
-import { z } from "zod";
 import dotenv from "dotenv";
+import { z } from "zod";
 
 dotenv.config();
 
-const envVariablesSchema = z.object({
+interface RedisEnvVariables {
+  REDIS_CONTAINER_NAME: string;
+  REDIS_HOST: string;
+  REDIS_PORT: string;
+}
+
+const envVariablesSchema: z.ZodType<RedisEnvVariables> = z.object({
   REDIS_CONTAINER_NAME: z.string(),
   REDIS_HOST: z.string(),
   REDIS_PORT: z.string(),
@@ -11,8 +17,12 @@ const envVariablesSchema = z.object({
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof envVariablesSchema> {}
+    interface ProcessEnv extends RedisEnvVariables {}
   }
 }
 
-export const { REDIS_CONTAINER_NAME, REDIS_HOST, REDIS_PORT } = envVariablesSchema.parse(process.env);
+const _parsed: RedisEnvVariables = envVariablesSchema.parse(process.env);
+
+export const REDIS_CONTAINER_NAME: string = _parsed.REDIS_CONTAINER_NAME;
+export const REDIS_HOST: string = _parsed.REDIS_HOST;
+export const REDIS_PORT: string = _parsed.REDIS_PORT;

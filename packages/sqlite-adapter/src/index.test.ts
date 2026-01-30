@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
-import { it, expect, afterAll, describe } from "vitest";
-import SqliteDatabase from "better-sqlite3";
-import { runAdapterTests } from "@stash-it/dev-tools";
 import { createHmac } from "node:crypto";
+import path from "node:path";
+import { runAdapterTests } from "@stash-it/dev-tools";
+import SqliteDatabase from "better-sqlite3";
+import fs from "fs-extra";
+import { afterAll, describe, expect, it } from "vitest";
 
 import { SqliteAdapter, type SqliteAdapterConfiguration } from "./index";
 
@@ -62,7 +62,7 @@ describe("sqlite-adapter", () => {
             expect(
               () => new SqliteAdapter({ ...adapterConfiguration, table: { tableName: 1 as unknown as string } }),
             ).toThrow(
-              expect.objectContaining({ message: expect.stringContaining("Expected string, received number") }),
+              expect.objectContaining({ message: expect.stringContaining("expected string, received number") }),
             );
           });
         });
@@ -72,7 +72,7 @@ describe("sqlite-adapter", () => {
             expect(
               () => new SqliteAdapter({ ...adapterConfiguration, table: { keyColumnName: 1 as unknown as string } }),
             ).toThrow(
-              expect.objectContaining({ message: expect.stringContaining("Expected string, received number") }),
+              expect.objectContaining({ message: expect.stringContaining("expected string, received number") }),
             );
           });
         });
@@ -82,7 +82,7 @@ describe("sqlite-adapter", () => {
             expect(
               () => new SqliteAdapter({ ...adapterConfiguration, table: { valueColumnName: 1 as unknown as string } }),
             ).toThrow(
-              expect.objectContaining({ message: expect.stringContaining("Expected string, received number") }),
+              expect.objectContaining({ message: expect.stringContaining("expected string, received number") }),
             );
           });
         });
@@ -92,7 +92,7 @@ describe("sqlite-adapter", () => {
             expect(
               () => new SqliteAdapter({ ...adapterConfiguration, table: { extraColumnName: 1 as unknown as string } }),
             ).toThrow(
-              expect.objectContaining({ message: expect.stringContaining("Expected string, received number") }),
+              expect.objectContaining({ message: expect.stringContaining("expected string, received number") }),
             );
           });
         });
@@ -150,9 +150,7 @@ describe("sqlite-adapter", () => {
     });
   });
 
-  describe("adapter tests", () => {
-    const adapter = new SqliteAdapter(adapterConfiguration);
+  const adapter = new SqliteAdapter(adapterConfiguration);
 
-    runAdapterTests(adapter);
-  });
+  runAdapterTests(adapter);
 });

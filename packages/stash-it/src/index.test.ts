@@ -1,6 +1,6 @@
+import type { StashItAdapterInterface, StashItPlugin } from "@stash-it/core";
+import { toHaveBeenCalledAfter, toHaveBeenCalledBefore } from "jest-extended";
 import { describe, expect, it, vi } from "vitest";
-import { toHaveBeenCalledBefore, toHaveBeenCalledAfter } from "jest-extended";
-import { type StashItAdapterInterface, type StashItPlugin } from "@stash-it/core";
 import { mock } from "vitest-mock-extended";
 import { StashIt } from "./index";
 
@@ -17,7 +17,7 @@ describe("stash-it class", () => {
       const plugin: StashItPlugin = {
         hookHandlers: {
           beforeSetItem: async (args) => {
-            // @ts-ignore
+            // @ts-expect-error
             args.adapter.getItem = null;
 
             return args;
@@ -41,9 +41,10 @@ describe("stash-it class", () => {
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
 
-      await stashIt.checkStorage();
+      const result = await stashIt.checkStorage();
 
       expect(adapter.checkStorage).toHaveBeenCalledOnce();
+      expect(result).toBe(true);
     });
   });
 
@@ -85,6 +86,19 @@ describe("stash-it class", () => {
       expect(itemSet).toEqual(item);
     });
 
+    describe("when extra is not provided", () => {
+      it("should use an empty object as default", async () => {
+        const adapter = createDummyAdapter();
+        adapter.setItem.mockResolvedValue({ key, value, extra: {} });
+        const stashIt = new StashIt(adapter);
+
+        const itemSet = await stashIt.setItem(key, value);
+
+        expect(adapter.setItem).toHaveBeenCalledWith(key, value, {});
+        expect(itemSet).toEqual({ key, value, extra: {} });
+      });
+    });
+
     it("should connect to the storage, perform the action on the adapter, and disconnect afterwards", async () => {
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
@@ -98,7 +112,7 @@ describe("stash-it class", () => {
 
     describe("error handling", () => {
       describe("when one of the hook handlers throws", () => {
-        it("adapter disconnects, and error is rethrown", () => {
+        it("adapter disconnects, and error is rethrown", async () => {
           const plugin: StashItPlugin = {
             hookHandlers: {
               afterSetItem: () => {
@@ -111,11 +125,9 @@ describe("stash-it class", () => {
           const stashIt = new StashIt(adapter);
           stashIt.registerPlugins([plugin]);
 
-          stashIt.setItem("any_key", "any_value").catch((error) => {
-            expect(error.message).toEqual("Something went wrong...");
-            expect(adapter.disconnect).toHaveBeenCalled();
-            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setItem);
-          });
+          await expect(stashIt.setItem("any_key", "any_value")).rejects.toThrow("Something went wrong...");
+          expect(adapter.disconnect).toHaveBeenCalled();
+          expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setItem);
         });
       });
     });
@@ -221,7 +233,7 @@ describe("stash-it class", () => {
 
     describe("error handling", () => {
       describe("when one of the hook handlers throws", () => {
-        it("adapter disconnects, and error is rethrown", () => {
+        it("adapter disconnects, and error is rethrown", async () => {
           const plugin: StashItPlugin = {
             hookHandlers: {
               afterGetItem: () => {
@@ -234,11 +246,9 @@ describe("stash-it class", () => {
           const stashIt = new StashIt(adapter);
           stashIt.registerPlugins([plugin]);
 
-          stashIt.getItem("any_key").catch((error) => {
-            expect(error.message).toEqual("Something went wrong...");
-            expect(adapter.disconnect).toHaveBeenCalled();
-            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getItem);
-          });
+          await expect(stashIt.getItem("any_key")).rejects.toThrow("Something went wrong...");
+          expect(adapter.disconnect).toHaveBeenCalled();
+          expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getItem);
         });
       });
     });
@@ -334,7 +344,7 @@ describe("stash-it class", () => {
 
     describe("error handling", () => {
       describe("when one of the hook handlers throws", () => {
-        it("adapter disconnects, and error is rethrown", () => {
+        it("adapter disconnects, and error is rethrown", async () => {
           const plugin: StashItPlugin = {
             hookHandlers: {
               afterHasItem: () => {
@@ -347,11 +357,9 @@ describe("stash-it class", () => {
           const stashIt = new StashIt(adapter);
           stashIt.registerPlugins([plugin]);
 
-          stashIt.hasItem("any_key").catch((error) => {
-            expect(error.message).toEqual("Something went wrong...");
-            expect(adapter.disconnect).toHaveBeenCalled();
-            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.hasItem);
-          });
+          await expect(stashIt.hasItem("any_key")).rejects.toThrow("Something went wrong...");
+          expect(adapter.disconnect).toHaveBeenCalled();
+          expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.hasItem);
         });
       });
     });
@@ -461,7 +469,7 @@ describe("stash-it class", () => {
 
     describe("error handling", () => {
       describe("when one of the hook handlers throws", () => {
-        it("adapter disconnects, and error is rethrown", () => {
+        it("adapter disconnects, and error is rethrown", async () => {
           const plugin: StashItPlugin = {
             hookHandlers: {
               afterRemoveItem: () => {
@@ -474,11 +482,9 @@ describe("stash-it class", () => {
           const stashIt = new StashIt(adapter);
           stashIt.registerPlugins([plugin]);
 
-          stashIt.removeItem("any_key").catch((error) => {
-            expect(error.message).toEqual("Something went wrong...");
-            expect(adapter.disconnect).toHaveBeenCalled();
-            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.removeItem);
-          });
+          await expect(stashIt.removeItem("any_key")).rejects.toThrow("Something went wrong...");
+          expect(adapter.disconnect).toHaveBeenCalled();
+          expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.removeItem);
         });
       });
     });
@@ -566,7 +572,7 @@ describe("stash-it class", () => {
 
     describe("error handling", () => {
       describe("when one of the hook handlers throws", () => {
-        it("adapter disconnects, and error is rethrown", () => {
+        it("adapter disconnects, and error is rethrown", async () => {
           const plugin: StashItPlugin = {
             hookHandlers: {
               afterSetExtra: () => {
@@ -579,11 +585,9 @@ describe("stash-it class", () => {
           const stashIt = new StashIt(adapter);
           stashIt.registerPlugins([plugin]);
 
-          stashIt.setExtra("any_key", { some: "extra" }).catch((error) => {
-            expect(error.message).toEqual("Something went wrong...");
-            expect(adapter.disconnect).toHaveBeenCalled();
-            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setExtra);
-          });
+          await expect(stashIt.setExtra("any_key", { some: "extra" })).rejects.toThrow("Something went wrong...");
+          expect(adapter.disconnect).toHaveBeenCalled();
+          expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.setExtra);
         });
       });
     });
@@ -673,7 +677,7 @@ describe("stash-it class", () => {
 
     describe("error handling", () => {
       describe("when one of the hook handlers throws", () => {
-        it("adapter disconnects, and error is rethrown", () => {
+        it("adapter disconnects, and error is rethrown", async () => {
           const plugin: StashItPlugin = {
             hookHandlers: {
               afterGetExtra: () => {
@@ -686,11 +690,9 @@ describe("stash-it class", () => {
           const stashIt = new StashIt(adapter);
           stashIt.registerPlugins([plugin]);
 
-          stashIt.getExtra("any_key").catch((error) => {
-            expect(error.message).toEqual("Something went wrong...");
-            expect(adapter.disconnect).toHaveBeenCalled();
-            expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getExtra);
-          });
+          await expect(stashIt.getExtra("any_key")).rejects.toThrow("Something went wrong...");
+          expect(adapter.disconnect).toHaveBeenCalled();
+          expect(adapter.disconnect).toHaveBeenCalledAfter(adapter.getExtra);
         });
       });
     });
@@ -744,6 +746,19 @@ describe("stash-it class", () => {
   describe("registerPlugins method", () => {
     // Each hook is tested in its own test suite.
     // Testing general use for the method.
+    describe("when an empty array is passed", () => {
+      it("should not throw and stash-it should work normally", async () => {
+        const adapter = createDummyAdapter();
+        const stashIt = new StashIt(adapter);
+
+        stashIt.registerPlugins([]);
+
+        const itemSet = await stashIt.setItem(key, value, extra);
+
+        expect(itemSet).toEqual(item);
+      });
+    });
+
     describe("when more than one plugin is registered for a given hook", () => {
       it("should call all hook handlers for that hook in the order they were registered", async () => {
         const HookHandler1 = vi.fn();

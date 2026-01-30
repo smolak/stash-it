@@ -1,4 +1,4 @@
-import type { HookHandler, HookHandlerArgs, Hook, StashItPlugin } from "@stash-it/core";
+import type { Hook, HookHandler, HookHandlerArgs, StashItPlugin } from "@stash-it/core";
 
 // TODO: given this is a first helper/util (and aimed for tests specifically), this can be moved to a separate package.
 // There will be most likely other helpers/utils that will be used in tests or for creation of plugins/adapters.
@@ -22,6 +22,7 @@ export const getHandler = <H extends Hook>(hook: H, plugin: StashItPlugin): Hook
     );
   }
 
-  // TODO: this "as" is a hack, but I don't know how to make it work right now.
+  // Type assertion required: TypeScript cannot correlate indexed access types
+  // when the generic parameter H could be any hook name.
   return plugin.hookHandlers[hook] as unknown as HookHandler<HookHandlerArgs[H]>;
 };

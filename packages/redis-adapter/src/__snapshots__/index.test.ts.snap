@@ -3,12 +3,12 @@
 exports[`redis-adapter > validation > when url is not provided > throws an error 1`] = `
 [ZodError: [
   {
-    "validation": "url",
-    "code": "invalid_string",
-    "message": "Invalid url",
+    "code": "invalid_format",
+    "format": "url",
     "path": [
       "url"
-    ]
+    ],
+    "message": "Invalid URL"
   }
 ]]
 `;
@@ -16,12 +16,12 @@ exports[`redis-adapter > validation > when url is not provided > throws an error
 exports[`redis-adapter > validation > when url is not valid > throws an error 1`] = `
 [ZodError: [
   {
-    "validation": "url",
-    "code": "invalid_string",
-    "message": "Invalid url",
+    "code": "invalid_format",
+    "format": "url",
     "path": [
       "url"
-    ]
+    ],
+    "message": "Invalid URL"
   }
 ]]
 `;

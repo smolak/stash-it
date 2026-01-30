@@ -1,8 +1,7 @@
-import { type StashItPlugin, type Hook, type HookHandlerArgs } from "@stash-it/core";
+import type { Hook, HookHandlerArgs, StashItPlugin } from "@stash-it/core";
 
 type LogFunction = (
   hook: Hook,
-  // eslint-disable-next-line no-unused-vars
   hookHandlerArgs: Omit<HookHandlerArgs[typeof hook], "adapter"> & { adapter: string },
 ) => void;
 
@@ -17,7 +16,7 @@ async function logAndReturn<H extends Hook>(
 }
 
 /**
- * Create a plugin that prefixes and/or suffixes the key.
+ * Create a plugin that logs all hook calls.
  *
  * @param log Log function.
  */

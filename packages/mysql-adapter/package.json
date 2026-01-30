@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/mysql-adapter",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -24,17 +24,24 @@
     "MySQL"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "biome check .",
     "test": "./bin/when-mysql-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-mysql-is-ready-run.sh vitest --watch",
-    "publish": "pnpx jsr publish --allow-slow-types"
+    "typecheck": "tsc --noEmit",
+    "publish": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.5.0",
-    "mysql2": "^3.11.4",
-    "zod": "^3.24.1"
+    "mysql2": "^3.16.2",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@stash-it/core": ">=0.5.0"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.6"
+    "@stash-it/core": "workspace:*",
+    "@biomejs/biome": "catalog:",
+    "@stash-it/dev-tools": "workspace:*",
+    "dotenv": "catalog:",
+    "vitest": "catalog:"
   }
 }

@@ -1,10 +1,10 @@
-import { describe, it, expect } from "vitest";
 import { getHandler } from "@stash-it/dev-tools";
-import { StashIt } from "@stash-it/stash-it";
 import { MemoryAdapter } from "@stash-it/memory-adapter";
+import { StashIt } from "@stash-it/stash-it";
+import { describe, expect, it } from "vitest";
 
-import { createPrefixSuffixPlugin } from "./index";
 import { ZodError } from "zod";
+import { createPrefixSuffixPlugin } from "./index";
 
 // Any adapter can be used here.
 const adapter = new MemoryAdapter();
@@ -66,7 +66,7 @@ describe("prefix-suffix-plugin", () => {
     });
 
     describe("after setting an item", () => {
-      it("prefix is dropped from key, as prefix is used only internally", async () => {
+      it("suffix is dropped from key, as suffix is used only internally", async () => {
         const plugin = createPrefixSuffixPlugin({ suffix: "-suffix" });
         const key = "key-suffix";
         const value = "value";
@@ -82,7 +82,7 @@ describe("prefix-suffix-plugin", () => {
     });
 
     describe("after getting an item", () => {
-      it("prefix is dropped from key, as prefix is used only internally", async () => {
+      it("suffix is dropped from key, as suffix is used only internally", async () => {
         const plugin = createPrefixSuffixPlugin({ suffix: "-suffix" });
         const key = "key-suffix";
         const value = "value";
@@ -143,8 +143,26 @@ describe("prefix-suffix-plugin", () => {
   });
 
   describe("when neither prefix nor suffix is set", () => {
-    it.only("throws an error", () => {
+    it("throws an error", () => {
       expect(() => createPrefixSuffixPlugin({})).toThrow(ZodError);
+    });
+  });
+
+  describe("validation", () => {
+    it("throws when prefix is an empty string", () => {
+      expect(() => createPrefixSuffixPlugin({ prefix: "" })).toThrow(ZodError);
+    });
+
+    it("throws when suffix is an empty string", () => {
+      expect(() => createPrefixSuffixPlugin({ suffix: "" })).toThrow(ZodError);
+    });
+
+    it("throws when prefix is whitespace only", () => {
+      expect(() => createPrefixSuffixPlugin({ prefix: "   " })).toThrow(ZodError);
+    });
+
+    it("throws when suffix is whitespace only", () => {
+      expect(() => createPrefixSuffixPlugin({ suffix: "   " })).toThrow(ZodError);
     });
   });
 

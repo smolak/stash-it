@@ -2,14 +2,15 @@ import type {
   Extra,
   GetExtraResult,
   GetItemResult,
+  HookHandler,
   HookHandlerArgs,
   Item,
   Key,
-  StashItPlugin,
   RegisteredHookHandlers,
   SetExtraResult,
   StashItAdapterInterface,
   StashItInterface,
+  StashItPlugin,
   Value,
 } from "@stash-it/core";
 
@@ -162,8 +163,8 @@ export class StashIt implements StashItInterface {
     }
   }
 
-  registerPlugins(plugins: StashItPlugin[]) {
-    plugins.forEach((plugin) => {
+  registerPlugins(plugins: StashItPlugin[]): void {
+    for (const plugin of plugins) {
       const { hookHandlers } = plugin;
       let hook: keyof RegisteredHookHandlers;
 
@@ -171,12 +172,16 @@ export class StashIt implements StashItInterface {
         const hookHandler = hookHandlers[hook];
 
         if (hookHandler) {
-          // I know this is right (covered by tests), but I don't know how to TS guard it :/
-          // @ts-ignore
-          this.#registeredHookHandlers[hook] = [...this.#registeredHookHandlers[hook], hookHandler];
+          // Type assertion required: TypeScript cannot correlate indexed access types
+          // across different objects (hookHandlers vs registeredHookHandlers).
+          // The runtime type safety is ensured by the for-in loop only yielding valid hooks.
+          (this.#registeredHookHandlers as Record<keyof RegisteredHookHandlers, unknown[]>)[hook] = [
+            ...this.#registeredHookHandlers[hook],
+            hookHandler,
+          ];
         }
       }
-    });
+    }
   }
 
   async #call<Hook extends keyof RegisteredHookHandlers>(
@@ -188,9 +193,13 @@ export class StashIt implements StashItInterface {
 
     if (hookHandlers.length > 0) {
       for (const handler of hookHandlers) {
-        // I know this is right (covered by tests), but I don't know how to TS guard it :/
-        // @ts-ignore
-        const result = await handler({ ...newArgs, adapter: this.#adapter });
+        // Type assertion required: TypeScript cannot narrow the handler's parameter type
+        // based on the generic Hook type when iterating over the array.
+        const typedHandler = handler as unknown as HookHandler<HookHandlerArgs[Hook]>;
+        const result = await typedHandler({
+          ...newArgs,
+          adapter: this.#adapter,
+        } as HookHandlerArgs[Hook]);
 
         newArgs = { ...newArgs, ...result };
       }

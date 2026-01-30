@@ -1,17 +1,22 @@
-import { type Key, StashItAdapter, type StashItPlugin } from "@stash-it/core";
-import z from "zod";
+import type { Key, StashItAdapter, StashItPlugin } from "@stash-it/core";
+import { z } from "zod";
+
+/** TTL plugin options. */
+export interface TtlPluginOptions {
+  /** Time to live in seconds. */
+  ttl: number;
+}
 
 const pluginOptionsSchema = z.object({
   ttl: z.number().int().positive(),
 });
 
-type PluginOptions = z.infer<typeof pluginOptionsSchema>;
 type Ttl = {
   ttl: number;
   createdAt: string;
 };
 
-const removeItemIfTtlExpired = async (adapter: StashItAdapter, key: Key, { ttl, createdAt }: Ttl) => {
+const removeItemIfTtlExpired = async (adapter: StashItAdapter, key: Key, { ttl, createdAt }: Ttl): Promise<void> => {
   const now = new Date();
   const createdAtDate = new Date(createdAt);
   const diff = now.getTime() - createdAtDate.getTime();
@@ -32,7 +37,7 @@ export const TTL_EXTRA_PROPERTY_NAME = "__ttl" as const;
  *
  * @param options Plugin options
  */
-export const createTtlPlugin = (options: PluginOptions): StashItPlugin => {
+export const createTtlPlugin = (options: TtlPluginOptions): StashItPlugin => {
   const { ttl } = pluginOptionsSchema.parse(options);
 
   return {

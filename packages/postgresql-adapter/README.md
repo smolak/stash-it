@@ -2,7 +2,7 @@
 
 ![logo-stash-it-color-dark 2x](https://user-images.githubusercontent.com/1819138/30385483-99fd209c-98a7-11e7-85e2-595791d8d894.png)
 
-`@stash-it/postgresql-adapter` is a simple redis adapter that can be used with `@stash-it/stash-it`.
+`@stash-it/postgresql-adapter` is a simple PostgreSQL adapter that can be used with `@stash-it/stash-it`.
 It uses `pg` package under the hood.
 
 ## Installation
@@ -35,6 +35,12 @@ bun
 
 ```bash
 bunx jsr add @stash-it/postgresql-adapter
+```
+
+You can also use the `jsr:` specifier directly in Deno:
+
+```ts
+import { PostgreSqlAdapter } from "jsr:@stash-it/postgresql-adapter";
 ```
 
 ## Usage
@@ -84,17 +90,15 @@ CREATE TABLE "items" (
 
 ### Running tests locally
 
-Make sure to have `.env` file with those variables (and your values):
+Copy the example environment file and adjust if needed:
 
-```sh
-POSTGRES_CONTAINER_NAME='postgresql_container'
-POSTGRES_DATABASE="dbname"
-POSTGRES_PASSWORD="password"
-POSTGRES_USER="user"
-POSTGRES_PORT="5432"
+```bash
+cp .env.example .env
 ```
 
-And then execute `pnpm test`.
+The `.env.example` file contains the default values. Use different if need be.
+
+Then execute `pnpm test`.
 
 The tests you will run do all sorts of checks to verify if the adapter is capable of conducting CRUD operations.
 

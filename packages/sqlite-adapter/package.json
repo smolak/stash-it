@@ -24,20 +24,26 @@
     "sqlite3"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "biome check .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
-    "publish": "pnpx jsr publish --allow-slow-types"
+    "typecheck": "tsc --noEmit",
+    "publish": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
-    "@stash-it/core": "npm:@jsr/stash-it__core@0.5.0",
-    "better-sqlite3": "^11.7.0",
-    "zod": "^3.24.1"
+    "better-sqlite3": "^12.6.2",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@stash-it/core": ">=0.5.0"
   },
   "devDependencies": {
-    "@stash-it/dev-tools": "npm:@jsr/stash-it__dev-tools@0.0.6",
-    "@types/better-sqlite3": "^7.6.11",
+    "@stash-it/core": "workspace:*",
+    "@biomejs/biome": "catalog:",
+    "@stash-it/dev-tools": "workspace:*",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/fs-extra": "^11.0.4",
-    "fs-extra": "^11.2.0"
+    "fs-extra": "^11.3.3",
+    "vitest": "catalog:"
   }
 }
