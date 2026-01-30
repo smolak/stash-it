@@ -162,7 +162,7 @@ export class StashIt implements StashItInterface {
     }
   }
 
-  registerPlugins(plugins: StashItPlugin[]) {
+  registerPlugins(plugins: StashItPlugin[]): void {
     for (const plugin of plugins) {
       const { hookHandlers } = plugin;
       let hook: keyof RegisteredHookHandlers;

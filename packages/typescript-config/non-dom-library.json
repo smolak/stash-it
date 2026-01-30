@@ -2,6 +2,8 @@
   "extends": "@total-typescript/tsconfig/tsc/no-dom/library-monorepo",
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "isolatedDeclarations": true,
+    "allowJs": false
   }
 }
