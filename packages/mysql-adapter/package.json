@@ -6,9 +6,23 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": ["mod.ts", "src/**/*.ts", "!src/**/*.test.ts", "_dist", "README.md", "package.json"],
+  "files": [
+    "mod.ts",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
   "license": "MIT",
-  "keywords": ["@stash-it", "stash it", "stash-it", "adapter", "mysql", "MySQL"],
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "adapter",
+    "mysql",
+    "MySQL"
+  ],
   "scripts": {
     "lint": "biome check .",
     "test": "./bin/when-mysql-is-ready-run.sh vitest run",
@@ -18,7 +32,7 @@
   },
   "dependencies": {
     "@stash-it/core": "catalog:",
-    "mysql2": "^3.11.4",
+    "mysql2": "^3.16.2",
     "zod": "catalog:"
   },
   "devDependencies": {

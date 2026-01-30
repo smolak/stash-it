@@ -6,7 +6,13 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": ["mod.ts", "src", "_dist", "README.md", "package.json"],
+  "files": [
+    "mod.ts",
+    "src",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
   "license": "MIT",
   "keywords": [
     "@stash-it",
@@ -35,7 +41,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "jest-extended": "^4.0.2",
+    "jest-extended": "^7.0.0",
     "vitest": "catalog:",
     "vitest-mock-extended": "^3.1.0"
   }

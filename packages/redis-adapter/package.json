@@ -6,9 +6,22 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": ["mod.ts", "src/**/*.ts", "!src/**/*.test.ts", "_dist", "README.md", "package.json"],
+  "files": [
+    "mod.ts",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
   "license": "MIT",
-  "keywords": ["@stash-it", "stash it", "stash-it", "adapter", "redis"],
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "adapter",
+    "redis"
+  ],
   "scripts": {
     "lint": "biome check .",
     "test": "./bin/when-redis-is-ready-run.sh vitest run",
@@ -18,7 +31,7 @@
   },
   "dependencies": {
     "@stash-it/core": "catalog:",
-    "redis": "^4.7.0",
+    "redis": "^5.10.0",
     "zod": "catalog:"
   },
   "devDependencies": {

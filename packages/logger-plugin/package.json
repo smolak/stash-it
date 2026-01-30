@@ -6,9 +6,23 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": ["mod.ts", "src/**/*.ts", "!src/**/*.test.ts", "_dist", "README.md", "package.json"],
+  "files": [
+    "mod.ts",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
   "license": "MIT",
-  "keywords": ["@stash-it", "stash it", "stash-it", "plugin", "logger", "logging"],
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "plugin",
+    "logger",
+    "logging"
+  ],
   "scripts": {
     "lint": "biome check .",
     "test": "vitest run",

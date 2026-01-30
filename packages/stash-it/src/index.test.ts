@@ -17,7 +17,7 @@ describe("stash-it class", () => {
       const plugin: StashItPlugin = {
         hookHandlers: {
           beforeSetItem: async (args) => {
-            // @ts-ignore
+            // @ts-expect-error
             args.adapter.getItem = null;
 
             return args;

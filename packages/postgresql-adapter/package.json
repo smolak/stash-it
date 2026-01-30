@@ -6,9 +6,23 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": ["mod.ts", "src/**/*.ts", "!src/**/*.test.ts", "_dist", "README.md", "package.json"],
+  "files": [
+    "mod.ts",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
   "license": "MIT",
-  "keywords": ["@stash-it", "stash it", "stash-it", "adapter", "postgresql", "PostgreSQL"],
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "adapter",
+    "postgresql",
+    "PostgreSQL"
+  ],
   "scripts": {
     "lint": "biome check .",
     "test": "./bin/when-postgresql-is-ready-run.sh vitest run",
@@ -18,13 +32,13 @@
   },
   "dependencies": {
     "@stash-it/core": "catalog:",
-    "pg": "^8.13.1",
+    "pg": "^8.17.2",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@stash-it/dev-tools": "workspace:*",
-    "@types/pg": "^8.11.10",
+    "@types/pg": "^8.16.0",
     "dotenv": "catalog:",
     "vitest": "catalog:"
   }

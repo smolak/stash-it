@@ -172,7 +172,7 @@ export class StashIt implements StashItInterface {
 
         if (hookHandler) {
           // I know this is right (covered by tests), but I don't know how to TS guard it :/
-          // @ts-ignore
+          // @ts-expect-error
           this.#registeredHookHandlers[hook] = [...this.#registeredHookHandlers[hook], hookHandler];
         }
       }
@@ -189,7 +189,7 @@ export class StashIt implements StashItInterface {
     if (hookHandlers.length > 0) {
       for (const handler of hookHandlers) {
         // I know this is right (covered by tests), but I don't know how to TS guard it :/
-        // @ts-ignore
+        // @ts-expect-error
         const result = await handler({ ...newArgs, adapter: this.#adapter });
 
         newArgs = { ...newArgs, ...result };

@@ -3,7 +3,7 @@ import { MemoryAdapter } from "@stash-it/memory-adapter";
 import { StashIt } from "@stash-it/stash-it";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { TTL_EXTRA_PROPERTY_NAME, createTtlPlugin } from "./index";
+import { createTtlPlugin, TTL_EXTRA_PROPERTY_NAME } from "./index";
 
 // Any adapter can be used here.
 const adapter = new MemoryAdapter();

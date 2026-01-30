@@ -6,9 +6,21 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": ["mod.ts", "src", "_dist", "README.md", "package.json"],
+  "files": [
+    "mod.ts",
+    "src",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
   "license": "MIT",
-  "keywords": ["@stash-it", "stash it", "stash-it", "dev-tools", "tools"],
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "dev-tools",
+    "tools"
+  ],
   "scripts": {
     "lint": "biome check .",
     "typecheck": "tsc --noEmit",
@@ -16,7 +28,7 @@
   },
   "dependencies": {
     "@stash-it/core": "catalog:",
-    "nanoid": "^5.0.8",
+    "nanoid": "^5.1.6",
     "vitest": "catalog:"
   },
   "devDependencies": {

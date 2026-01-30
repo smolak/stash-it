@@ -3,16 +3,15 @@
 exports[`mysql-adapter > configuration > connection > database > throws an error when database is empty 1`] = `
 [ZodError: [
   {
+    "origin": "string",
     "code": "too_small",
     "minimum": 1,
-    "type": "string",
     "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
     "path": [
       "connection",
       "database"
-    ]
+    ],
+    "message": "Too small: expected string to have >=1 characters"
   }
 ]]
 `;
@@ -20,14 +19,13 @@ exports[`mysql-adapter > configuration > connection > database > throws an error
 exports[`mysql-adapter > configuration > connection > database > throws an error when database is not provided 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "connection",
       "database"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]]
 `;
@@ -35,16 +33,15 @@ exports[`mysql-adapter > configuration > connection > database > throws an error
 exports[`mysql-adapter > configuration > connection > host > throws an error when host is empty 1`] = `
 [ZodError: [
   {
+    "origin": "string",
     "code": "too_small",
     "minimum": 1,
-    "type": "string",
     "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
     "path": [
       "connection",
       "host"
-    ]
+    ],
+    "message": "Too small: expected string to have >=1 characters"
   }
 ]]
 `;
@@ -52,14 +49,13 @@ exports[`mysql-adapter > configuration > connection > host > throws an error whe
 exports[`mysql-adapter > configuration > connection > host > throws an error when host is not provided 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "connection",
       "host"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]]
 `;
@@ -67,16 +63,15 @@ exports[`mysql-adapter > configuration > connection > host > throws an error whe
 exports[`mysql-adapter > configuration > connection > password > throws an error when password is empty 1`] = `
 [ZodError: [
   {
+    "origin": "string",
     "code": "too_small",
     "minimum": 1,
-    "type": "string",
     "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
     "path": [
       "connection",
       "password"
-    ]
+    ],
+    "message": "Too small: expected string to have >=1 characters"
   }
 ]]
 `;
@@ -84,14 +79,13 @@ exports[`mysql-adapter > configuration > connection > password > throws an error
 exports[`mysql-adapter > configuration > connection > password > throws an error when password is not provided 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "connection",
       "password"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]]
 `;
@@ -99,14 +93,13 @@ exports[`mysql-adapter > configuration > connection > password > throws an error
 exports[`mysql-adapter > configuration > connection > port number > throws an error when port is not a number 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "number",
-    "received": "string",
+    "code": "invalid_type",
     "path": [
       "connection",
       "port"
     ],
-    "message": "Expected number, received string"
+    "message": "Invalid input: expected number, received string"
   }
 ]]
 `;
@@ -114,16 +107,15 @@ exports[`mysql-adapter > configuration > connection > port number > throws an er
 exports[`mysql-adapter > configuration > connection > user > throws an error when user is empty 1`] = `
 [ZodError: [
   {
+    "origin": "string",
     "code": "too_small",
     "minimum": 1,
-    "type": "string",
     "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
     "path": [
       "connection",
       "user"
-    ]
+    ],
+    "message": "Too small: expected string to have >=1 characters"
   }
 ]]
 `;
@@ -131,14 +123,13 @@ exports[`mysql-adapter > configuration > connection > user > throws an error whe
 exports[`mysql-adapter > configuration > connection > user > throws an error when user is not provided 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "connection",
       "user"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]]
 `;
@@ -146,16 +137,15 @@ exports[`mysql-adapter > configuration > connection > user > throws an error whe
 exports[`mysql-adapter > configuration > table > extraColumnName > should throw if empty 1`] = `
 [ZodError: [
   {
+    "origin": "string",
     "code": "too_small",
     "minimum": 1,
-    "type": "string",
     "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
     "path": [
       "table",
       "extraColumnName"
-    ]
+    ],
+    "message": "Too small: expected string to have >=1 characters"
   }
 ]]
 `;
@@ -163,14 +153,13 @@ exports[`mysql-adapter > configuration > table > extraColumnName > should throw 
 exports[`mysql-adapter > configuration > table > extraColumnName > should throw if not a string 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "number",
+    "code": "invalid_type",
     "path": [
       "table",
       "extraColumnName"
     ],
-    "message": "Expected string, received number"
+    "message": "Invalid input: expected string, received number"
   }
 ]]
 `;
@@ -178,16 +167,15 @@ exports[`mysql-adapter > configuration > table > extraColumnName > should throw 
 exports[`mysql-adapter > configuration > table > keyColumnName > should throw if empty 1`] = `
 [ZodError: [
   {
+    "origin": "string",
     "code": "too_small",
     "minimum": 1,
-    "type": "string",
     "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
     "path": [
       "table",
       "keyColumnName"
-    ]
+    ],
+    "message": "Too small: expected string to have >=1 characters"
   }
 ]]
 `;
@@ -195,14 +183,13 @@ exports[`mysql-adapter > configuration > table > keyColumnName > should throw if
 exports[`mysql-adapter > configuration > table > keyColumnName > should throw if not a string 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "number",
+    "code": "invalid_type",
     "path": [
       "table",
       "keyColumnName"
     ],
-    "message": "Expected string, received number"
+    "message": "Invalid input: expected string, received number"
   }
 ]]
 `;
@@ -210,16 +197,15 @@ exports[`mysql-adapter > configuration > table > keyColumnName > should throw if
 exports[`mysql-adapter > configuration > table > tableName > should throw if empty 1`] = `
 [ZodError: [
   {
+    "origin": "string",
     "code": "too_small",
     "minimum": 1,
-    "type": "string",
     "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
     "path": [
       "table",
       "tableName"
-    ]
+    ],
+    "message": "Too small: expected string to have >=1 characters"
   }
 ]]
 `;
@@ -227,14 +213,13 @@ exports[`mysql-adapter > configuration > table > tableName > should throw if emp
 exports[`mysql-adapter > configuration > table > tableName > should throw if not a string 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "number",
+    "code": "invalid_type",
     "path": [
       "table",
       "tableName"
     ],
-    "message": "Expected string, received number"
+    "message": "Invalid input: expected string, received number"
   }
 ]]
 `;
@@ -242,16 +227,15 @@ exports[`mysql-adapter > configuration > table > tableName > should throw if not
 exports[`mysql-adapter > configuration > table > valueColumnName > should throw if empty 1`] = `
 [ZodError: [
   {
+    "origin": "string",
     "code": "too_small",
     "minimum": 1,
-    "type": "string",
     "inclusive": true,
-    "exact": false,
-    "message": "String must contain at least 1 character(s)",
     "path": [
       "table",
       "valueColumnName"
-    ]
+    ],
+    "message": "Too small: expected string to have >=1 characters"
   }
 ]]
 `;
@@ -259,14 +243,13 @@ exports[`mysql-adapter > configuration > table > valueColumnName > should throw 
 exports[`mysql-adapter > configuration > table > valueColumnName > should throw if not a string 1`] = `
 [ZodError: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "number",
+    "code": "invalid_type",
     "path": [
       "table",
       "valueColumnName"
     ],
-    "message": "Expected string, received number"
+    "message": "Invalid input: expected string, received number"
   }
 ]]
 `;

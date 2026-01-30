@@ -6,9 +6,23 @@
     "access": "public"
   },
   "exports": "./mod.ts",
-  "files": ["mod.ts", "src/**/*.ts", "!src/**/*.test.ts", "_dist", "README.md", "package.json"],
+  "files": [
+    "mod.ts",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
   "license": "MIT",
-  "keywords": ["@stash-it", "stash it", "stash-it", "adapter", "sqlite", "sqlite3"],
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "adapter",
+    "sqlite",
+    "sqlite3"
+  ],
   "scripts": {
     "lint": "biome check .",
     "test": "vitest run",
@@ -26,7 +40,7 @@
     "@stash-it/dev-tools": "workspace:*",
     "@types/better-sqlite3": "^7.6.13",
     "@types/fs-extra": "^11.0.4",
-    "fs-extra": "^11.2.0",
+    "fs-extra": "^11.3.3",
     "vitest": "catalog:"
   }
 }
