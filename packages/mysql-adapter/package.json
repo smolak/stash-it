@@ -28,7 +28,7 @@
     "test": "./bin/when-mysql-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-mysql-is-ready-run.sh vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpm -w run check-versions && pnpx jsr publish"
+    "release": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
     "mysql2": "^3.16.2",

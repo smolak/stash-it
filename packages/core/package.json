@@ -35,7 +35,7 @@
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpm -w run check-versions && pnpx jsr publish"
+    "release": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

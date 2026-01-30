@@ -38,7 +38,7 @@
         "POSTGRES_PORT"
       ]
     },
-    "publish": {
+    "release": {
       "dependsOn": ["lint", "test"],
       "cache": false
     }

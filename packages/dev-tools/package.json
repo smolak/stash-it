@@ -25,7 +25,7 @@
     "lint": "biome check .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpm -w run check-versions && pnpx jsr publish"
+    "release": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
     "@stash-it/core": "workspace:*",

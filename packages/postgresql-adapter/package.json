@@ -28,7 +28,7 @@
     "test": "./bin/when-postgresql-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-postgresql-is-ready-run.sh vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpm -w run check-versions && pnpx jsr publish"
+    "release": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
     "pg": "^8.17.2",

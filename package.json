@@ -14,7 +14,7 @@
     "typecheck": "turbo typecheck",
     "format": "biome check --write .",
     "check-versions": "npx tsx scripts/check-versions.ts",
-    "publish-packages": "turbo publish"
+    "release-packages": "turbo release"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

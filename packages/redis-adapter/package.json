@@ -27,7 +27,7 @@
     "test": "./bin/when-redis-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-redis-is-ready-run.sh vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpm -w run check-versions && pnpx jsr publish"
+    "release": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
     "redis": "^5.10.0",
