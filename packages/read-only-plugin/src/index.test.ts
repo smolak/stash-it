@@ -3,6 +3,7 @@ import { MemoryAdapter } from "@stash-it/memory-adapter";
 import { StashIt } from "@stash-it/stash-it";
 import { describe, expect, it } from "vitest";
 
+import { ZodError } from "zod";
 import { createReadOnlyPlugin } from "./index";
 
 describe("read-only-plugin", () => {
@@ -29,15 +30,34 @@ describe("read-only-plugin", () => {
     );
   });
 
-  it('allows to execute all of the "read" operations', () => {
-    const stash = new StashIt(new MemoryAdapter());
+  it('allows to execute all of the "read" operations and returns expected values', async () => {
+    const adapter = new MemoryAdapter();
+    const stash = new StashIt(adapter);
     const readOnlyPlugin = createReadOnlyPlugin();
+
+    // Pre-populate data before applying read-only plugin
+    await adapter.setItem("existing-key", "value", { some: "extra" });
 
     stash.registerPlugins([readOnlyPlugin]);
 
-    expect(() => stash.getItem("key")).not.toThrow();
-    expect(() => stash.hasItem("key")).not.toThrow();
-    expect(() => stash.getExtra("key")).not.toThrow();
+    // Test read operations return expected values
+    const item = await stash.getItem("existing-key");
+    expect(item).toEqual({ key: "existing-key", value: "value", extra: { some: "extra" } });
+
+    const exists = await stash.hasItem("existing-key");
+    expect(exists).toBe(true);
+
+    const doesNotExist = await stash.hasItem("non-existing-key");
+    expect(doesNotExist).toBe(false);
+
+    const extra = await stash.getExtra("existing-key");
+    expect(extra).toEqual({ some: "extra" });
+
+    const nonExistingItem = await stash.getItem("non-existing-key");
+    expect(nonExistingItem).toBeUndefined();
+
+    const nonExistingExtra = await stash.getExtra("non-existing-key");
+    expect(nonExistingExtra).toBeUndefined();
   });
 
   it("allows customizing error messages", async () => {
@@ -65,5 +85,31 @@ describe("read-only-plugin", () => {
     await expect(beforeSetExtraHandler({ key, extra, adapter })).rejects.toThrow(
       expect.objectContaining({ message: expect.stringContaining("Custom set extra error message.") }),
     );
+  });
+
+  describe("validation", () => {
+    it("throws when setItemErrorMessage is an empty string", () => {
+      expect(() => createReadOnlyPlugin({ setItemErrorMessage: "" })).toThrow(ZodError);
+    });
+
+    it("throws when removeItemErrorMessage is an empty string", () => {
+      expect(() => createReadOnlyPlugin({ removeItemErrorMessage: "" })).toThrow(ZodError);
+    });
+
+    it("throws when setExtraErrorMessage is an empty string", () => {
+      expect(() => createReadOnlyPlugin({ setExtraErrorMessage: "" })).toThrow(ZodError);
+    });
+
+    it("throws when setItemErrorMessage is whitespace only", () => {
+      expect(() => createReadOnlyPlugin({ setItemErrorMessage: "   " })).toThrow(ZodError);
+    });
+
+    it("throws when removeItemErrorMessage is whitespace only", () => {
+      expect(() => createReadOnlyPlugin({ removeItemErrorMessage: "   " })).toThrow(ZodError);
+    });
+
+    it("throws when setExtraErrorMessage is whitespace only", () => {
+      expect(() => createReadOnlyPlugin({ setExtraErrorMessage: "   " })).toThrow(ZodError);
+    });
   });
 });

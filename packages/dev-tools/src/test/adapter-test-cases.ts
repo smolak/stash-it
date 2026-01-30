@@ -37,7 +37,7 @@ export const runAdapterTests = (adapter: StashItAdapterInterface): void => {
         it("should throw when key is invalid and not set an item", async () => {
           const keyConsistingInvalidCharacters = "-=[!@#$%^&*()]=-";
 
-          // Addig as if the test will fail, and item is set, such item should be removed
+          // Adding as if the test will fail, and item is set, such item should be removed
           keysToRemoveItemsBy.push(keyConsistingInvalidCharacters);
 
           const value = "value";

@@ -1,3 +1,4 @@
+import type { Hook } from "@stash-it/core";
 import { getHandler } from "@stash-it/dev-tools";
 import { MemoryAdapter } from "@stash-it/memory-adapter";
 import { StashIt } from "@stash-it/stash-it";
@@ -6,94 +7,103 @@ import { describe, expect, it, vi } from "vitest";
 import { createLoggerPlugin } from "./index";
 
 describe("logger-plugin", () => {
-  it("calls log function with hook name and args passed to that hook", async () => {
-    const key = "key";
-    const value = "value";
-    const extra = { some: "extra value" };
-    const item = { key, value, extra };
+  const key = "key";
+  const value = "value";
+  const extra = { some: "extra value" };
+  const item = { key, value, extra };
 
-    // Any adapter will do
-    const adapter = new MemoryAdapter();
-    const adapterClassName = adapter.constructor.name;
+  // Any adapter will do
+  const adapter = new MemoryAdapter();
+  const adapterClassName = adapter.constructor.name;
 
-    const logFunction = vi.fn();
-    const plugin = createLoggerPlugin(logFunction);
+  describe("hook handlers", () => {
+    const testCases: Array<{
+      hook: Hook;
+      args: Record<string, unknown>;
+      expectedLogArgs: Record<string, unknown>;
+    }> = [
+      {
+        hook: "buildKey",
+        args: { key },
+        expectedLogArgs: { adapter: adapterClassName, key },
+      },
+      {
+        hook: "beforeSetItem",
+        args: { key, value, extra },
+        expectedLogArgs: { adapter: adapterClassName, key, value, extra },
+      },
+      {
+        hook: "afterSetItem",
+        args: { key, value, extra, item },
+        expectedLogArgs: { adapter: adapterClassName, key, value, extra, item },
+      },
+      {
+        hook: "beforeGetItem",
+        args: { key },
+        expectedLogArgs: { adapter: adapterClassName, key },
+      },
+      {
+        hook: "afterGetItem",
+        args: { key, item },
+        expectedLogArgs: { adapter: adapterClassName, key, item },
+      },
+      {
+        hook: "beforeHasItem",
+        args: { key },
+        expectedLogArgs: { adapter: adapterClassName, key },
+      },
+      {
+        hook: "afterHasItem",
+        args: { key, result: true },
+        expectedLogArgs: { adapter: adapterClassName, key, result: true },
+      },
+      {
+        hook: "beforeRemoveItem",
+        args: { key },
+        expectedLogArgs: { adapter: adapterClassName, key },
+      },
+      {
+        hook: "afterRemoveItem",
+        args: { key, result: true },
+        expectedLogArgs: { adapter: adapterClassName, key, result: true },
+      },
+      {
+        hook: "beforeSetExtra",
+        args: { key, extra },
+        expectedLogArgs: { adapter: adapterClassName, key, extra },
+      },
+      {
+        hook: "afterSetExtra",
+        args: { key, extra },
+        expectedLogArgs: { adapter: adapterClassName, key, extra },
+      },
+      {
+        hook: "beforeGetExtra",
+        args: { key },
+        expectedLogArgs: { adapter: adapterClassName, key },
+      },
+      {
+        hook: "afterGetExtra",
+        args: { key, extra },
+        expectedLogArgs: { adapter: adapterClassName, key, extra },
+      },
+    ];
 
-    const buildKeyHandler = getHandler("buildKey", plugin);
-    await buildKeyHandler({ adapter, key });
-    expect(logFunction).toHaveBeenCalledWith("buildKey", { adapter: adapterClassName, key });
+    it.each(testCases)("$hook handler calls log function with hook name and args", async ({
+      hook,
+      args,
+      expectedLogArgs,
+    }) => {
+      const logFunction = vi.fn();
+      const plugin = createLoggerPlugin(logFunction);
 
-    logFunction.mockReset();
+      const handler = getHandler(hook, plugin);
+      // Type assertion needed as we're using a generic test data structure
+      // biome-ignore lint/suspicious/noExplicitAny: Test data structure requires flexibility
+      await handler({ adapter, ...args } as any);
 
-    const beforeSetItemHandler = getHandler("beforeSetItem", plugin);
-    await beforeSetItemHandler({ adapter, key, value, extra });
-    expect(logFunction).toHaveBeenCalledWith("beforeSetItem", { adapter: adapterClassName, key, value, extra });
-
-    logFunction.mockReset();
-
-    const afterSetItemHandler = getHandler("afterSetItem", plugin);
-    await afterSetItemHandler({ adapter, key, value, extra, item });
-    expect(logFunction).toHaveBeenCalledWith("afterSetItem", { adapter: adapterClassName, key, value, extra, item });
-
-    logFunction.mockReset();
-
-    const beforeGetItemHandler = getHandler("beforeGetItem", plugin);
-    await beforeGetItemHandler({ adapter, key });
-    expect(logFunction).toHaveBeenCalledWith("beforeGetItem", { adapter: adapterClassName, key });
-
-    logFunction.mockReset();
-
-    const afterGetItemHandler = getHandler("afterGetItem", plugin);
-    await afterGetItemHandler({ adapter, key, item });
-    expect(logFunction).toHaveBeenCalledWith("afterGetItem", { adapter: adapterClassName, key, item });
-
-    logFunction.mockReset();
-
-    const beforeHasItemHandler = getHandler("beforeHasItem", plugin);
-    await beforeHasItemHandler({ adapter, key });
-    expect(logFunction).toHaveBeenCalledWith("beforeHasItem", { adapter: adapterClassName, key });
-
-    logFunction.mockReset();
-
-    const afterHasItemHandler = getHandler("afterHasItem", plugin);
-    await afterHasItemHandler({ adapter, key, result: true });
-    expect(logFunction).toHaveBeenCalledWith("afterHasItem", { adapter: adapterClassName, key, result: true });
-
-    logFunction.mockReset();
-
-    const beforeRemoveItemHandler = getHandler("beforeRemoveItem", plugin);
-    await beforeRemoveItemHandler({ adapter, key });
-    expect(logFunction).toHaveBeenCalledWith("beforeRemoveItem", { adapter: adapterClassName, key });
-
-    logFunction.mockReset();
-
-    const afterRemoveItemHandler = getHandler("afterRemoveItem", plugin);
-    await afterRemoveItemHandler({ adapter, key, result: true });
-    expect(logFunction).toHaveBeenCalledWith("afterRemoveItem", { adapter: adapterClassName, key, result: true });
-
-    logFunction.mockReset();
-
-    const beforeSetExtraHandler = getHandler("beforeSetExtra", plugin);
-    await beforeSetExtraHandler({ adapter, key, extra });
-    expect(logFunction).toHaveBeenCalledWith("beforeSetExtra", { adapter: adapterClassName, key, extra });
-
-    logFunction.mockReset();
-
-    const afterSetExtraHandler = getHandler("afterSetExtra", plugin);
-    await afterSetExtraHandler({ adapter, key, extra });
-    expect(logFunction).toHaveBeenCalledWith("afterSetExtra", { adapter: adapterClassName, key, extra });
-
-    logFunction.mockReset();
-
-    const beforeGetExtraHandler = getHandler("beforeGetExtra", plugin);
-    await beforeGetExtraHandler({ adapter, key });
-    expect(logFunction).toHaveBeenCalledWith("beforeGetExtra", { adapter: adapterClassName, key });
-
-    logFunction.mockReset();
-
-    const afterGetExtraHandler = getHandler("afterGetExtra", plugin);
-    await afterGetExtraHandler({ adapter, key, extra });
-    expect(logFunction).toHaveBeenCalledWith("afterGetExtra", { adapter: adapterClassName, key, extra });
+      expect(logFunction).toHaveBeenCalledWith(hook, expectedLogArgs);
+    });
   });
 
   describe("e2e testing", () => {

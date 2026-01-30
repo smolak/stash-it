@@ -3,6 +3,7 @@ import { MemoryAdapter } from "@stash-it/memory-adapter";
 import { StashIt } from "@stash-it/stash-it";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { ZodError } from "zod";
 import { createTtlPlugin, TTL_EXTRA_PROPERTY_NAME } from "./index";
 
 // Any adapter can be used here.
@@ -20,6 +21,24 @@ describe("ttl-plugin", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+  });
+
+  describe("validation", () => {
+    it("throws when ttl is negative", () => {
+      expect(() => createTtlPlugin({ ttl: -1 })).toThrow(ZodError);
+    });
+
+    it("throws when ttl is zero", () => {
+      expect(() => createTtlPlugin({ ttl: 0 })).toThrow(ZodError);
+    });
+
+    it("throws when ttl is a decimal number", () => {
+      expect(() => createTtlPlugin({ ttl: 1.5 })).toThrow(ZodError);
+    });
+
+    it("throws when ttl is not a number", () => {
+      expect(() => createTtlPlugin({ ttl: "10" as unknown as number })).toThrow(ZodError);
+    });
   });
 
   describe("setting an item", () => {
