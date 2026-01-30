@@ -18,10 +18,10 @@ export type Item = {
 };
 
 /** Hook handler function. Accepts and returns the same args, apart from the adapter, which is injected each time. */
-export type HookHandler<Args> = (args: Args) => Promise<Omit<Args, "adapter">>;
+export type HookHandler<Args extends { adapter: unknown }> = (args: Args) => Promise<Omit<Args, "adapter">>;
 
-type RequiredProperties<Object, K extends keyof Object> = {
-  [P in K]: Object[P];
+type RequiredProperties<T, K extends keyof T> = {
+  [P in K]: T[P];
 };
 
 /** All possible hooks. */
@@ -149,7 +149,6 @@ export interface StashItInterface extends CommonInterface {
 export interface StashItAdapterInterface extends CommonInterface {
   connect(): Promise<void>;
   disconnect(): Promise<void>;
-  checkStorage(): Promise<true>;
 }
 
 /** StashIt adapter abstract class. */
@@ -171,7 +170,7 @@ export abstract class StashItAdapter implements StashItAdapterInterface {
   }
 
   /**
-   * Runs checks, essetially all public adapter's methods,
+   * Runs checks, essentially all public adapter's methods,
    * on the storage, to verify if all of those methods can be performed.
    * More precisely, if the adapter can operate (read, write, update, delete)
    * on the storage without problems.
@@ -202,7 +201,9 @@ export abstract class StashItAdapter implements StashItAdapterInterface {
 
   protected validateKey(key: Key): void {
     if (!/^[A-Za-z0-9_-]+$/.test(key)) {
-      throw new Error(`Invalid key. Only _-azAZ09 allowed. '${key}' used.`);
+      throw new Error(
+        `Invalid key: '${key}'. Only alphanumeric characters (a-z, A-Z, 0-9), underscores (_), and hyphens (-) are allowed.`,
+      );
     }
   }
 
