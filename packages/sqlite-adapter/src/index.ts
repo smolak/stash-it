@@ -24,11 +24,6 @@ export interface SqliteAdapterConfiguration {
   table?: SqliteAdapterTableConfiguration;
 }
 
-interface SqliteAdapterConfigurationOutput {
-  connection: SqliteAdapterConnectionConfiguration;
-  table: Required<SqliteAdapterTableConfiguration>;
-}
-
 const sqliteAdapterConfigurationSchema = z.object({
   connection: z.object({
     dbPath: z.string().trim(),

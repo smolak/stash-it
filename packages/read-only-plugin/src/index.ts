@@ -11,12 +11,6 @@ export interface ReadOnlyPluginOptions {
   setExtraErrorMessage?: string;
 }
 
-interface ReadOnlyPluginOptionsOutput {
-  setItemErrorMessage: string;
-  removeItemErrorMessage: string;
-  setExtraErrorMessage: string;
-}
-
 const errorMessageSchema = z.string().trim().min(1);
 const pluginOptionsSchema = z.object({
   setItemErrorMessage: errorMessageSchema.default("Overwriting items is not allowed!"),
