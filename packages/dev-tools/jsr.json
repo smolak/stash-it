@@ -5,6 +5,7 @@
   "exports": "./mod.ts",
   "imports": {
     "@stash-it/core": "jsr:@stash-it/core@^0.6.0",
+    "nanoid": "npm:nanoid@^5.1.6",
     "vitest": "npm:vitest@^4.0.18"
   },
   "publish": {

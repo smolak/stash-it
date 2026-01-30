@@ -58,21 +58,77 @@ function parseCoreVersionFromImport(importSpecifier: string): string | null {
   return match?.[1] ?? null;
 }
 
-function parseVitestVersionFromImport(importSpecifier: string): string | null {
-  // Parse version from "npm:vitest@^4.0.18"
-  const match = importSpecifier.match(/vitest@(\^?.+)$/);
+function parseNpmVersionFromImport(importSpecifier: string, packageName: string): string | null {
+  // Parse version from "npm:package@^version"
+  const regex = new RegExp(`${packageName.replace("/", "\\/")}@(\\^?[\\d.]+)$`);
+  const match = importSpecifier.match(regex);
   return match?.[1] ?? null;
 }
 
-async function getVitestVersionFromCatalog(): Promise<string | null> {
+async function getCatalogVersion(packageName: string): Promise<string | null> {
   try {
     const content = await readFile(join(process.cwd(), "pnpm-workspace.yaml"), "utf-8");
-    // Parse "vitest: ^4.0.18" from the yaml file
-    const match = content.match(/^\s*vitest:\s*(\^?[\d.]+)/m);
+    // Parse "package: ^version" from the yaml file
+    const regex = new RegExp(`^\\s*${packageName}:\\s*(\\^?[\\d.]+)`, "m");
+    const match = content.match(regex);
     return match?.[1] ?? null;
   } catch {
     return null;
   }
+}
+
+interface CatalogImportInfo {
+  packageName: string;
+  importedVersion: string | null;
+  expectedVersion: string;
+  match: boolean;
+}
+
+// Packages that use zod from the catalog
+const PACKAGES_USING_ZOD = [
+  "mysql-adapter",
+  "postgresql-adapter",
+  "redis-adapter",
+  "sqlite-adapter",
+  "ttl-plugin",
+  "prefix-suffix-plugin",
+  "read-only-plugin",
+];
+
+async function checkZodImports(catalogZodVersion: string): Promise<CatalogImportInfo[]> {
+  const packagesDir = join(process.cwd(), "packages");
+  const results: CatalogImportInfo[] = [];
+
+  for (const pkg of PACKAGES_USING_ZOD) {
+    const jsrJsonPath = join(packagesDir, pkg, "jsr.json");
+    const jsrJson = await getJsrJson(jsrJsonPath);
+
+    if (!jsrJson) {
+      continue;
+    }
+
+    const imports = jsrJson.imports as Record<string, string> | undefined;
+    if (!imports || !imports.zod) {
+      results.push({
+        packageName: pkg,
+        importedVersion: null,
+        expectedVersion: catalogZodVersion,
+        match: false,
+      });
+      continue;
+    }
+
+    const importedVersion = parseNpmVersionFromImport(imports.zod, "zod");
+
+    results.push({
+      packageName: pkg,
+      importedVersion,
+      expectedVersion: catalogZodVersion,
+      match: importedVersion === catalogZodVersion,
+    });
+  }
+
+  return results;
 }
 
 async function checkPackageVersions(): Promise<VersionInfo[]> {
@@ -197,11 +253,11 @@ async function main(): Promise<void> {
   console.log("─".repeat(70));
 
   // Check vitest version in dev-tools
-  const catalogVitestVersion = await getVitestVersionFromCatalog();
+  const catalogVitestVersion = await getCatalogVersion("vitest");
   const devToolsJsr = await getJsrJson(join(process.cwd(), "packages", "dev-tools", "jsr.json"));
   const devToolsImports = devToolsJsr?.imports as Record<string, string> | undefined;
   const devToolsVitestImport = devToolsImports?.vitest;
-  const devToolsVitestVersion = devToolsVitestImport ? parseVitestVersionFromImport(devToolsVitestImport) : null;
+  const devToolsVitestVersion = devToolsVitestImport ? parseNpmVersionFromImport(devToolsVitestImport, "vitest") : null;
 
   let vitestMismatch = false;
 
@@ -221,8 +277,34 @@ async function main(): Promise<void> {
 
   console.log("─".repeat(70));
 
+  // Check zod version across packages
+  const catalogZodVersion = await getCatalogVersion("zod");
+  let zodMismatches: CatalogImportInfo[] = [];
+
+  console.log(`\nChecking zod version in jsr.json imports (expected: ${catalogZodVersion ?? "unknown"}):`);
+  console.log("─".repeat(70));
+  console.log(`${"Package".padEnd(25)} ${"imported".padEnd(15)} ${"expected".padEnd(15)} Status`);
+  console.log("─".repeat(70));
+
+  if (!catalogZodVersion) {
+    console.log("⚠️  Could not read zod version from pnpm-workspace.yaml catalog");
+  } else {
+    const zodResults = await checkZodImports(catalogZodVersion);
+    zodMismatches = zodResults.filter((r) => !r.match);
+
+    for (const result of zodResults) {
+      const status = result.match ? "✅" : "❌ MISMATCH";
+      const importedVersion = result.importedVersion ?? "N/A";
+      console.log(
+        `${result.packageName.padEnd(25)} ${importedVersion.padEnd(15)} ${result.expectedVersion.padEnd(15)} ${status}`,
+      );
+    }
+  }
+
+  console.log("─".repeat(70));
+
   // Report all errors
-  const hasErrors = mismatches.length > 0 || importMismatches.length > 0 || vitestMismatch;
+  const hasErrors = mismatches.length > 0 || importMismatches.length > 0 || vitestMismatch || zodMismatches.length > 0;
 
   if (mismatches.length > 0) {
     console.log(`\n❌ Found ${mismatches.length} package version mismatch(es):`);
@@ -245,6 +327,15 @@ async function main(): Promise<void> {
   if (vitestMismatch) {
     console.log(`\n❌ vitest version mismatch in dev-tools/jsr.json`);
     console.log(`   Update the vitest import to match the catalog version: ${catalogVitestVersion}`);
+  }
+
+  if (zodMismatches.length > 0) {
+    console.log(`\n❌ Found ${zodMismatches.length} zod version mismatch(es):`);
+    for (const mismatch of zodMismatches) {
+      console.log(
+        `   - ${mismatch.packageName}: imports zod@${mismatch.importedVersion ?? "missing"}, expected ${mismatch.expectedVersion}`,
+      );
+    }
   }
 
   if (hasErrors) {

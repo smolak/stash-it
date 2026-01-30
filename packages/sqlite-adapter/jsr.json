@@ -4,7 +4,9 @@
   "version": "0.6.0",
   "exports": "./mod.ts",
   "imports": {
-    "@stash-it/core": "jsr:@stash-it/core@^0.6.0"
+    "@stash-it/core": "jsr:@stash-it/core@^0.6.0",
+    "better-sqlite3": "npm:better-sqlite3@^12.6.2",
+    "zod": "npm:zod@^4.3.6"
   },
   "publish": {
     "include": ["package.json", "README.md", "mod.ts", "src/**/*.ts"],
