@@ -80,15 +80,13 @@ async function main(): Promise<void> {
   // Print all packages and their versions
   console.log("Package Versions:");
   console.log("─".repeat(70));
-  console.log(
-    `${"Package".padEnd(25)} ${"package.json".padEnd(15)} ${"jsr.json".padEnd(15)} Status`
-  );
+  console.log(`${"Package".padEnd(25)} ${"package.json".padEnd(15)} ${"jsr.json".padEnd(15)} Status`);
   console.log("─".repeat(70));
 
   for (const result of results) {
-    const status = result.match ? "✓" : "✗ MISMATCH";
+    const status = result.match ? "✅" : "❌ MISMATCH";
     console.log(
-      `${result.packageName.padEnd(25)} ${result.packageJsonVersion.padEnd(15)} ${result.jsrJsonVersion.padEnd(15)} ${status}`
+      `${result.packageName.padEnd(25)} ${result.packageJsonVersion.padEnd(15)} ${result.jsrJsonVersion.padEnd(15)} ${status}`,
     );
   }
 
@@ -98,7 +96,7 @@ async function main(): Promise<void> {
     console.log(`\n❌ Found ${mismatches.length} version mismatch(es):`);
     for (const mismatch of mismatches) {
       console.log(
-        `   - ${mismatch.packageName}: package.json=${mismatch.packageJsonVersion}, jsr.json=${mismatch.jsrJsonVersion}`
+        `   - ${mismatch.packageName}: package.json=${mismatch.packageJsonVersion}, jsr.json=${mismatch.jsrJsonVersion}`,
       );
     }
     process.exit(1);
