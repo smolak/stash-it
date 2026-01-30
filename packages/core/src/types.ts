@@ -18,7 +18,6 @@ export type Item = {
 };
 
 /** Hook handler function. Accepts and returns the same args, apart from the adapter, which is injected each time. */
-// eslint-disable-next-line no-unused-vars
 export type HookHandler<Args> = (args: Args) => Promise<Omit<Args, "adapter">>;
 
 type RequiredProperties<Object, K extends keyof Object> = {
@@ -69,17 +68,11 @@ type ExtraNotFound = undefined;
 export type GetExtraResult = Extra | ExtraNotFound;
 
 interface CommonInterface {
-  // eslint-disable-next-line no-unused-vars
   setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
-  // eslint-disable-next-line no-unused-vars
   getItem(key: Key): Promise<GetItemResult>;
-  // eslint-disable-next-line no-unused-vars
   hasItem(key: Key): Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   removeItem(key: Key): Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
-  // eslint-disable-next-line no-unused-vars
   getExtra(key: Key): Promise<GetExtraResult>;
   checkStorage(): Promise<true>;
 }
@@ -150,7 +143,6 @@ export type StashItPlugin = {
 
 /** StashIt interface. */
 export interface StashItInterface extends CommonInterface {
-  // eslint-disable-next-line no-unused-vars
   registerPlugins(plugins: StashItPlugin[]): void;
 }
 
@@ -214,16 +206,10 @@ export abstract class StashItAdapter implements StashItAdapterInterface {
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
   abstract setItem(key: Key, value: Value, extra: Extra): Promise<Item>;
-  // eslint-disable-next-line no-unused-vars
   abstract getItem(key: Key): Promise<GetItemResult>;
-  // eslint-disable-next-line no-unused-vars
   abstract hasItem(key: Key): Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   abstract removeItem(key: Key): Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   abstract setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
-  // eslint-disable-next-line no-unused-vars
   abstract getExtra(key: Key): Promise<GetExtraResult>;
 }

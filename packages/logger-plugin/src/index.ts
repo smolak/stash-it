@@ -2,7 +2,6 @@ import type { Hook, HookHandlerArgs, StashItPlugin } from "@stash-it/core";
 
 type LogFunction = (
   hook: Hook,
-  // eslint-disable-next-line no-unused-vars
   hookHandlerArgs: Omit<HookHandlerArgs[typeof hook], "adapter"> & { adapter: string },
 ) => void;
 
