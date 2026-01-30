@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/dev-tools",
-  "version": "0.0.6",
+  "version": "0.5.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -25,7 +25,7 @@
     "lint": "biome check .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
     "@stash-it/core": "workspace:*",

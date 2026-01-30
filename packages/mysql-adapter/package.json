@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/mysql-adapter",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -28,7 +28,7 @@
     "test": "./bin/when-mysql-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-mysql-is-ready-run.sh vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
     "mysql2": "^3.16.2",

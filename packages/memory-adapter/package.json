@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/memory-adapter",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -27,7 +27,7 @@
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "peerDependencies": {
     "@stash-it/core": ">=0.5.0"

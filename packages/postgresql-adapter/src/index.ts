@@ -54,9 +54,17 @@ export class PostgreSqlAdapter extends StashItAdapter {
   readonly #keyColumnName: string;
   readonly #valueColumnName: string;
   readonly #extraColumnName: string;
+  readonly #connectionConfiguration: Required<PostgreSqlAdapterConnectionConfiguration>;
 
-  #client: Client;
-  #connectionConfiguration: Required<PostgreSqlAdapterConnectionConfiguration>;
+  #_client: Client | undefined;
+
+  get #client(): Client {
+    if (!this.#_client) {
+      throw new Error("PostgreSQL adapter is not connected. Call connect() first.");
+    }
+
+    return this.#_client;
+  }
 
   constructor(configuration: PostgreSqlAdapterConfiguration) {
     super();
@@ -75,9 +83,9 @@ export class PostgreSqlAdapter extends StashItAdapter {
   }
 
   override async connect(): Promise<void> {
-    this.#client = new Client(this.#connectionConfiguration);
+    this.#_client = new Client(this.#connectionConfiguration);
 
-    await this.#client.connect();
+    await this.#_client.connect();
   }
 
   override async disconnect(): Promise<void> {

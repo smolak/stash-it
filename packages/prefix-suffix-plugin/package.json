@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/prefix-suffix-plugin",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -28,7 +28,7 @@
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
     "zod": "catalog:"

@@ -54,7 +54,15 @@ export class MySqlAdapter extends StashItAdapter {
   readonly #valueColumnName: string;
   readonly #extraColumnName: string;
 
-  #connection: Connection;
+  #_connection: Connection | undefined;
+
+  get #connection(): Connection {
+    if (!this.#_connection) {
+      throw new Error("MySQL adapter is not connected. Call connect() first.");
+    }
+
+    return this.#_connection;
+  }
 
   constructor(configuration: MySqlAdapterConfiguration) {
     super();
@@ -72,7 +80,7 @@ export class MySqlAdapter extends StashItAdapter {
   }
 
   override async connect(): Promise<void> {
-    this.#connection = await createConnection(this.#connectionConfiguration);
+    this.#_connection = await createConnection(this.#connectionConfiguration);
   }
 
   override async disconnect(): Promise<void> {

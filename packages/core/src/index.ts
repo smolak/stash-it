@@ -146,6 +146,7 @@ export interface StashItInterface extends CommonInterface {
   registerPlugins(plugins: StashItPlugin[]): void;
 }
 
+/** StashIt adapter interface. */
 export interface StashItAdapterInterface extends CommonInterface {
   connect(): Promise<void>;
   disconnect(): Promise<void>;

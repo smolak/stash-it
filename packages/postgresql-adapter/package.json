@@ -1,6 +1,6 @@
 {
   "name": "@stash-it/postgresql-adapter",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -28,7 +28,7 @@
     "test": "./bin/when-postgresql-is-ready-run.sh vitest run",
     "test:watch": "./bin/when-postgresql-is-ready-run.sh vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "dependencies": {
     "pg": "^8.17.2",

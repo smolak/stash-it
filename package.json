@@ -12,7 +12,9 @@
     "lint": "turbo lint",
     "test": "turbo test",
     "typecheck": "turbo typecheck",
-    "format": "biome check --write ."
+    "format": "biome check --write .",
+    "check-versions": "npx tsx scripts/check-versions.ts",
+    "publish-packages": "turbo publish"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

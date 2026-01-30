@@ -32,10 +32,13 @@
   ],
   "scripts": {
     "lint": "biome check .",
+    "test": "vitest run",
+    "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
-    "publish": "pnpx jsr publish"
+    "publish": "pnpm -w run check-versions && pnpx jsr publish"
   },
   "devDependencies": {
-    "@biomejs/biome": "catalog:"
+    "@biomejs/biome": "catalog:",
+    "vitest": "catalog:"
   }
 }

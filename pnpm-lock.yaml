@@ -41,6 +41,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.3.13
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.18(@types/node@25.1.0)
 
   packages/dev-tools:
     dependencies:
