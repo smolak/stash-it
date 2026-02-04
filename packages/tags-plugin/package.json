@@ -1,0 +1,46 @@
+{
+  "name": "@stash-it/tags-plugin",
+  "version": "0.1.0",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": "./mod.ts",
+  "files": [
+    "mod.ts",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "_dist",
+    "README.md",
+    "package.json"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "@stash-it",
+    "stash it",
+    "stash-it",
+    "plugin",
+    "tags"
+  ],
+  "scripts": {
+    "lint": "biome check .",
+    "test": "vitest run",
+    "test:watch": "vitest --watch",
+    "typecheck": "tsc --noEmit",
+    "release": "pnpm -w run check-versions && pnpx jsr publish"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@stash-it/core": ">=0.5.0"
+  },
+  "devDependencies": {
+    "@stash-it/core": "workspace:*",
+    "@biomejs/biome": "catalog:",
+    "@stash-it/dev-tools": "workspace:*",
+    "@stash-it/memory-adapter": "workspace:*",
+    "@stash-it/stash-it": "workspace:*",
+    "vitest": "catalog:"
+  }
+}

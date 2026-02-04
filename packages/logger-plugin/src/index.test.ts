@@ -119,7 +119,7 @@ describe("logger-plugin", () => {
       const logFunction = vi.fn();
       const plugin = createLoggerPlugin(logFunction);
 
-      stash.registerPlugins([plugin]);
+      stash.use(plugin);
 
       await stash.setItem(key, value, extra);
       expect(logFunction).toHaveBeenCalledWith("beforeSetItem", { adapter: adapterClassName, key, value, extra });

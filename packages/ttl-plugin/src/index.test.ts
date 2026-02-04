@@ -94,8 +94,7 @@ describe("ttl-plugin", () => {
       const timeInMs = ttl * 1_000;
 
       it("set item contains ttl data in extra", async () => {
-        const stash = new StashIt(new MemoryAdapter());
-        stash.registerPlugins([createTtlPlugin({ ttl })]);
+        const stash = new StashIt(new MemoryAdapter()).use(createTtlPlugin({ ttl }));
 
         await stash.setItem("key", "value");
 
@@ -107,8 +106,7 @@ describe("ttl-plugin", () => {
       });
 
       it("setting extra data keeps ttl data intact", async () => {
-        const stash = new StashIt(new MemoryAdapter());
-        stash.registerPlugins([createTtlPlugin({ ttl })]);
+        const stash = new StashIt(new MemoryAdapter()).use(createTtlPlugin({ ttl }));
 
         await stash.setItem("key", "value", { some: "initial extra" });
 
@@ -125,8 +123,7 @@ describe("ttl-plugin", () => {
       const timeInMs = ttl * 1_000 + 1;
 
       it("getting an item returns item not found result", async () => {
-        const stash = new StashIt(new MemoryAdapter());
-        stash.registerPlugins([createTtlPlugin({ ttl })]);
+        const stash = new StashIt(new MemoryAdapter()).use(createTtlPlugin({ ttl }));
 
         await stash.setItem("key", "value");
 
@@ -138,8 +135,7 @@ describe("ttl-plugin", () => {
       });
 
       it("checking if item exists returns item not found result", async () => {
-        const stash = new StashIt(new MemoryAdapter());
-        stash.registerPlugins([createTtlPlugin({ ttl })]);
+        const stash = new StashIt(new MemoryAdapter()).use(createTtlPlugin({ ttl }));
 
         await stash.setItem("key", "value");
 
@@ -151,8 +147,7 @@ describe("ttl-plugin", () => {
       });
 
       it("getting extra returns extra not found result", async () => {
-        const stash = new StashIt(new MemoryAdapter());
-        stash.registerPlugins([createTtlPlugin({ ttl })]);
+        const stash = new StashIt(new MemoryAdapter()).use(createTtlPlugin({ ttl }));
 
         await stash.setItem("key", "value");
 
@@ -164,8 +159,7 @@ describe("ttl-plugin", () => {
       });
 
       it("setting extra returns extra could not be set result", async () => {
-        const stash = new StashIt(new MemoryAdapter());
-        stash.registerPlugins([createTtlPlugin({ ttl })]);
+        const stash = new StashIt(new MemoryAdapter()).use(createTtlPlugin({ ttl }));
 
         await stash.setItem("key", "value");
 
@@ -177,8 +171,7 @@ describe("ttl-plugin", () => {
       });
 
       it("removing an item returns removal unsuccessful result", async () => {
-        const stash = new StashIt(new MemoryAdapter());
-        stash.registerPlugins([createTtlPlugin({ ttl })]);
+        const stash = new StashIt(new MemoryAdapter()).use(createTtlPlugin({ ttl }));
 
         await stash.setItem("key", "value");
 

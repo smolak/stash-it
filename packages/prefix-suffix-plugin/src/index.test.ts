@@ -168,8 +168,9 @@ describe("prefix-suffix-plugin", () => {
 
   describe("e2e testing", () => {
     it("setting and getting an item returns an item with `key` property neither prefixed nor suffixed", async () => {
-      const stash = new StashIt(new MemoryAdapter());
-      stash.registerPlugins([createPrefixSuffixPlugin({ prefix: "prefix-", suffix: "-suffix" })]);
+      const stash = new StashIt(new MemoryAdapter()).use(
+        createPrefixSuffixPlugin({ prefix: "prefix-", suffix: "-suffix" }),
+      );
 
       const key = "key";
 
@@ -191,8 +192,8 @@ describe("prefix-suffix-plugin", () => {
       const plugin1 = createPrefixSuffixPlugin({ prefix: "prefix1-" });
       const plugin2 = createPrefixSuffixPlugin({ prefix: "prefix2-" });
 
-      stash1.registerPlugins([plugin1]);
-      stash2.registerPlugins([plugin2]);
+      stash1.use(plugin1);
+      stash2.use(plugin2);
 
       await stash1.setItem("key", "value1");
       await stash2.setItem("key", "value2");

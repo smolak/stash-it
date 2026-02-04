@@ -69,7 +69,7 @@ const stash = new StashIt(adapter);
 const plugin = createLoggerPlugin(console.log);
 
 // Register the plugin to the stash-it instance.
-stash.registerPlugins([plugin]);
+stash.use(plugin);
 
 // Use it.
 await stash.set("key", "value");

@@ -1,4 +1,4 @@
-import type { StashItAdapterInterface, StashItPlugin } from "@stash-it/core";
+import type { Extra, StashItAdapterInterface, StashItPlugin } from "@stash-it/core";
 import { toHaveBeenCalledAfter, toHaveBeenCalledBefore } from "jest-extended";
 import { describe, expect, it, vi } from "vitest";
 import { mock } from "vitest-mock-extended";
@@ -28,7 +28,7 @@ describe("stash-it class", () => {
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
 
-      stashIt.registerPlugins([plugin]);
+      stashIt.use(plugin);
 
       await expect(stashIt.setItem(key, value, extra)).rejects.toThrow(
         expect.objectContaining({ message: expect.stringContaining("Cannot assign to read only property 'getItem'") }),
@@ -60,7 +60,7 @@ describe("stash-it class", () => {
         const adapter = createDummyAdapter();
         const stashIt = new StashIt(adapter);
 
-        stashIt.registerPlugins([plugin]);
+        stashIt.use(plugin);
 
         await stashIt.setItem(key, value, extra);
 
@@ -123,7 +123,7 @@ describe("stash-it class", () => {
 
           const adapter = createDummyAdapter();
           const stashIt = new StashIt(adapter);
-          stashIt.registerPlugins([plugin]);
+          stashIt.use(plugin);
 
           await expect(stashIt.setItem("any_key", "any_value")).rejects.toThrow("Something went wrong...");
           expect(adapter.disconnect).toHaveBeenCalled();
@@ -160,7 +160,7 @@ describe("stash-it class", () => {
 
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
-      stashIt.registerPlugins([plugin]);
+      stashIt.use(plugin);
 
       const itemSet = await stashIt.setItem(key, value, extra);
 
@@ -244,7 +244,7 @@ describe("stash-it class", () => {
 
           const adapter = createDummyAdapter();
           const stashIt = new StashIt(adapter);
-          stashIt.registerPlugins([plugin]);
+          stashIt.use(plugin);
 
           await expect(stashIt.getItem("any_key")).rejects.toThrow("Something went wrong...");
           expect(adapter.disconnect).toHaveBeenCalled();
@@ -275,7 +275,7 @@ describe("stash-it class", () => {
 
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
-      stashIt.registerPlugins([plugin]);
+      stashIt.use(plugin);
 
       const itemGot = await stashIt.getItem(key);
 
@@ -355,7 +355,7 @@ describe("stash-it class", () => {
 
           const adapter = createDummyAdapter();
           const stashIt = new StashIt(adapter);
-          stashIt.registerPlugins([plugin]);
+          stashIt.use(plugin);
 
           await expect(stashIt.hasItem("any_key")).rejects.toThrow("Something went wrong...");
           expect(adapter.disconnect).toHaveBeenCalled();
@@ -393,7 +393,7 @@ describe("stash-it class", () => {
 
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
-      stashIt.registerPlugins([plugin]);
+      stashIt.use(plugin);
 
       const itemSet = await stashIt.hasItem(key);
 
@@ -480,7 +480,7 @@ describe("stash-it class", () => {
 
           const adapter = createDummyAdapter();
           const stashIt = new StashIt(adapter);
-          stashIt.registerPlugins([plugin]);
+          stashIt.use(plugin);
 
           await expect(stashIt.removeItem("any_key")).rejects.toThrow("Something went wrong...");
           expect(adapter.disconnect).toHaveBeenCalled();
@@ -507,7 +507,7 @@ describe("stash-it class", () => {
 
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
-      stashIt.registerPlugins([plugin]);
+      stashIt.use(plugin);
 
       const result = await stashIt.removeItem(key);
 
@@ -583,7 +583,7 @@ describe("stash-it class", () => {
 
           const adapter = createDummyAdapter();
           const stashIt = new StashIt(adapter);
-          stashIt.registerPlugins([plugin]);
+          stashIt.use(plugin);
 
           await expect(stashIt.setExtra("any_key", { some: "extra" })).rejects.toThrow("Something went wrong...");
           expect(adapter.disconnect).toHaveBeenCalled();
@@ -612,7 +612,7 @@ describe("stash-it class", () => {
 
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
-      stashIt.registerPlugins([plugin]);
+      stashIt.use(plugin);
 
       const extraSet = await stashIt.setExtra(key, extra);
 
@@ -688,7 +688,7 @@ describe("stash-it class", () => {
 
           const adapter = createDummyAdapter();
           const stashIt = new StashIt(adapter);
-          stashIt.registerPlugins([plugin]);
+          stashIt.use(plugin);
 
           await expect(stashIt.getExtra("any_key")).rejects.toThrow("Something went wrong...");
           expect(adapter.disconnect).toHaveBeenCalled();
@@ -714,7 +714,7 @@ describe("stash-it class", () => {
 
       const adapter = createDummyAdapter();
       const stashIt = new StashIt(adapter);
-      stashIt.registerPlugins([plugin]);
+      stashIt.use(plugin);
 
       const extraGot = await stashIt.getExtra(key);
 
@@ -743,15 +743,13 @@ describe("stash-it class", () => {
     });
   });
 
-  describe("registerPlugins method", () => {
+  describe("use() method", () => {
     // Each hook is tested in its own test suite.
     // Testing general use for the method.
-    describe("when an empty array is passed", () => {
-      it("should not throw and stash-it should work normally", async () => {
+    describe("when no plugins are registered", () => {
+      it("should work normally", async () => {
         const adapter = createDummyAdapter();
         const stashIt = new StashIt(adapter);
-
-        stashIt.registerPlugins([]);
 
         const itemSet = await stashIt.setItem(key, value, extra);
 
@@ -777,12 +775,138 @@ describe("stash-it class", () => {
         const adapter = createDummyAdapter();
         const stashIt = new StashIt(adapter);
 
-        stashIt.registerPlugins([plugin1, plugin2]);
+        stashIt.use(plugin1).use(plugin2);
 
         await stashIt.setItem(key, value, extra);
 
         expect(HookHandler1).toHaveBeenCalledBefore(HookHandler2);
       });
+    });
+  });
+
+  describe("use() method for type-safe plugin chaining", () => {
+    // These tests verify that TypeScript correctly accumulates extra types
+    // when chaining multiple plugins with .use()
+
+    // Define test extra types for plugins
+    interface PluginAExtra extends Extra {
+      __pluginA: { valueA: string };
+    }
+
+    interface PluginBExtra extends Extra {
+      __pluginB: { valueB: number };
+    }
+
+    interface PluginCExtra extends Extra {
+      __pluginC: { valueC: boolean };
+    }
+
+    const createPluginA = (): StashItPlugin<PluginAExtra> => ({
+      hookHandlers: {
+        beforeSetItem: async ({ key, value, extra }) => ({
+          key,
+          value,
+          extra: { ...extra, __pluginA: { valueA: "added by plugin A" } },
+        }),
+      },
+    });
+
+    const createPluginB = (): StashItPlugin<PluginBExtra> => ({
+      hookHandlers: {
+        beforeSetItem: async ({ key, value, extra }) => ({
+          key,
+          value,
+          extra: { ...extra, __pluginB: { valueB: 42 } },
+        }),
+      },
+    });
+
+    const createPluginC = (): StashItPlugin<PluginCExtra> => ({
+      hookHandlers: {
+        beforeSetItem: async ({ key, value, extra }) => ({
+          key,
+          value,
+          extra: { ...extra, __pluginC: { valueC: true } },
+        }),
+      },
+    });
+
+    it("accumulates types from multiple plugins chained with .use()", async () => {
+      const adapter = createDummyAdapter();
+
+      // Chain three plugins - TypeScript should accept this
+      const stash = new StashIt(adapter).use(createPluginA()).use(createPluginB()).use(createPluginC());
+
+      // Should be able to call setItem with any combination of extras
+      // These lines test TypeScript compilation - if types are wrong, this won't compile
+
+      // No extra properties (all optional)
+      await stash.setItem("key1", "value1");
+
+      // Only pluginA's extra
+      await stash.setItem("key2", "value2", { __pluginA: { valueA: "test" } });
+
+      // Only pluginB's extra
+      await stash.setItem("key3", "value3", { __pluginB: { valueB: 123 } });
+
+      // Mix of plugin extras
+      await stash.setItem("key4", "value4", {
+        __pluginA: { valueA: "test" },
+        __pluginC: { valueC: false },
+      });
+
+      // All plugin extras plus custom properties
+      await stash.setItem("key5", "value5", {
+        __pluginA: { valueA: "test" },
+        __pluginB: { valueB: 999 },
+        __pluginC: { valueC: true },
+        customProp: "also allowed",
+      });
+
+      // Verify the stash operations complete successfully
+      expect(adapter.setItem).toHaveBeenCalledTimes(5);
+    });
+
+    it("returns items with correct accumulated extra types", async () => {
+      const adapter = createDummyAdapter();
+
+      // Setup adapter to return item with all plugin extras
+      const itemWithAllExtras = {
+        key: "testKey",
+        value: "testValue",
+        extra: {
+          __pluginA: { valueA: "from A" },
+          __pluginB: { valueB: 100 },
+          __pluginC: { valueC: true },
+        },
+      };
+      adapter.getItem.mockResolvedValue(itemWithAllExtras);
+
+      const stash = new StashIt(adapter).use(createPluginA()).use(createPluginB()).use(createPluginC());
+
+      const result = await stash.getItem("testKey");
+
+      // TypeScript should know about all extra properties
+      // These assertions also serve as compile-time type checks
+      expect(result?.extra.__pluginA?.valueA).toBe("from A");
+      expect(result?.extra.__pluginB?.valueB).toBe(100);
+      expect(result?.extra.__pluginC?.valueC).toBe(true);
+    });
+
+    it("works with setExtra using partial accumulated types", async () => {
+      const adapter = createDummyAdapter();
+      adapter.setExtra.mockResolvedValue({
+        __pluginA: { valueA: "updated" },
+        existingProp: "kept",
+      });
+
+      const stash = new StashIt(adapter).use(createPluginA()).use(createPluginB());
+
+      // Should accept partial extras
+      const result = await stash.setExtra("key", { __pluginA: { valueA: "updated" } });
+
+      expect(adapter.setExtra).toHaveBeenCalled();
+      expect(result).not.toBe(false);
     });
   });
 });

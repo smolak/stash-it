@@ -14,10 +14,13 @@ import type {
   Value,
 } from "@stash-it/core";
 
-/** StashIt class. The main class to use. */
-export class StashIt implements StashItInterface {
+/**
+ * StashIt class. The main class to use.
+ * @template TExtra - The type of extra data, accumulated from registered plugins
+ */
+export class StashIt<TExtra extends Extra = Extra> implements StashItInterface<TExtra> {
   readonly #adapter: StashItAdapterInterface;
-  #registeredHookHandlers: RegisteredHookHandlers = {
+  #registeredHookHandlers: RegisteredHookHandlers<TExtra> = {
     buildKey: [],
     beforeSetItem: [],
     afterSetItem: [],
@@ -49,14 +52,19 @@ export class StashIt implements StashItInterface {
     return result.key;
   }
 
-  async setItem(key: Key, value: Value, extra: Extra = {}): Promise<Item> {
+  async setItem(
+    key: Key,
+    value: Value,
+    extra: Partial<TExtra> & Extra = {} as Partial<TExtra> & Extra,
+  ): Promise<Item<TExtra>> {
     await this.#adapter.connect();
 
     try {
       const builtKey = await this.#buildKey(key);
-      const beforeData = await this.#call("beforeSetItem", { key: builtKey, value, extra });
+      // Type assertion: hooks work with base Extra, but we pass the user's partial extra
+      const beforeData = await this.#call("beforeSetItem", { key: builtKey, value, extra: extra as TExtra });
       const setItem = await this.#adapter.setItem(beforeData.key, beforeData.value, beforeData.extra);
-      const afterData = await this.#call("afterSetItem", { ...beforeData, item: setItem });
+      const afterData = await this.#call("afterSetItem", { ...beforeData, item: setItem as Item<TExtra> });
 
       await this.#adapter.disconnect();
 
@@ -68,14 +76,14 @@ export class StashIt implements StashItInterface {
     }
   }
 
-  async getItem(key: Key): Promise<GetItemResult> {
+  async getItem(key: Key): Promise<GetItemResult<TExtra>> {
     await this.#adapter.connect();
 
     try {
       const builtKey = await this.#buildKey(key);
       const beforeData = await this.#call("beforeGetItem", { key: builtKey });
       const item = await this.#adapter.getItem(beforeData.key);
-      const afterData = await this.#call("afterGetItem", { ...beforeData, item });
+      const afterData = await this.#call("afterGetItem", { ...beforeData, item: item as GetItemResult<TExtra> });
 
       await this.#adapter.disconnect();
 
@@ -125,14 +133,18 @@ export class StashIt implements StashItInterface {
     }
   }
 
-  async setExtra(key: Key, extra: Extra): Promise<SetExtraResult> {
+  async setExtra(key: Key, extra: Partial<TExtra> & Extra): Promise<SetExtraResult<TExtra>> {
     await this.#adapter.connect();
 
     try {
       const builtKey = await this.#buildKey(key);
-      const beforeData = await this.#call("beforeSetExtra", { key: builtKey, extra });
+      // Type assertion: hooks work with base Extra, but we pass the user's partial extra
+      const beforeData = await this.#call("beforeSetExtra", { key: builtKey, extra: extra as TExtra });
       const extraSet = await this.#adapter.setExtra(beforeData.key, beforeData.extra);
-      const afterData = await this.#call("afterSetExtra", { ...beforeData, extra: extraSet });
+      const afterData = await this.#call("afterSetExtra", {
+        ...beforeData,
+        extra: extraSet as SetExtraResult<TExtra>,
+      });
 
       await this.#adapter.disconnect();
 
@@ -144,14 +156,14 @@ export class StashIt implements StashItInterface {
     }
   }
 
-  async getExtra(key: Key): Promise<GetExtraResult> {
+  async getExtra(key: Key): Promise<GetExtraResult<TExtra>> {
     await this.#adapter.connect();
 
     try {
       const builtKey = await this.#buildKey(key);
       const beforeData = await this.#call("beforeGetExtra", { key: builtKey });
       const extra = await this.#adapter.getExtra(beforeData.key);
-      const afterData = await this.#call("afterGetExtra", { ...beforeData, extra });
+      const afterData = await this.#call("afterGetExtra", { ...beforeData, extra: extra as GetExtraResult<TExtra> });
 
       await this.#adapter.disconnect();
 
@@ -163,31 +175,45 @@ export class StashIt implements StashItInterface {
     }
   }
 
-  registerPlugins(plugins: StashItPlugin[]): void {
-    for (const plugin of plugins) {
-      const { hookHandlers } = plugin;
-      let hook: keyof RegisteredHookHandlers;
+  /**
+   * Register a plugin and return a typed StashIt instance.
+   * Plugins can be chained for type-safe composition.
+   *
+   * @example
+   * ```typescript
+   * const stash = new StashIt(adapter)
+   *   .use(createTagsPlugin())
+   *   .use(createTtlPlugin({ ttl: 3600 }));
+   *
+   * // Now __tags and __ttl are typed in extra!
+   * await stash.setItem('key', value, { __tags: ['movie'], __ttl: { ... } });
+   * ```
+   */
+  use<PAddsExtra extends Extra>(plugin: StashItPlugin<PAddsExtra>): StashIt<TExtra & PAddsExtra> {
+    const { hookHandlers } = plugin;
+    let hook: keyof RegisteredHookHandlers<TExtra>;
 
-      for (hook in hookHandlers) {
-        const hookHandler = hookHandlers[hook];
+    for (hook in hookHandlers) {
+      const hookHandler = hookHandlers[hook];
 
-        if (hookHandler) {
-          // Type assertion required: TypeScript cannot correlate indexed access types
-          // across different objects (hookHandlers vs registeredHookHandlers).
-          // The runtime type safety is ensured by the for-in loop only yielding valid hooks.
-          (this.#registeredHookHandlers as Record<keyof RegisteredHookHandlers, unknown[]>)[hook] = [
-            ...this.#registeredHookHandlers[hook],
-            hookHandler,
-          ];
-        }
+      if (hookHandler) {
+        // Type assertion required: TypeScript cannot correlate indexed access types
+        // across different objects (hookHandlers vs registeredHookHandlers).
+        // The runtime type safety is ensured by the for-in loop only yielding valid hooks.
+        (this.#registeredHookHandlers as Record<keyof RegisteredHookHandlers<TExtra>, unknown[]>)[hook] = [
+          ...this.#registeredHookHandlers[hook],
+          hookHandler,
+        ];
       }
     }
+
+    return this as unknown as StashIt<TExtra & PAddsExtra>;
   }
 
-  async #call<Hook extends keyof RegisteredHookHandlers>(
+  async #call<Hook extends keyof RegisteredHookHandlers<TExtra>>(
     hook: Hook,
-    args: Omit<HookHandlerArgs[Hook], "adapter">,
-  ): Promise<Omit<HookHandlerArgs[Hook], "adapter">> {
+    args: Omit<HookHandlerArgs<TExtra>[Hook], "adapter">,
+  ): Promise<Omit<HookHandlerArgs<TExtra>[Hook], "adapter">> {
     const hookHandlers = this.#registeredHookHandlers[hook];
     let newArgs = args;
 
@@ -195,11 +221,11 @@ export class StashIt implements StashItInterface {
       for (const handler of hookHandlers) {
         // Type assertion required: TypeScript cannot narrow the handler's parameter type
         // based on the generic Hook type when iterating over the array.
-        const typedHandler = handler as unknown as HookHandler<HookHandlerArgs[Hook]>;
+        const typedHandler = handler as unknown as HookHandler<HookHandlerArgs<TExtra>[Hook]>;
         const result = await typedHandler({
           ...newArgs,
           adapter: this.#adapter,
-        } as HookHandlerArgs[Hook]);
+        } as HookHandlerArgs<TExtra>[Hook]);
 
         newArgs = { ...newArgs, ...result };
       }

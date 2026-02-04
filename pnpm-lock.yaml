@@ -275,6 +275,31 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0(typescript@5.9.3)(vitest@4.0.18(@types/node@25.1.0))
 
+  packages/tags-plugin:
+    dependencies:
+      zod:
+        specifier: 'catalog:'
+        version: 4.3.6
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 'catalog:'
+        version: 2.3.13
+      '@stash-it/core':
+        specifier: workspace:*
+        version: link:../core
+      '@stash-it/dev-tools':
+        specifier: workspace:*
+        version: link:../dev-tools
+      '@stash-it/memory-adapter':
+        specifier: workspace:*
+        version: link:../memory-adapter
+      '@stash-it/stash-it':
+        specifier: workspace:*
+        version: link:../stash-it
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.18(@types/node@25.1.0)
+
   packages/ttl-plugin:
     dependencies:
       zod:

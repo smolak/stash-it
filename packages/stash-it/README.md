@@ -63,7 +63,7 @@ const loggerPlugin: StashItPlugin = {
   },
 };
 
-stash.registerPlugins([loggerPlugin]);
+stash.use(loggerPlugin);
 
 await stash.setItem("the key", "some value", { optional: "extra data" });
 // console.log: Item with key "the key" was set.

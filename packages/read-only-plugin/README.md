@@ -67,7 +67,7 @@ const stash = new StashIt(adapter);
 const plugin = createReadOnlyPlugin();
 
 // Register the plugin to the stash-it instance.
-stash.registerPlugins([plugin]);
+stash.use(plugin);
 
 // Use it.
 await stash.get("key"); // Returns an item if it exists

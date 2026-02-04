@@ -1,4 +1,4 @@
-import type { Key, StashItAdapter, StashItPlugin } from "@stash-it/core";
+import type { Extra, Key, StashItAdapter, StashItPlugin } from "@stash-it/core";
 import { z } from "zod";
 
 /** TTL plugin options. */
@@ -33,11 +33,25 @@ const removeItemIfTtlExpired = async (adapter: StashItAdapter, key: Key, { ttl, 
 export const TTL_EXTRA_PROPERTY_NAME = "__ttl" as const;
 
 /**
+ * Type for the extra object containing TTL data.
+ * Use this with .use() for type-safe TTL properties.
+ */
+export interface TtlExtra extends Extra {
+  [TTL_EXTRA_PROPERTY_NAME]: Ttl;
+}
+
+/**
  * Create a plugin that adds TTL (time to live) to an item that gets stored.
  *
  * @param options Plugin options
+ *
+ * @example
+ * ```typescript
+ * const stash = new StashIt(adapter)
+ *   .use(createTtlPlugin({ ttl: 3600 })); // Type-safe: stash knows about __ttl
+ * ```
  */
-export const createTtlPlugin = (options: TtlPluginOptions): StashItPlugin => {
+export const createTtlPlugin = (options: TtlPluginOptions): StashItPlugin<TtlExtra> => {
   const { ttl } = pluginOptionsSchema.parse(options);
 
   return {

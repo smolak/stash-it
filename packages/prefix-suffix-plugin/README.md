@@ -72,7 +72,7 @@ const plugin = createPrefixSuffixPlugin({
 });
 
 // Register the plugin to the stash-it instance.
-stash.registerPlugins([plugin]);
+stash.use(plugin);
 
 // Use it.
 await stash.set("key", "value");

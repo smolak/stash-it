@@ -10,11 +10,14 @@ export type Value = RecursiveType;
 /** Extra data stored in the item. */
 export type Extra = { [key: string]: RecursiveType };
 
-/** Item stored in the stash. */
-export type Item = {
+/**
+ * Item stored in the stash.
+ * @template TExtra - The type of extra data, defaults to base Extra type
+ */
+export type Item<TExtra extends Extra = Extra> = {
   key: Key;
   value: Value;
-  extra: Extra;
+  extra: TExtra;
 };
 
 /** Hook handler function. Accepts and returns the same args, apart from the adapter, which is injected each time. */
@@ -42,82 +45,116 @@ export type Hook =
 
 type AdapterArg = { adapter: StashItAdapter };
 type BuildKeyArgs = AdapterArg & { key: Key };
-type BeforeSetItemArgs = AdapterArg & { key: Key; value: Value; extra: Extra };
-type AfterSetItemArgs = AdapterArg & { key: Key; value: Value; extra: Extra; item: Item };
+type BeforeSetItemArgs<TExtra extends Extra = Extra> = AdapterArg & { key: Key; value: Value; extra: TExtra };
+type AfterSetItemArgs<TExtra extends Extra = Extra> = AdapterArg & {
+  key: Key;
+  value: Value;
+  extra: TExtra;
+  item: Item<TExtra>;
+};
 type BeforeGetItemArgs = AdapterArg & { key: Key };
-type AfterGetItemArgs = AdapterArg & { key: Key; item: GetItemResult };
+type AfterGetItemArgs<TExtra extends Extra = Extra> = AdapterArg & { key: Key; item: GetItemResult<TExtra> };
 type BeforeHasItemArgs = AdapterArg & { key: Key };
 type AfterHasItemArgs = AdapterArg & { key: Key; result: boolean };
 type BeforeRemoveItemArgs = AdapterArg & { key: Key };
 type AfterRemoveItemArgs = AdapterArg & { key: Key; result: boolean };
-type BeforeSetExtraArgs = AdapterArg & { key: Key; extra: Extra };
-type AfterSetExtraArgs = AdapterArg & { key: Key; extra: SetExtraResult };
+type BeforeSetExtraArgs<TExtra extends Extra = Extra> = AdapterArg & { key: Key; extra: TExtra };
+type AfterSetExtraArgs<TExtra extends Extra = Extra> = AdapterArg & { key: Key; extra: SetExtraResult<TExtra> };
 type BeforeGetExtraArgs = AdapterArg & { key: Key };
-type AfterGetExtraArgs = AdapterArg & { key: Key; extra: GetExtraResult };
+type AfterGetExtraArgs<TExtra extends Extra = Extra> = AdapterArg & { key: Key; extra: GetExtraResult<TExtra> };
 
 type ExtraCouldNotBeSet = false;
-/** Result of setting extra data. */
-export type SetExtraResult = Extra | ExtraCouldNotBeSet;
+/**
+ * Result of setting extra data.
+ * @template TExtra - The type of extra data
+ */
+export type SetExtraResult<TExtra extends Extra = Extra> = TExtra | ExtraCouldNotBeSet;
 
 type ItemNotFound = undefined;
-/** Result of getting an item. */
-export type GetItemResult = Item | ItemNotFound;
+/**
+ * Result of getting an item.
+ * @template TExtra - The type of extra data
+ */
+export type GetItemResult<TExtra extends Extra = Extra> = Item<TExtra> | ItemNotFound;
 
 type ExtraNotFound = undefined;
-/** Result of getting extra data. */
-export type GetExtraResult = Extra | ExtraNotFound;
+/**
+ * Result of getting extra data.
+ * @template TExtra - The type of extra data
+ */
+export type GetExtraResult<TExtra extends Extra = Extra> = TExtra | ExtraNotFound;
 
-interface CommonInterface {
-  setItem(key: Key, value: Value, extra?: Extra): Promise<Item>;
-  getItem(key: Key): Promise<GetItemResult>;
+/**
+ * Common interface for StashIt and adapters.
+ * @template TExtra - The type of extra data
+ */
+interface CommonInterface<TExtra extends Extra = Extra> {
+  /**
+   * Store an item. Extra properties are optional - provide any subset of the accumulated plugin extras.
+   */
+  setItem(key: Key, value: Value, extra?: Partial<TExtra> & Extra): Promise<Item<TExtra>>;
+  getItem(key: Key): Promise<GetItemResult<TExtra>>;
   hasItem(key: Key): Promise<boolean>;
   removeItem(key: Key): Promise<boolean>;
-  setExtra(key: Key, extra: Extra): Promise<SetExtraResult>;
-  getExtra(key: Key): Promise<GetExtraResult>;
+  /**
+   * Update extra data. Properties are optional - provide any subset of the accumulated plugin extras.
+   */
+  setExtra(key: Key, extra: Partial<TExtra> & Extra): Promise<SetExtraResult<TExtra>>;
+  getExtra(key: Key): Promise<GetExtraResult<TExtra>>;
   checkStorage(): Promise<true>;
 }
 
-/** All types of hook handler args. */
-export type HookHandlerArgs = RequiredProperties<
+/**
+ * All types of hook handler args.
+ * @template TExtra - The type of extra data
+ */
+export type HookHandlerArgs<TExtra extends Extra = Extra> = RequiredProperties<
   {
     buildKey: BuildKeyArgs;
-    beforeSetItem: BeforeSetItemArgs;
-    afterSetItem: AfterSetItemArgs;
+    beforeSetItem: BeforeSetItemArgs<TExtra>;
+    afterSetItem: AfterSetItemArgs<TExtra>;
     beforeGetItem: BeforeGetItemArgs;
-    afterGetItem: AfterGetItemArgs;
+    afterGetItem: AfterGetItemArgs<TExtra>;
     beforeHasItem: BeforeHasItemArgs;
     afterHasItem: AfterHasItemArgs;
     beforeRemoveItem: BeforeRemoveItemArgs;
     afterRemoveItem: AfterRemoveItemArgs;
-    beforeSetExtra: BeforeSetExtraArgs;
-    afterSetExtra: AfterSetExtraArgs;
+    beforeSetExtra: BeforeSetExtraArgs<TExtra>;
+    afterSetExtra: AfterSetExtraArgs<TExtra>;
     beforeGetExtra: BeforeGetExtraArgs;
-    afterGetExtra: AfterGetExtraArgs;
+    afterGetExtra: AfterGetExtraArgs<TExtra>;
   },
   Hook
 >;
 
-/** Type for holding registered hook handlers for all possible hooks. */
-export type RegisteredHookHandlers = RequiredProperties<
+/**
+ * Type for holding registered hook handlers for all possible hooks.
+ * @template TExtra - The type of extra data
+ */
+export type RegisteredHookHandlers<TExtra extends Extra = Extra> = RequiredProperties<
   {
     buildKey: ReadonlyArray<HookHandler<BuildKeyArgs>>;
-    beforeSetItem: ReadonlyArray<HookHandler<BeforeSetItemArgs>>;
-    afterSetItem: ReadonlyArray<HookHandler<AfterSetItemArgs>>;
+    beforeSetItem: ReadonlyArray<HookHandler<BeforeSetItemArgs<TExtra>>>;
+    afterSetItem: ReadonlyArray<HookHandler<AfterSetItemArgs<TExtra>>>;
     beforeGetItem: ReadonlyArray<HookHandler<BeforeGetItemArgs>>;
-    afterGetItem: ReadonlyArray<HookHandler<AfterGetItemArgs>>;
+    afterGetItem: ReadonlyArray<HookHandler<AfterGetItemArgs<TExtra>>>;
     beforeHasItem: ReadonlyArray<HookHandler<BeforeHasItemArgs>>;
     afterHasItem: ReadonlyArray<HookHandler<AfterHasItemArgs>>;
     beforeRemoveItem: ReadonlyArray<HookHandler<BeforeRemoveItemArgs>>;
     afterRemoveItem: ReadonlyArray<HookHandler<AfterRemoveItemArgs>>;
-    beforeSetExtra: ReadonlyArray<HookHandler<BeforeSetExtraArgs>>;
-    afterSetExtra: ReadonlyArray<HookHandler<AfterSetExtraArgs>>;
+    beforeSetExtra: ReadonlyArray<HookHandler<BeforeSetExtraArgs<TExtra>>>;
+    afterSetExtra: ReadonlyArray<HookHandler<AfterSetExtraArgs<TExtra>>>;
     beforeGetExtra: ReadonlyArray<HookHandler<BeforeGetExtraArgs>>;
-    afterGetExtra: ReadonlyArray<HookHandler<AfterGetExtraArgs>>;
+    afterGetExtra: ReadonlyArray<HookHandler<AfterGetExtraArgs<TExtra>>>;
   },
   Hook
 >;
 
-type PluginHookHandlers = RequiredProperties<
+/**
+ * Plugin hook handlers type.
+ * Hooks work with base Extra type since they need to handle any extra data.
+ */
+export type PluginHookHandlers = RequiredProperties<
   {
     buildKey?: HookHandler<BuildKeyArgs>;
     beforeSetItem?: HookHandler<BeforeSetItemArgs>;
@@ -136,18 +173,42 @@ type PluginHookHandlers = RequiredProperties<
   Hook
 >;
 
-/** StashIt plugin type. */
-export type StashItPlugin = {
+/**
+ * StashIt plugin type.
+ * @template TAddsExtra - The type of extra data this plugin adds (used for type inference with .use())
+ */
+// biome-ignore lint/correctness/noUnusedVariables: TAddsExtra is a phantom type used for type inference with .use()
+export type StashItPlugin<TAddsExtra extends Extra = Extra> = {
   hookHandlers: PluginHookHandlers;
 };
 
-/** StashIt interface. */
-export interface StashItInterface extends CommonInterface {
-  registerPlugins(plugins: StashItPlugin[]): void;
+/**
+ * StashIt interface.
+ * @template TExtra - The type of extra data
+ */
+export interface StashItInterface<TExtra extends Extra = Extra> extends CommonInterface<TExtra> {
+  /**
+   * Register a plugin and return a typed StashIt instance.
+   * Plugins can be chained for type-safe composition.
+   *
+   * @example
+   * ```typescript
+   * const stash = new StashIt(adapter)
+   *   .use(createTagsPlugin())
+   *   .use(createTtlPlugin({ ttl: 3600 }));
+   *
+   * // Now __tags and __ttl are typed!
+   * await stash.setItem('key', value, { __tags: ['movie'], __ttl: { ... } });
+   * ```
+   */
+  use<PAddsExtra extends Extra>(plugin: StashItPlugin<PAddsExtra>): StashItInterface<TExtra & PAddsExtra>;
 }
 
-/** StashIt adapter interface. */
-export interface StashItAdapterInterface extends CommonInterface {
+/**
+ * StashIt adapter interface.
+ * Adapters work with base Extra type since they handle raw storage.
+ */
+export interface StashItAdapterInterface extends CommonInterface<Extra> {
   connect(): Promise<void>;
   disconnect(): Promise<void>;
 }

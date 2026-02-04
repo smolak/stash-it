@@ -38,7 +38,7 @@ describe("read-only-plugin", () => {
     // Pre-populate data before applying read-only plugin
     await adapter.setItem("existing-key", "value", { some: "extra" });
 
-    stash.registerPlugins([readOnlyPlugin]);
+    stash.use(readOnlyPlugin);
 
     // Test read operations return expected values
     const item = await stash.getItem("existing-key");
